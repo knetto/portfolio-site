@@ -393,6 +393,7 @@ nav .close:hover div::after {
   align-items: center;
   transition: bottom 0.8s ease; /* Smooth slide-in animation */
   z-index: 11; /* Above other content */
+  
 }
 
 #new-section .new-section-content {
