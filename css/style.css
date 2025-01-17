@@ -1,0 +1,399 @@
+:root {
+  --black: #0A0A0A;
+  --white: #eeebdc;
+  --shadow: rgba(0, 0, 0, 0.78);
+
+
+  --navBackground: var(--black);
+  --navText: var(--white);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Geist", sans-serif; 
+}
+
+html, body {
+  width: 100%;
+  min-height: 100%;
+  overflow-x: hidden;  /* Prevent horizontal scrolling */
+  overflow-y: auto;    /* Allow vertical scrolling if content overflows */
+}
+
+body {
+  background: var(--black);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column; /* Allows for vertical stacking of elements */
+  overflow: auto; /* Allow scrolling if content overflows */
+}
+
+:root {
+  --black: #0A0A0A;
+  --white: #eeebdc;
+  --shadow: rgba(0, 0, 0, 0.78);
+
+  --navBackground: var(--black);
+  --navText: var(--white);
+
+  --scrollbarTrack: var(--black);
+  --scrollbar: var(--black);
+  --scrollbarThumb: var(--white);
+}
+
+body::-webkit-scrollbar-track {
+  background-color: var(--scrollbarTrack);
+}
+
+body::-webkit-scrollbar {
+  width: 10px;
+  background-color: var(--scrollbar);
+}
+
+body::-webkit-scrollbar-thumb {
+  background-color: var(--scrollbarThumb);
+}
+
+.navbar {
+  background-color: var(--navBackground);
+  color: var(--navText);
+  transition: background-color 0.3s, color 0.3s;
+}
+
+
+#canvas {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 50%;
+  height: 50%;
+}
+
+#particles-js {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+#container3D {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 15%;
+  left: 0;
+  pointer-events: none;
+  z-index: 2;
+}
+
+h1 {
+  font-size: 40px;
+  text-align: center;
+}
+
+.container {
+  cursor: pointer;
+  position: absolute;
+  top: 5%;
+  right: 5%;
+  width: 50px;
+  height: 50px;
+  padding-top: 25px;
+ 
+}
+
+.menu {
+  position: relative;
+  width: 50px;
+  height: 50px;
+}
+
+.menu span {
+  width: 100%;
+  height: 3.5px;
+  background: var(--white);
+  position: absolute;
+  transition: all 0.3s ease;
+  border-radius: 5px;
+}
+
+.menu span:first-child {
+  top: -15px;
+}
+
+.menu span:last-child {
+  top: 15px;
+}
+
+.container:hover #button8 span:first-child {
+  width: 10px;
+  height: 15px;
+  top: -17px;
+  animation: wink 3s 2s infinite;
+}
+
+.container:hover #button8 span:last-child {
+  width: 35px;
+  height: 20px;
+  border-radius: 20px 20px 50px 50px;
+  top: 5px;
+  margin-left: 7px;
+  animation: smile 3s 2s infinite;
+}
+
+.container:hover #button8 span:nth-child(2) {
+  width: 10px;
+  height: 15px;
+  top: -17px;
+  margin-left: 40px;
+  animation: wink 3s 2s infinite;
+}
+
+@keyframes wink {
+  0% {
+    height: 15px;
+  }
+  5% {
+    height: 1px;
+    top: -7px;
+  }
+  10% {
+    height: 15px;
+    top: -17px;
+  }
+  100% {
+    height: 15px;
+  }
+}
+
+@keyframes smile {
+  0% {
+    border-radius: 20px 20px 50px 50px;
+  }
+  5% {
+    border-radius: 10px 10px 110px 110px;
+    top: 4px;
+  }
+  10% {
+    border-radius: 20px 20px 50px 50px;
+    top: 5px;
+  }
+  100% {
+    border-radius: 20px 20px 50px 50px;
+  }
+}
+
+nav {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%); /* This ensures the nav is centered both horizontally and vertically */
+  width: 100%;
+  height: 0; /* Full viewport height */
+  background: var(--navBackground);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 9999;
+}
+
+
+nav ul {
+  list-style: none;
+}
+
+nav ul li {
+  margin: 50px 0;
+}
+
+nav ul li a {
+  color: var(--navText);
+  font-size: 2em;
+  text-decoration: none;
+  font-weight: 500;
+  position: relative;
+  opacity: 0;
+  pointer-events: none;
+}
+
+nav ul li a:after {
+  content: '';
+  width: 100%;
+  position: absolute;
+  height: 3px;
+  border-radius: 5px;
+  background: var(--navText);
+  bottom: -10px;
+  left: 0;
+  transform-origin: left;
+  transition: transform .5s ease;
+  transform: scaleX(0);
+}
+
+nav ul li a:hover:after {
+  transform: scaleX(1);
+}
+
+nav .close {
+  width: 50px;
+  height: 45px;
+  padding-top: 20px;
+  position: absolute;
+  top: 5%;
+  right: 5%;
+  cursor: pointer;
+  opacity: 0;
+  pointer-events: none;
+}
+
+nav h2 {
+  position: absolute;
+  top: 5%;
+  left: 5%;
+  opacity: 0;
+  pointer-events: none;
+  color: var(--navText);
+  font-size: 2em;
+}
+
+.main-h2 {
+  position: absolute;
+  top: 5%;
+  left: 5%;
+  color: var(--white);
+  font-size: 2em;
+  opacity: 1;
+  pointer-events: none;
+  z-index: 999;
+}
+
+nav .close div::before,
+nav .close div::after {
+  content: '';
+  position: absolute;
+  width: 50px;
+  height: 3.5px;
+  background: var(--navText);
+  transition: background .5s ease;
+}
+
+nav .close div::before {
+  transform: rotate(-45deg);
+  transition: transform 0.3s ease;
+}
+
+nav .close div::after {
+  transform: rotate(45deg);
+  transition: transform 0.3s ease;
+}
+
+nav .close:hover div::before {
+  transform: rotate(45deg);
+  transition: transform 0.3s ease, transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1.5);
+}
+
+nav .close:hover div::after {
+  transform: rotate(-45deg);
+  transition: transform 0.3s ease, transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1.5);
+}
+
+.MainTitleFront {
+  position: absolute;
+  top: 37%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  font-size: 5rem;
+  font-weight: 900;
+  color: var(--white);
+  line-height: 1.2;
+  pointer-events: none;
+  z-index: 3;
+  text-shadow: 2px 2px 12px var(--shadow);
+}
+
+.MainTitleBack {
+  position: absolute;
+  top: 21%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  font-size: 10rem;
+  font-weight: 900;
+  color: var(--white);
+  line-height: 1.2;
+  pointer-events: none;
+  z-index: 1;
+  text-shadow: 2px 2px 12px var(--shadow);
+}
+
+.MainTitle div {
+  transform: translate(-50%, calc(-50% + 100%)); /* Center horizontally but move below vertically */
+  opacity: 0; /* Start invisible */
+}
+
+.landingPage {
+  position: fixed; /* Fix the landing page in place */
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 4; /* Ensure it's on top of other content */
+}
+
+.nav-bar {
+  position: fixed; /* Fix the landing page in place */
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 999; /* Ensure it's on top of other content */
+}
+
+#scroll-bar {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  width: 100vw;
+  height: 0; /* Start with zero height */
+  background-color: var(--black);
+  transform: translate(-50%, -50%); /* Center both horizontally and vertically */
+  z-index: 10; /* Ensure it's above most content */
+}
+
+.content {
+  height: 300vh; /* Simulating enough content for scrolling */
+}
+
+
+#new-section {
+  position: fixed;
+  bottom: -100%; /* Start completely off-screen */
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  background-color: var(--black);
+  color: var(--white);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: bottom 0.8s ease; /* Smooth slide-in animation */
+  z-index: 11; /* Above other content */
+}
+
+#new-section .new-section-content {
+  text-align: center;
+}
+
+#new-section h2 {
+  font-size: 3rem;
+}
+
+#new-section p {
+  font-size: 1.5rem;
+}
