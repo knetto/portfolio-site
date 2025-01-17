@@ -5,6 +5,10 @@
 
   --navBackground: var(--black);
   --navText: var(--white);
+
+  --scrollbarTrack: var(--black);
+  --scrollbar: var(--black);
+  --scrollbarThumb: var(--white);
 }
 
 * {
@@ -28,19 +32,6 @@ body {
   align-items: center;
   flex-direction: column; /* Allows for vertical stacking of elements */
   overflow: auto; /* Allow scrolling if content overflows */
-}
-
-:root {
-  --black: #0A0A0A;
-  --white: #eeebdc;
-  --shadow: rgba(0, 0, 0, 0.78);
-
-  --navBackground: var(--black);
-  --navText: var(--white);
-
-  --scrollbarTrack: var(--black);
-  --scrollbar: var(--black);
-  --scrollbarThumb: var(--white);
 }
 
 body::-webkit-scrollbar-track {
@@ -310,7 +301,7 @@ nav .close:hover div::after {
   left: 50%;
   transform: translate(-50%, -50%);
   text-align: center;
-  font-size: 5rem;
+  font-size: clamp(25px, 2vw, 100px);
   font-weight: 900;
   color: var(--white);
   line-height: 1.2;
@@ -325,7 +316,7 @@ nav .close:hover div::after {
   left: 50%;
   transform: translate(-50%, -50%);
   text-align: center;
-  font-size: 10rem;
+  font-size: clamp(50px, 5vw, 200px);
   font-weight: 900;
   color: var(--white);
   line-height: 1.2;
@@ -337,6 +328,7 @@ nav .close:hover div::after {
 .MainTitle div {
   transform: translate(-50%, calc(-50% + 100%)); /* Center horizontally but move below vertically */
   opacity: 0; /* Start invisible */
+  width: 100%;
 }
 
 .landingPage {
@@ -407,3 +399,7 @@ nav .close:hover div::after {
 #new-section p {
   font-size: 1.5rem;
 }
+
+
+
+
