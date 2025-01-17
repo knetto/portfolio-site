@@ -297,11 +297,12 @@ nav .close:hover div::after {
 
 .MainTitleFront {
   position: absolute;
-  top: 37%;
+  bottom: 57%; /* Position based on the bottom */
   left: 50%;
-  transform: translate(-50%, -50%);
+  transform: translateX(-50%) scale(1); /* Adjust scale value as needed */
+  transform-origin: bottom center; /* Scale from the bottom */
   text-align: center;
-  font-size: clamp(25px, 2vw, 100px);
+  font-size: clamp(25px, 2.5vw, 200px);
   font-weight: 900;
   color: var(--white);
   line-height: 1.2;
@@ -312,11 +313,12 @@ nav .close:hover div::after {
 
 .MainTitleBack {
   position: absolute;
-  top: 21%;
+  bottom: 65.5%; /* Position based on the bottom */
   left: 50%;
-  transform: translate(-50%, -50%);
+  transform: translateX(-50%) scale(1); /* Adjust scale value as needed */
+  transform-origin: bottom center; /* Scale from the bottom */
   text-align: center;
-  font-size: clamp(50px, 5vw, 200px);
+  font-size: clamp(50px, 6vw, 200px);
   font-weight: 900;
   color: var(--white);
   line-height: 1.2;
@@ -324,6 +326,8 @@ nav .close:hover div::after {
   z-index: 1;
   text-shadow: 2px 2px 12px var(--shadow);
 }
+
+
 
 .MainTitle div {
   transform: translate(-50%, calc(-50% + 100%)); /* Center horizontally but move below vertically */
