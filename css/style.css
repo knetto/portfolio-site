@@ -3,8 +3,8 @@
   --white: #eeebdc;
   --shadow: rgba(0, 0, 0, 0.78);
 
-  --navBackground: var(--black);
-  --navText: var(--white);
+  --navBackground: var(--white);
+  --navText: var(--black);
 
   --scrollbarTrack: var(--black);
   --scrollbar: var(--black);
@@ -16,6 +16,7 @@
   padding: 0;
   box-sizing: border-box;
   font-family: "Geist", sans-serif; 
+  cursor: none;
 }
 
 html, body {
@@ -23,6 +24,7 @@ html, body {
   min-height: 100%;
   overflow-x: hidden;  /* Prevent horizontal scrolling */
   overflow-y: auto;    /* Allow vertical scrolling if content overflows */
+  scroll-behavior: smooth;
 }
 
 body {
@@ -53,16 +55,6 @@ body::-webkit-scrollbar-thumb {
   transition: background-color 0.3s, color 0.3s;
 }
 
-
-#canvas {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 50%;
-  height: 50%;
-}
-
 #particles-js {
   width: 100%;
   height: 100%;
@@ -76,7 +68,7 @@ body::-webkit-scrollbar-thumb {
   width: 100%;
   height: 100%;
   position: absolute;
-  top: 15%;
+  top: 20%;
   left: 0;
   pointer-events: none;
   z-index: 2;
@@ -88,7 +80,6 @@ h1 {
 }
 
 .container {
-  cursor: pointer;
   position: absolute;
   top: 5%;
   right: 5%;
@@ -239,7 +230,6 @@ nav .close {
   position: absolute;
   top: 5%;
   right: 5%;
-  cursor: pointer;
   opacity: 0;
   pointer-events: none;
 }
@@ -297,12 +287,11 @@ nav .close:hover div::after {
 
 .MainTitleFront {
   position: absolute;
-  bottom: 57%; /* Position based on the bottom */
+  top: 45%;
   left: 50%;
-  transform: translateX(-50%) scale(1); /* Adjust scale value as needed */
-  transform-origin: bottom center; /* Scale from the bottom */
+  transform: translateX(-50%);
   text-align: center;
-  font-size: clamp(25px, 2.5vw, 200px);
+  font-size: calc(210px * 0.45); /* Scale down the size relative to .MainTitleBack */
   font-weight: 900;
   color: var(--white);
   line-height: 1.2;
@@ -313,12 +302,11 @@ nav .close:hover div::after {
 
 .MainTitleBack {
   position: absolute;
-  bottom: 65.5%; /* Position based on the bottom */
+  top: 16%;
   left: 50%;
-  transform: translateX(-50%) scale(1); /* Adjust scale value as needed */
-  transform-origin: bottom center; /* Scale from the bottom */
+  transform: translateX(-50%);
   text-align: center;
-  font-size: clamp(50px, 6vw, 200px);
+  font-size: 210px;
   font-weight: 900;
   color: var(--white);
   line-height: 1.2;
@@ -327,7 +315,94 @@ nav .close:hover div::after {
   text-shadow: 2px 2px 12px var(--shadow);
 }
 
+@media (max-width: 2500px) {
+  .MainTitleFront {
+    font-size: calc(200px * 0.45); /* Scaled down font size */
+  }
 
+  .MainTitleBack {
+    top: 21%; /* Adjusted position */
+    font-size: 200px; /* Scaled down font size */
+  }
+}
+
+@media (max-width: 2100px) {
+  .MainTitleFront {
+    font-size: calc(150px * 0.45); /* Scaled down font size */
+  }
+
+  .MainTitleBack {
+    top: 24%; /* Adjusted position */
+    font-size: 150px; /* Scaled down font size */
+  }
+}
+
+@media (max-width: 1600px) {
+  .MainTitleFront {
+    font-size: calc(120px * 0.45); /* Scaled down font size */
+  }
+
+  .MainTitleBack {
+    top: 26%; /* Adjusted position */
+    font-size: 120px; /* Scaled down font size */
+  }
+}
+
+@media (max-width: 1200px) {
+  .MainTitleFront {
+    font-size: calc(100px * 0.45); /* Scaled down font size */
+  }
+
+  .MainTitleBack {
+    top: 27%; /* Adjusted position */
+    font-size: 100px; /* Scaled down font size */
+  }
+}
+
+@media (max-width: 900px) {
+  .MainTitleFront {
+    font-size: calc(80px * 0.45); /* Scaled down font size */
+  }
+
+  .MainTitleBack {
+    top: 36%; /* Adjusted position */
+    font-size: 80px; /* Scaled down font size */
+    z-index: 3;
+  }
+}
+
+@media (max-width: 700px) {
+  .MainTitleFront {
+    font-size: calc(60px * 0.45); /* Scaled down font size */
+  }
+
+  .MainTitleBack {
+    top: 38%; /* Adjusted position */
+    font-size: 60px; /* Scaled down font size */
+  }
+}
+
+@media (max-width: 520px) {
+  .MainTitleFront {
+    font-size: calc(50px * 0.45); /* Scaled down font size */
+  }
+
+  .MainTitleBack {
+    top: 39%; /* Adjusted position */
+    font-size: 50px; /* Scaled down font size */
+  }
+}
+
+@media (max-width: 450px) {
+  .MainTitleFront {
+    font-size: calc(50px * 0.45); /* Scaled down font size */
+  }
+
+  .MainTitleBack {
+    top: 38%; /* Adjusted position */
+    font-size: 50px; /* Scaled down font size */
+  }
+}
 
 .MainTitle div {
   transform: translate(-50%, calc(-50% + 100%)); /* Center horizontally but move below vertically */
@@ -362,7 +437,7 @@ nav .close:hover div::after {
   left: 50%;
   width: 100vw;
   height: 0; /* Start with zero height */
-  background-color: var(--black);
+  background-color: var(--white);
   transform: translate(-50%, -50%); /* Center both horizontally and vertically */
   z-index: 10; /* Ensure it's above most content */
   pointer-events: none;
@@ -383,7 +458,7 @@ nav .close:hover div::after {
   width: 100%;
   height: 100vh;
   /* background-color: var(--black); */
-  color: var(--white);
+  color: var(--black);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -404,6 +479,25 @@ nav .close:hover div::after {
   font-size: 1.5rem;
 }
 
+.hover-this {
+  transition: all 0.3s ease;
+}
 
+.cursor {
+  pointer-events: none;
+  position: fixed;
+  width: 10px; /* Default size */
+  height: 10px; /* Default size */
+  background-color: var(--white);
+  border-radius: 50%;
+  mix-blend-mode: difference;
+  transition: transform 0.3s ease, width 0.3s ease, height 0.3s ease;
+  z-index: 9999;
+}
 
+.cursor.hovered {
+  transform: translate(-50%, -50%) scale(1.5); /* Smooth enlargement */
+  width: 55px; /* Larger size */
+  height: 55px; /* Larger size */
+}
 

@@ -1,17 +1,16 @@
-// Import the necessary libraries
 import * as THREE from "https://cdn.skypack.dev/three@0.129.0/build/three.module.js";
 import { GLTFLoader } from "https://cdn.skypack.dev/three@0.129.0/examples/jsm/loaders/GLTFLoader.js";
 
 // Create the scene
 const scene = new THREE.Scene();
 
-// Create an Orthographic camera for isometric view
+// Set up camera parameters
 const width = window.innerWidth;
 const height = window.innerHeight;
 const aspect = width / height;
 const d = 50; // Distance from the camera to the scene (zoom level)
 
-// Set up the Orthographic Camera
+// Create an Orthographic camera for isometric view
 const camera = new THREE.OrthographicCamera(
   -d * aspect,  // Left
   d * aspect,   // Right
@@ -44,8 +43,8 @@ loader.load(
     // Add the loaded model to the scene
     roomObject = gltf.scene;
 
-    // Scale the object to make it bigger
-    roomObject.scale.set(1.2, 1.2, 1.2);  // Scale by a factor of 2 on all axes
+    // Scale the object to make it bigger (don't change this scale dynamically on resize)
+    roomObject.scale.set(1.3, 1.3, 1.3);  // Keep the scale constant
 
     // Add the model to the scene
     scene.add(roomObject);
@@ -138,17 +137,40 @@ function animate() {
 animate();
 
 // Resize the renderer if the window is resized
+// Function to adjust scale based on screen width
+function adjustScale() {
+  if (roomObject) {
+    if (window.innerWidth < 900) {
+      roomObject.scale.set(0.85, 0.85, 0.85); // Scale down for smaller screens
+      roomObject.position.set(0, 15, 0); // Move the object up by 200 pixels
+    } else {
+      roomObject.scale.set(1.3, 1.3, 1.2); // Original scale for larger screens
+      roomObject.position.set(0, 0, 0); // Reset position to default
+    }
+  }
+}
+
+// Call adjustScale on window resize
 window.addEventListener("resize", function () {
   // Update the renderer size
   renderer.setSize(window.innerWidth, window.innerHeight);
 
   // Update camera aspect ratio and projection matrix
   const newAspect = window.innerWidth / window.innerHeight;
-  camera.left = -d * newAspect;  // Update left based on the new aspect ratio
-  camera.right = d * newAspect;  // Update right based on the new aspect ratio
-  camera.top = d;               // Keep the top value constant
-  camera.bottom = -d;           // Keep the bottom value constant
 
-  camera.aspect = newAspect;    // Update the camera aspect ratio
-  camera.updateProjectionMatrix();  // Recalculate the projection matrix
+  // Adjust the camera's left and right properties based on the new aspect ratio
+  camera.left = -d * newAspect;    // Update left based on the new aspect ratio
+  camera.right = d * newAspect;    // Update right based on the new aspect ratio
+
+  // Keep the top and bottom fixed, since these control vertical scaling (height)
+  camera.top = d;                  // Keep the top value constant
+  camera.bottom = -d;              // Keep the bottom value constant
+
+  camera.aspect = newAspect;       // Update the camera aspect ratio
+  camera.updateProjectionMatrix(); // Recalculate the projection matrix
+
+  adjustScale(); // Adjust model scale
 });
+
+// Call adjustScale initially to set the scale based on the current screen width
+adjustScale();

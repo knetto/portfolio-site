@@ -47,12 +47,12 @@ window.addEventListener('scroll', () => {
 
   if (scrollPosition >= triggerPoint) {
     // When scrolled fully, change navbar colors
-    document.documentElement.style.setProperty('--navBackground', 'var(--white)');
-    document.documentElement.style.setProperty('--navText', 'var(--black)');
-  } else {
-    // Reset navbar colors when not fully scrolled
     document.documentElement.style.setProperty('--navBackground', 'var(--black)');
     document.documentElement.style.setProperty('--navText', 'var(--white)');
+  } else {
+    // Reset navbar colors when not fully scrolled
+    document.documentElement.style.setProperty('--navBackground', 'var(--white)');
+    document.documentElement.style.setProperty('--navText', 'var(--black)');
   }
 
   if (scrollPosition <= triggerPoint) {
@@ -78,6 +78,36 @@ window.addEventListener('scroll', () => {
   lastScrollPosition = scrollPosition; // Update last scroll position
 });
 
+
+(function () {
+  const links = document.querySelectorAll('nav > .hover-this, .hover-this');
+  const cursor = document.querySelector('.cursor');
+
+  // Follow the mouse position
+  const editCursor = (e) => {
+    const { clientX: x, clientY: y } = e;
+    cursor.style.left = `${x}px`;
+    cursor.style.top = `${y}px`;
+  };
+
+  // Add or remove the hovered class for cursor enlargement
+  const handleHover = (e) => {
+    if (e.type === 'mouseenter') {
+      cursor.classList.add('hovered');
+    } else {
+      cursor.classList.remove('hovered');
+    }
+  };
+
+  // Add event listeners for hover effects
+  links.forEach((link) => {
+    link.addEventListener('mouseenter', handleHover);
+    link.addEventListener('mouseleave', handleHover);
+  });
+
+  // Update cursor position on mousemove
+  window.addEventListener('mousemove', editCursor);
+})();
 
 
 
