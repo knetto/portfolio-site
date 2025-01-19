@@ -4,29 +4,24 @@ import { GLTFLoader } from "https://cdn.skypack.dev/three@0.129.0/examples/jsm/l
 // Create the scene
 const scene = new THREE.Scene();
 
-// Set up camera parameters
-const width = window.innerWidth;
-const height = window.innerHeight;
-const aspect = width / height;
-const d = 50; // Distance from the camera to the scene (zoom level)
-
 // Create an Orthographic camera for isometric view
 const camera = new THREE.OrthographicCamera(
-  -d * aspect,  // Left
-  d * aspect,   // Right
-  d,            // Top
-  -d,           // Bottom
-  1,            // Near
-  1000          // Far
+  -innerWidth / 32, // Left
+  innerWidth / 32,   // Right
+  innerHeight / 32,  // Top
+  -innerHeight / 32, // Bottom
+  1,                // Near
+  1000              // Far
 );
 
-// Position the camera for an isometric view
-camera.position.set(d, d, d); // X, Y, Z position
-camera.lookAt(new THREE.Vector3(0, 0, 0)); // Look at the origin
+// Set the camera position for an isometric view
+camera.position.set(10, 10, 10);  // Position the camera at (10, 10, 10)
+camera.lookAt(new THREE.Vector3(0, 0, 0)); // Make the camera look at the origin
 
 // Create a renderer and set its size
-const renderer = new THREE.WebGLRenderer({ alpha: true }); // Alpha allows transparent background
-renderer.setSize(window.innerWidth, window.innerHeight);
+const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+renderer.setSize(innerWidth, innerHeight);
+document.body.appendChild(renderer.domElement);
 
 // Append the renderer to the DOM
 document.getElementById("container3D").appendChild(renderer.domElement);
@@ -36,7 +31,6 @@ const loader = new GLTFLoader();
 let roomObject;
 let rotating = true; // Flag to control rotation animation
 
-// After loading the room model
 loader.load(
   './3dModels/Room/scene.gltf',  // Path to the 3D model file
   function (gltf) {
@@ -44,7 +38,7 @@ loader.load(
     roomObject = gltf.scene;
 
     // Scale the object to make it bigger (don't change this scale dynamically on resize)
-    roomObject.scale.set(1.3, 1.3, 1.3);  // Keep the scale constant
+    roomObject.scale.set(1, 1, 1);  // Keep the scale constant
 
     // Add the model to the scene
     scene.add(roomObject);
@@ -61,6 +55,7 @@ loader.load(
     console.error('Error loading model: ', error);
   }
 );
+
 
 // Add some lights to illuminate the model
 const topLight = new THREE.DirectionalLight(0xffffff, 1);
@@ -138,39 +133,15 @@ animate();
 
 // Resize the renderer if the window is resized
 // Function to adjust scale based on screen width
-function adjustScale() {
-  if (roomObject) {
-    if (window.innerWidth < 900) {
-      roomObject.scale.set(0.85, 0.85, 0.85); // Scale down for smaller screens
-      roomObject.position.set(0, 15, 0); // Move the object up by 200 pixels
-    } else {
-      roomObject.scale.set(1.3, 1.3, 1.2); // Original scale for larger screens
-      roomObject.position.set(0, 0, 0); // Reset position to default
-    }
-  }
-}
+window.addEventListener("resize", (event) => {
+  // Adjust camera frustum for isometric view
+  camera.left = -innerWidth / 35;
+  camera.right = innerWidth / 35;
+  camera.top = innerHeight / 35;
+  camera.bottom = -innerHeight / 35;
+  camera.updateProjectionMatrix(); // Update the camera projection matrix after resizing
 
-// Call adjustScale on window resize
-window.addEventListener("resize", function () {
-  // Update the renderer size
-  renderer.setSize(window.innerWidth, window.innerHeight);
-
-  // Update camera aspect ratio and projection matrix
-  const newAspect = window.innerWidth / window.innerHeight;
-
-  // Adjust the camera's left and right properties based on the new aspect ratio
-  camera.left = -d * newAspect;    // Update left based on the new aspect ratio
-  camera.right = d * newAspect;    // Update right based on the new aspect ratio
-
-  // Keep the top and bottom fixed, since these control vertical scaling (height)
-  camera.top = d;                  // Keep the top value constant
-  camera.bottom = -d;              // Keep the bottom value constant
-
-  camera.aspect = newAspect;       // Update the camera aspect ratio
-  camera.updateProjectionMatrix(); // Recalculate the projection matrix
-
-  adjustScale(); // Adjust model scale
+  // Resize the renderer
+  renderer.setSize(innerWidth, innerHeight);
+  renderer.render(scene, camera);
 });
-
-// Call adjustScale initially to set the scale based on the current screen width
-adjustScale();
