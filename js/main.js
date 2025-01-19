@@ -125,7 +125,7 @@ function resizeScaleModel() {
     // Define the breakpoints and scale factors
     let scaleFactor = 1;
 
-    if (width < 600) {
+    if (width < 700) {
       scaleFactor = 0.5; // Smaller screens
     } else if (width < 1000) {
       scaleFactor = 0.8; // Medium screens

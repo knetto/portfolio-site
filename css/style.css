@@ -337,7 +337,8 @@ nav .close:hover div::after {
 
 @media (max-width: 1000px) {
   .MainTitleBack {
-    top: 32.5%;
+    top: 50%; /* Position the element vertically at the center */
+    margin-top: -165px;
     font-size: 70px; /* Adjust as needed */
   }
   .MainTitleFront {
@@ -348,16 +349,22 @@ nav .close:hover div::after {
 
 @media (max-width: 700px) {
   .MainTitleBack {
+    top: 50%; /* Position the element vertically at the center */
+    margin-top: -150px;
     font-size: 50px; /* Adjust as needed */
   }
   .MainTitleFront {
     font-size: 23px; /* Adjust as needed */
-
+  }
+  #container3D {
+    top: -135px !important;
   }
 }
 
 @media (max-width: 500px) {
   .MainTitleBack {
+    top: 50%; /* Position the element vertically at the center */
+    margin-top: -140px;
     font-size: 40px; /* Adjust as needed */
   }
   .MainTitleFront {
