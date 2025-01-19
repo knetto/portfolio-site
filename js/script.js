@@ -99,10 +99,22 @@ window.addEventListener('scroll', () => {
     }
   };
 
+// Pulse effect when clicked
+const handleClick = () => {
+  // Trigger pulse animation on click by scaling cursor
+  cursor.classList.add('click');
+  
+  // Reset the cursor back to normal size after the pulse animation
+  setTimeout(() => {
+    cursor.classList.remove('click');
+  }, 500); // Duration of the pulse animation
+};
+
   // Add event listeners for hover effects
   links.forEach((link) => {
     link.addEventListener('mouseenter', handleHover);
     link.addEventListener('mouseleave', handleHover);
+    link.addEventListener('click', handleClick);
   });
 
   // Update cursor position on mousemove
