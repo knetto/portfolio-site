@@ -40,6 +40,9 @@ loader.load(
     // Scale the object to make it bigger (don't change this scale dynamically on resize)
     roomObject.scale.set(1, 1, 1);  // Keep the scale constant
 
+    // Lower the model by adjusting its Y position (e.g., set to -1)
+    roomObject.position.y = -20;
+
     // Add the model to the scene
     scene.add(roomObject);
     
@@ -55,7 +58,6 @@ loader.load(
     console.error('Error loading model: ', error);
   }
 );
-
 
 // Add some lights to illuminate the model
 const topLight = new THREE.DirectionalLight(0xffffff, 1);
@@ -115,6 +117,27 @@ function animateRotation() {
   }
 }
 
+// Function to adjust the scale of the model based on window width
+function resizeScaleModel() {
+  if (roomObject) {
+    const width = window.innerWidth;
+
+    // Define the breakpoints and scale factors
+    let scaleFactor = 1;
+
+    if (width < 600) {
+      scaleFactor = 0.5; // Smaller screens
+    } else if (width < 1000) {
+      scaleFactor = 0.8; // Medium screens
+    } else {
+      scaleFactor = 1; // Larger screens
+    }
+
+    // Adjust the model's scale based on the factor
+    roomObject.scale.set(scaleFactor, scaleFactor, scaleFactor);
+  }
+}
+
 // Render the scene
 function animate() {
   requestAnimationFrame(animate);
@@ -131,17 +154,19 @@ function animate() {
 // Start the animation loop (rendering)
 animate();
 
-// Resize the renderer if the window is resized
-// Function to adjust scale based on screen width
-window.addEventListener("resize", (event) => {
+// Resize the renderer and model if the window is resized
+window.addEventListener("resize", () => {
   // Adjust camera frustum for isometric view
-  camera.left = -innerWidth / 35;
-  camera.right = innerWidth / 35;
-  camera.top = innerHeight / 35;
-  camera.bottom = -innerHeight / 35;
+  camera.left = -innerWidth / 32;
+  camera.right = innerWidth / 32;
+  camera.top = innerHeight / 32;
+  camera.bottom = -innerHeight / 32;
   camera.updateProjectionMatrix(); // Update the camera projection matrix after resizing
 
   // Resize the renderer
   renderer.setSize(innerWidth, innerHeight);
+
+  // Call function to adjust the model scale
+  resizeScaleModel();
   renderer.render(scene, camera);
 });
