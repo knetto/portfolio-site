@@ -14,17 +14,8 @@
 * {
   margin: 0;
   padding: 0;
-  box-sizing: border-box;
   font-family: "Geist", sans-serif; 
   cursor: none;
-}
-
-html, body {
-  width: 100%;
-  min-height: 100%;
-  overflow-x: hidden;  /* Prevent horizontal scrolling */
-  overflow-y: auto;    /* Allow vertical scrolling if content overflows */
-  scroll-behavior: smooth;
 }
 
 body {
@@ -32,7 +23,6 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  flex-direction: column; /* Allows for vertical stacking of elements */
   overflow: auto; /* Allow scrolling if content overflows */
 }
 
@@ -285,128 +275,32 @@ nav .close:hover div::after {
   transition: transform 0.3s ease, transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1.5);
 }
 
-.MainTitleFront {
-  position: absolute;
-  top: 45%;
-  left: 50%;
-  transform: translateX(-50%);
-  text-align: center;
-  font-size: calc(210px * 0.45); /* Scale down the size relative to .MainTitleBack */
-  font-weight: 900;
-  color: var(--white);
-  line-height: 1.2;
-  pointer-events: none;
-  z-index: 3;
-  text-shadow: 2px 2px 12px var(--shadow);
+.MainTitle {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; /* Full height to center it vertically */
+  text-align: center; /* Center text horizontally */
 }
 
 .MainTitleBack {
   position: absolute;
-  top: 16%;
-  left: 50%;
-  transform: translateX(-50%);
-  text-align: center;
-  font-size: 210px;
+  z-index: 1; /* Place it behind the front title */
+  font-size: 175px; /* Adjust as needed */
+  color: var(--white); /* Adjust text color */
+  left: 50%; /* Center it horizontally */
+  transform: translateX(-50%); /* Offset by half the element's width to center it */
   font-weight: 900;
-  color: var(--white);
-  line-height: 1.2;
-  pointer-events: none;
-  z-index: 1;
-  text-shadow: 2px 2px 12px var(--shadow);
+  width: 100%;
+  margin-bottom: 350px;
 }
 
-@media (max-width: 2500px) {
-  .MainTitleFront {
-    font-size: calc(200px * 0.45); /* Scaled down font size */
-  }
-
-  .MainTitleBack {
-    top: 21%; /* Adjusted position */
-    font-size: 200px; /* Scaled down font size */
-  }
-}
-
-@media (max-width: 2100px) {
-  .MainTitleFront {
-    font-size: calc(150px * 0.45); /* Scaled down font size */
-  }
-
-  .MainTitleBack {
-    top: 24%; /* Adjusted position */
-    font-size: 150px; /* Scaled down font size */
-  }
-}
-
-@media (max-width: 1600px) {
-  .MainTitleFront {
-    font-size: calc(120px * 0.45); /* Scaled down font size */
-  }
-
-  .MainTitleBack {
-    top: 26%; /* Adjusted position */
-    font-size: 120px; /* Scaled down font size */
-  }
-}
-
-@media (max-width: 1200px) {
-  .MainTitleFront {
-    font-size: calc(100px * 0.45); /* Scaled down font size */
-  }
-
-  .MainTitleBack {
-    top: 27%; /* Adjusted position */
-    font-size: 100px; /* Scaled down font size */
-  }
-}
-
-@media (max-width: 900px) {
-  .MainTitleFront {
-    font-size: calc(80px * 0.45); /* Scaled down font size */
-  }
-
-  .MainTitleBack {
-    top: 36%; /* Adjusted position */
-    font-size: 80px; /* Scaled down font size */
-    z-index: 3;
-  }
-}
-
-@media (max-width: 700px) {
-  .MainTitleFront {
-    font-size: calc(60px * 0.45); /* Scaled down font size */
-  }
-
-  .MainTitleBack {
-    top: 38%; /* Adjusted position */
-    font-size: 60px; /* Scaled down font size */
-  }
-}
-
-@media (max-width: 520px) {
-  .MainTitleFront {
-    font-size: calc(50px * 0.45); /* Scaled down font size */
-  }
-
-  .MainTitleBack {
-    top: 39%; /* Adjusted position */
-    font-size: 50px; /* Scaled down font size */
-  }
-}
-
-@media (max-width: 450px) {
-  .MainTitleFront {
-    font-size: calc(50px * 0.45); /* Scaled down font size */
-  }
-
-  .MainTitleBack {
-    top: 38%; /* Adjusted position */
-    font-size: 50px; /* Scaled down font size */
-  }
-}
-
-.MainTitle div {
-  transform: translate(-50%, calc(-50% + 100%)); /* Center horizontally but move below vertically */
-  opacity: 0; /* Start invisible */
+.MainTitleFront {
+  font-size: 80px; /* Adjust as needed */
+  color: var(--white); /* Adjust text color */
+  z-index: 2; /* Ensure it's on top of the back title */
+  font-weight: 900;
+  line-height: 1.4;
   width: 100%;
 }
 
@@ -501,3 +395,7 @@ nav .close:hover div::after {
   height: 55px; /* Larger size */
 }
 
+.magnet-item {
+  display: block;
+  transition: 250ms linear;
+}

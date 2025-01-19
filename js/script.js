@@ -111,6 +111,36 @@ window.addEventListener('scroll', () => {
 
 
 
+// JavaScript for the magnetic effect
+const magneticElements = document.querySelectorAll('.hover-this');
+
+magneticElements.forEach(element => {
+  const magneticEffect = (e) => {
+    const rect = element.getBoundingClientRect();
+    const offsetX = e.clientX - rect.left - rect.width / 2;
+    const offsetY = e.clientY - rect.top - rect.height / 2;
+    const maxDistance = 100; // Maximum distance for the magnetic effect
+    const distance = Math.min(
+      Math.sqrt(offsetX * offsetX + offsetY * offsetY),
+      maxDistance
+    );
+    const strength = (1 - distance / maxDistance) * 60; // Effect strength
+    const dx = (offsetX / rect.width) * strength;
+    const dy = (offsetY / rect.height) * strength;
+
+    element.style.transform = `translate(${dx}px, ${dy}px)`;
+  };
+
+  const resetEffect = () => {
+    element.style.transform = `translate(0, 0)`;
+  };
+
+  element.addEventListener('mousemove', magneticEffect);
+  element.addEventListener('mouseleave', resetEffect);
+});
+
+
+
 
 
 
