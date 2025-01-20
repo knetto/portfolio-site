@@ -23,8 +23,9 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  overflow: auto; /* Allow scrolling if content overflows */
+  overflow: auto;
   box-sizing: border-box;
+  -webkit-text-size-adjust: 100%;
 }
 
 body::-webkit-scrollbar-track {
@@ -478,3 +479,5 @@ nav .close:hover div::after {
   display: block;
   transition: 250ms linear;
 }
+
+@media (max-width: 768px) { .cursor { display: none; } }
