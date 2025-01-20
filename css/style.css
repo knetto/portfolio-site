@@ -375,6 +375,12 @@ nav .close:hover div::after {
   #container3D {
     top: -135px !important;
   }
+  #cursor {
+    display: none !important;
+  }
+  .cursor-circle{
+    display: none !important;
+  }
 }
 
 @media (max-width: 500px) {
@@ -432,48 +438,10 @@ nav .close:hover div::after {
   transition: all 0.3s ease;
 }
 
-/* .cursor {
-  pointer-events: none;
-  position: fixed;
-  width: 18px; 
-  height: 18px; 
-  background-color: var(--white);
-  border-radius: 50%;
-  mix-blend-mode: difference;
-  transition: transform 0.3s ease, width 0.3s ease, height 0.3s ease;
-  z-index: 9999;
-}
-
-
-.cursor-circle {
-  position: absolute;
-  width: 20px;
-  height: 20px;
-  background-color: #fff;
-  border-radius: 50%;
-  transform-origin: center;
-  opacity: 0.7;
-  transition: transform 0.1s ease-out, opacity 0.2s ease-out;
-}
-
-
-.cursor.hovered {
-  transform: translate(-50%, -50%) scale(1.5); 
-  width: 55px; 
-  height: 55px; 
-}
-
-.cursor.click {
-  background-color: var(--white);
-  transform: translate(-50%, -50%) scale(1.3);
-} */
-
 .magnet-item {
   display: block;
   transition: 250ms linear;
 }
-
-@media (max-width: 768px) { .cursor { display: none; } }
 
 #new-section {
   position: fixed;
@@ -531,5 +499,4 @@ nav .close:hover div::after {
   transform: translate(-50%, -50%); /* Center the cursor at its middle */
   transition: width 0.3s ease, height 0.3s ease;
 }
-
 

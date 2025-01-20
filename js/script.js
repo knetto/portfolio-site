@@ -120,7 +120,16 @@ const hoverSize = 90;    // Size of the cursor when hovering over an item
 let mouseX = 0;
 let mouseY = 0;
 let cursorCircles;
-let cursorHistory = Array(TAIL_LENGTH).fill({x: 0, y: 0});
+let cursorHistory = Array(TAIL_LENGTH).fill({ x: 0, y: 0 });
+
+// Function to hide cursor if viewport width is smaller than 768px
+function checkCursorVisibility() {
+  if (window.innerWidth <= 768) {
+    cursor.style.display = 'none';
+  } else {
+    cursor.style.display = 'block';
+  }
+}
 
 function onMouseMove(event) {
   mouseX = event.clientX;
@@ -154,8 +163,10 @@ function updateCursor() {
   requestAnimationFrame(updateCursor);
 }
 
+// Event listener for mousemove
 document.addEventListener('mousemove', onMouseMove, false);
 
+// Initialize and start the cursor
 initCursor();
 updateCursor();
 
@@ -179,6 +190,13 @@ hoverElements.forEach(element => {
     });
   });
 });
+
+// Add listener for window resize to dynamically check for cursor visibility
+window.addEventListener('resize', checkCursorVisibility);
+
+// Initial check to hide cursor if the screen width is below 768px
+checkCursorVisibility();
+
 
 
 
