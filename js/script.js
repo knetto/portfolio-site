@@ -7,7 +7,7 @@ particlesJS.load('particles-js', 'particlesjs-config.json', function() {
       
   // Wait for the page to load and then trigger the animation
 window.addEventListener('load', function() {
-  let tl = gsap.timeline({ delay: 1 }); // Delay before starting animation
+  let tl = gsap.timeline({ delay: 1.1 }); // Delay before starting animation
   
   tl.to('.MainTitle div', {
     duration: 0.5, 

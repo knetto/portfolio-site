@@ -37,8 +37,8 @@ loader.load(
     // Add the loaded model to the scene
     roomObject = gltf.scene;
 
-    // Scale the object to make it bigger (don't change this scale dynamically on resize)
-    roomObject.scale.set(1, 1, 1);  // Keep the scale constant
+    // Set the initial small scale for the model (start even smaller)
+    roomObject.scale.set(0.05, 0.05, 0.05);  // Start very small for faster growth
 
     // Lower the model by adjusting its Y position (e.g., set to -1)
     roomObject.position.y = -20;
@@ -49,7 +49,8 @@ loader.load(
     // Start the rotation animation
     animateRotation();
 
-    resizeScaleModel()
+    // Start the smooth scaling transition
+    smoothScaleModel();
   },
   function (xhr) {
     // Track loading progress
@@ -119,24 +120,43 @@ function animateRotation() {
   }
 }
 
-// Function to adjust the scale of the model based on window width
-function resizeScaleModel() {
+// Function to smoothly scale the model to the appropriate size
+function smoothScaleModel() {
   if (roomObject) {
+    // Define the target scale based on window width
     const width = window.innerWidth;
-
-    // Define the breakpoints and scale factors
-    let scaleFactor = 1;
+    let targetScale = 1;
 
     if (width < 700) {
-      scaleFactor = 0.5; // Smaller screens
+      targetScale = 0.5; // Smaller screens
     } else if (width < 1000) {
-      scaleFactor = 0.8; // Medium screens
+      targetScale = 0.8; // Medium screens
     } else {
-      scaleFactor = 1; // Larger screens
+      targetScale = 1; // Larger screens
     }
 
-    // Adjust the model's scale based on the factor
-    roomObject.scale.set(scaleFactor, scaleFactor, scaleFactor);
+    // Smoothly transition to the target scale
+    const scaleDuration = 700; // Shorter duration (500 ms for faster scaling)
+    const startScale = roomObject.scale.x;
+    const scaleStartTime = performance.now();
+
+    function scaleTransition() {
+      const elapsedTime = performance.now() - scaleStartTime;
+      const progress = Math.min(elapsedTime / scaleDuration, 1);
+
+      // Interpolate between the start and target scale values
+      const newScale = startScale + (targetScale - startScale) * progress;
+
+      // Apply the new scale
+      roomObject.scale.set(newScale, newScale, newScale);
+
+      // Continue the transition until the target scale is reached
+      if (progress < 1) {
+        requestAnimationFrame(scaleTransition);
+      }
+    }
+
+    scaleTransition(); // Start the smooth scaling transition
   }
 }
 
@@ -168,7 +188,7 @@ window.addEventListener("resize", () => {
   // Resize the renderer
   renderer.setSize(innerWidth, innerHeight);
 
-  // Call function to adjust the model scale
-  resizeScaleModel();
+  // Call function to adjust the model scale smoothly
+  smoothScaleModel();
   renderer.render(scene, camera);
 });
