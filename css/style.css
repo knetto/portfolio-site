@@ -72,7 +72,7 @@ h1 {
 }
 
 .container {
-  position: absolute;
+  position: fixed;
   top: 5%;
   right: 5%;
   width: 50px;
@@ -80,6 +80,12 @@ h1 {
   padding-top: 20px;
   opacity: 0;
 }
+
+.container.no-transition {
+  transition: none !important;
+}
+
+
 
 .menu {
   position: relative;
@@ -415,9 +421,8 @@ nav .close:hover div::after {
 }
 
 .content {
-  height: 300vh; /* Simulating enough content for scrolling */
+  height: 150vh;
   pointer-events: none;
-
 }
 
 

@@ -18,23 +18,30 @@ window.addEventListener('load', function() {
   });
 });
 
- // Fade in elements with GSAP
- window.onload = function () {
-  gsap.fromTo(
-    ".main-h2",
-    { opacity: 0, y: -50 },
-    { opacity: 1, y: 0, duration: 1 }
-  );
 
-  gsap.fromTo(
-    ".container",
-    { opacity: 0, y: -50 },
-    { opacity: 1, y: 0, duration: 1 }
+const container = document.querySelector(".container");
+
+// Add the class to disable transitions
+container.classList.add("no-transition");
+
+// GSAP Animation
+gsap.timeline({
+  onComplete: () => {
+    // Remove the class after the animation is complete
+    container.classList.remove("no-transition");
+  }
+})
+  .fromTo(".main-h2", 
+    { y: -50, opacity: 0 }, 
+    { y: 0, opacity: 1, duration: 1, ease: "power2.out" }
+  )
+  .fromTo(".container", 
+    { y: -50, opacity: 0 }, 
+    { y: 0, opacity: 1, duration: 1, ease: "power2.out" },
+    "-=1"
   );
-};
 
   
-
 let scrollBar = document.getElementById('scroll-bar');
 let newSection = document.getElementById('new-section');
 
