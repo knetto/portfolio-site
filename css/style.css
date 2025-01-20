@@ -452,23 +452,72 @@ nav .close:hover div::after {
   /* background-color: var(--black); */
   color: var(--black);
   display: flex;
-  justify-content: center;
-  align-items: center;
+  /* justify-content: center;
+  align-items: center; */
   transition: bottom 0.8s ease; /* Smooth slide-in animation */
   z-index: 11; /* Above other content */
   
 }
+.new-section-content {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
 
-#new-section .new-section-content {
+.text-content {
+  flex: 1;
+  min-width: 280px;
+}
+
+.text-content h2 {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+}
+
+.text-content p {
+  font-size: 1.125rem;
+  line-height: 1.6;
+  margin-bottom: 1rem;
+}
+
+.image-content {
+  flex: 1;
+  min-width: 280px;
   text-align: center;
 }
 
-#new-section h2 {
-  font-size: 3rem;
+.image-content img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 8px;
 }
 
-#new-section p {
-  font-size: 1.5rem;
+/* Responsive styles */
+@media (max-width: 768px) {
+  .new-section-content {
+    flex-direction: column;
+  }
+
+  .text-content h2 {
+    font-size: 2rem;
+  }
+
+  .text-content p {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .text-content h2 {
+    font-size: 1.8rem;
+  }
+
+  .text-content p {
+    font-size: 0.9rem;
+  }
 }
 
 
