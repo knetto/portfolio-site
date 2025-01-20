@@ -136,7 +136,7 @@ magneticElements.forEach(element => {
       Math.sqrt(offsetX * offsetX + offsetY * offsetY),
       maxDistance
     );
-    const strength = (1 - distance / maxDistance) * 60; // Effect strength
+    const strength = (1 - distance / maxDistance) * 70; // Effect strength
     const dx = (offsetX / rect.width) * strength;
     const dy = (offsetY / rect.height) * strength;
 

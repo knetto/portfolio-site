@@ -77,8 +77,8 @@ h1 {
   right: 5%;
   width: 50px;
   height: 50px;
-  padding-top: 25px;
- 
+  padding-top: 20px;
+  opacity: 0;
 }
 
 .menu {
@@ -217,10 +217,10 @@ nav ul li a:hover:after {
 
 nav .close {
   width: 50px;
-  height: 45px;
+  height: 25px;
   padding-top: 20px;
   position: absolute;
-  top: 5%;
+  top: 4.9%;
   right: 5%;
   opacity: 0;
   pointer-events: none;
@@ -245,6 +245,7 @@ nav h2 {
   opacity: 1;
   pointer-events: none;
   z-index: 999;
+  opacity: 0;
 }
 
 nav .close div::before,
@@ -481,3 +482,4 @@ nav .close:hover div::after {
 }
 
 @media (max-width: 768px) { .cursor { display: none; } }
+
