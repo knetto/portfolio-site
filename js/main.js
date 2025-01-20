@@ -48,6 +48,8 @@ loader.load(
     
     // Start the rotation animation
     animateRotation();
+
+    resizeScaleModel()
   },
   function (xhr) {
     // Track loading progress
