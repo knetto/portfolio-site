@@ -9,13 +9,16 @@
   --scrollbarTrack: var(--black);
   --scrollbar: var(--black);
   --scrollbarThumb: var(--white);
+
+  --cursor-size: 28px;
+  --bg: #FAF7EE;
 }
 
 * {
   margin: 0;
   padding: 0;
   font-family: "Geist", sans-serif; 
-  cursor: none;
+  /* cursor: none; */
 }
 
 body {
@@ -425,6 +428,52 @@ nav .close:hover div::after {
   pointer-events: none;
 }
 
+.hover-this {
+  transition: all 0.3s ease;
+}
+
+/* .cursor {
+  pointer-events: none;
+  position: fixed;
+  width: 18px; 
+  height: 18px; 
+  background-color: var(--white);
+  border-radius: 50%;
+  mix-blend-mode: difference;
+  transition: transform 0.3s ease, width 0.3s ease, height 0.3s ease;
+  z-index: 9999;
+}
+
+
+.cursor-circle {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  background-color: #fff;
+  border-radius: 50%;
+  transform-origin: center;
+  opacity: 0.7;
+  transition: transform 0.1s ease-out, opacity 0.2s ease-out;
+}
+
+
+.cursor.hovered {
+  transform: translate(-50%, -50%) scale(1.5); 
+  width: 55px; 
+  height: 55px; 
+}
+
+.cursor.click {
+  background-color: var(--white);
+  transform: translate(-50%, -50%) scale(1.3);
+} */
+
+.magnet-item {
+  display: block;
+  transition: 250ms linear;
+}
+
+@media (max-width: 768px) { .cursor { display: none; } }
 
 #new-section {
   position: fixed;
@@ -454,37 +503,33 @@ nav .close:hover div::after {
   font-size: 1.5rem;
 }
 
-.hover-this {
-  transition: all 0.3s ease;
+
+
+.goo {
+  display: none;
 }
 
-.cursor {
-  pointer-events: none;
+#cursor {
   position: fixed;
-  width: 10px; /* Default size */
-  height: 10px; /* Default size */
-  background-color: var(--white);
-  border-radius: 50%;
-  mix-blend-mode: difference;
-  transition: transform 0.3s ease, width 0.3s ease, height 0.3s ease;
+  top: 0px;  /* Half of 28px cursor size */
+  left: 0px; /* Half of 28px cursor size */
+  pointer-events: none;
+  mix-blend-mode: difference;  
+  filter: url(#goo);
   z-index: 9999;
 }
 
-.cursor.hovered {
-  transform: translate(-50%, -50%) scale(1.5); /* Smooth enlargement */
-  width: 55px; /* Larger size */
-  height: 55px; /* Larger size */
+.cursor-circle {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 28px;  /* Default cursor size */
+  height: 28px; /* Default cursor size */
+  border-radius: 50%;
+  background: var(--bg);
+  transform-origin: center;
+  transform: translate(-50%, -50%); /* Center the cursor at its middle */
+  transition: width 0.3s ease, height 0.3s ease;
 }
 
-.cursor.click {
-  background-color: var(--white);
-  transform: translate(-50%, -50%) scale(1.3);
-}
-
-.magnet-item {
-  display: block;
-  transition: 250ms linear;
-}
-
-@media (max-width: 768px) { .cursor { display: none; } }
 
