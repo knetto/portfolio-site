@@ -501,39 +501,68 @@ nav .close:hover div::after {
   margin-top: 1rem; 
 }
 
-/* Responsive styles */
+/* Media Queries for Smaller Screens */
 @media (max-width: 768px) {
   .new-section-content {
     flex-direction: column;
-    padding: 1.5rem; /* Adjusted padding for smaller screens */
+    gap: 2rem; /* Reduced gap for small screens */
+    margin-top: 10vh;
   }
 
   .text-content {
-    padding: 1rem; /* Reduced padding for smaller screens */
+    transform: translateY(0); /* Reset sliding effect on small screens */
+    padding: 1rem; /* Less padding for smaller screens */
   }
 
   .text-content h2 {
-    font-size: 2rem;
+    font-size: 2rem; /* Smaller heading font size */
   }
 
   .text-content p {
-    font-size: 1rem;
+    font-size: 1rem; /* Smaller text for readability */
+  }
+
+  .image-content {
+    text-align: center;
+    transform: translateY(0); /* Reset sliding effect */
   }
 
   .image-content img {
-    margin-top: 1.5rem; /* Slightly increased space for smaller screens */
+    max-width: 90%; /* Image size reduced to fit screen */
+    margin-top: 1rem;
+  }
+
+  .social-media-icons {
+    display: flex;
+    gap: 1rem; /* Reduced gap between social media icons */
+    margin-top: 1rem;
+  }
+
+  .social-icon i {
+    font-size: 1.5rem; /* Smaller icon size */
   }
 }
 
 @media (max-width: 480px) {
   .text-content h2 {
-    font-size: 1.8rem;
+    font-size: 1.5rem; /* Even smaller font for very small screens */
   }
 
   .text-content p {
-    font-size: 0.9rem;
+    font-size: 0.9rem; /* Further reduced font size */
+  }
+
+  .social-media-icons {
+    gap: 0.8rem; /* More reduced gap on very small screens */
+  }
+
+  .social-icon i {
+    font-size: 1.25rem; /* Further reduced icon size */
   }
 }
+
+
+
 
 .goo {
   display: none;
