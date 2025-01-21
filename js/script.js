@@ -162,14 +162,15 @@ let scrollBar = document.getElementById('scroll-bar');
 let newSection = document.getElementById('new-section');
 let menuSpans = document.querySelectorAll('.menu span'); // Select all spans inside .menu
 let mainH2 = document.querySelector('.main-h2');
+let textContent = document.querySelector('.text-content');
+let imageContent = document.querySelector('.image-content');
 
 // To track scroll direction
 let lastScrollPosition = 0;
 const triggerPoint = window.innerHeight * 0.5; // Trigger point is 50% of the screen height
 
-window.addEventListener('scroll', () => {
-  const scrollPosition = window.scrollY; // Current scroll position
-
+// Function to apply styles based on scroll position
+function updateScrollStyles(scrollPosition) {
   if (scrollPosition >= triggerPoint) {
     // When scrolled fully, change navbar colors and other styles
     document.documentElement.style.setProperty('--navBackground', 'var(--black)');
@@ -199,6 +200,10 @@ window.addEventListener('scroll', () => {
 
     // Hide the new section if scrolling up and below the trigger point
     newSection.style.bottom = "-100%";
+
+    // Reset the text and image position when scrolling up
+    textContent.style.transform = 'translateY(50px)'; // Move text back
+    imageContent.style.transform = 'translateY(400px)'; // Move image back
   } else {
     // Ensure the bar stays full once scrolled past the trigger point
     scrollBar.style.height = "100vh";
@@ -206,12 +211,64 @@ window.addEventListener('scroll', () => {
     // Show the new section if scrolling down
     if (scrollPosition > lastScrollPosition) {
       newSection.style.bottom = "0";
+      
+      textContent.style.transform = 'translateY(0)';
+      
+      // Fade in the image content with a slight delay
+      setTimeout(() => {
+        imageContent.style.transform = 'translateY(0)';
+      }, 200); // Delay the image for 200ms for a staggered effect
     } else {
       // Hide the new section if scrolling up
       newSection.style.bottom = "-100%";
     }
   }
+}
+
+// Initial check to apply styles if the page is already scrolled on load
+window.addEventListener('load', () => {
+  const initialScrollPosition = window.scrollY;
+  updateScrollStyles(initialScrollPosition);
+});
+
+window.addEventListener('scroll', () => {
+  const scrollPosition = window.scrollY; // Current scroll position
+  updateScrollStyles(scrollPosition);
 
   lastScrollPosition = scrollPosition; // Update last scroll position
 });
+
+
+
+
+document.addEventListener("DOMContentLoaded", function() {
+  const socialIcons = document.querySelectorAll('.social-icon');
+  
+  // Create an IntersectionObserver to detect when the social icons container is fully in the viewport
+  const observer = new IntersectionObserver((entries, observer) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        // Start the GSAP animation with a delay after the icons are in view
+        socialIcons.forEach((icon, index) => {
+          gsap.from(icon, {
+            y: 50, // Start from below the screen
+            opacity: 0, // Start hidden
+            duration: 0.8, // Animation duration
+            delay: 0.5 + index * 0.2, // Global start delay (1 second) + staggered delay for each icon
+            ease: "power4.out" // Ease for smoothness
+          });
+        });
+        // Stop observing once the animation starts
+        observer.unobserve(entry.target);
+      }
+    });
+  }, {
+    threshold: 0.5 // Trigger when 50% of the social icons are visible in the viewport
+  });
+
+  // Observe the social-media-icons container
+  const socialMediaIconsContainer = document.querySelector('.social-media-icons');
+  observer.observe(socialMediaIconsContainer);
+});
+
 

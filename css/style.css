@@ -11,7 +11,7 @@
   --scrollbarThumb: var(--white);
 
   --cursor-size: 28px;
-  --bg: #FAF7EE;
+  --bg: var(--white);
 }
 
 * {
@@ -471,6 +471,8 @@ nav .close:hover div::after {
   flex: 1;
   min-width: 280px;
   padding: 1.5rem; /* Added padding to text for better readability */
+  transform: translateY(50px); /* Start off-screen for sliding effect */
+  transition: transform 0.5s ease 0.3s; /* Smooth fade-in and slide-in */
 }
 
 .text-content h2 {
@@ -488,13 +490,15 @@ nav .close:hover div::after {
   flex: 1;
   min-width: 280px;
   text-align: center;
+  transform: translateY(400px); /* Start off-screen for sliding effect */
+  transition: transform 0.7s ease 0.2s; /* Smooth fade-in and slide-in with delay */
 }
 
 .image-content img {
   max-width: 100%;
   height: auto;
-  border-radius: 8px;
-  margin-top: 1rem; /* Added margin to create space between image and text */
+  border-radius: 10px;
+  margin-top: 1rem; 
 }
 
 /* Responsive styles */
@@ -531,9 +535,6 @@ nav .close:hover div::after {
   }
 }
 
-
-
-
 .goo {
   display: none;
 }
@@ -560,4 +561,34 @@ nav .close:hover div::after {
   transform: translate(-50%, -50%); /* Center the cursor at its middle */
   transition: width 0.3s ease, height 0.3s ease;
 }
+
+/* Social Media Icons */
+.social-media-icons {
+  display: flex;
+  gap: 20px;
+  margin-top: 20px;
+  margin-left: -10px;
+}
+
+.social-icon {
+  font-size: 2rem; /* Adjust size */
+  color: var(--black) !important; /* Default color */
+  text-decoration: none;
+}
+
+/* .social-icon:hover {
+  color: #0077b5; 
+} */
+
+.social-icon i {
+  margin: 0 10px;
+}
+
+/* Style for the thin line (divider) */
+.divider {
+  height: 1px;
+  background-color: var(--black); /* Light gray color */
+  margin: 20px 0; /* Adjust spacing as needed */
+}
+
 
