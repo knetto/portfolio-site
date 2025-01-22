@@ -73,20 +73,14 @@ const TAIL_LENGTH = 20;
 const cursor = document.getElementById('cursor');
 const defaultSize = 28;  // Default cursor size
 const hoverSize = 90;    // Size of the cursor when hovering over an item
+const clickIncrease = 15; // Amount to increase cursor size on click
+const animationDuration = 200; // Duration of the size change animation in ms
 
 let mouseX = 0;
 let mouseY = 0;
+let isHovering = false;  // Track if the cursor is hovering over an element
 let cursorCircles;
 let cursorHistory = Array(TAIL_LENGTH).fill({ x: 0, y: 0 });
-
-// Function to hide cursor if viewport width is smaller than 768px
-function checkCursorVisibility() {
-  if (window.innerWidth <= 768) {
-    cursor.style.display = 'none';
-  } else {
-    cursor.style.display = 'block';
-  }
-}
 
 function onMouseMove(event) {
   mouseX = event.clientX;
@@ -120,6 +114,46 @@ function updateCursor() {
   requestAnimationFrame(updateCursor);
 }
 
+// Function to handle cursor size update with animation
+function updateCursorSize(size, withTransition = false) {
+  cursorCircles.forEach(circle => {
+    if (withTransition) {
+      circle.style.transition = `width ${animationDuration}ms ease-in-out, height ${animationDuration}ms ease-in-out`;
+    } else {
+      circle.style.transition = 'none';
+    }
+    circle.style.width = `${size}px`;
+    circle.style.height = `${size}px`;
+  });
+}
+
+// Add hover event listeners
+const hoverElements = document.querySelectorAll('.hover-this');
+
+hoverElements.forEach(element => {
+  element.addEventListener('mouseenter', () => {
+    isHovering = true;
+    updateCursorSize(hoverSize, true); // Smooth transition on hover
+  });
+
+  element.addEventListener('mouseleave', () => {
+    isHovering = false;
+    updateCursorSize(defaultSize, true); // Smooth transition when leaving hover
+  });
+});
+
+// Add mousedown event listener
+document.addEventListener('mousedown', () => {
+  const currentSize = isHovering ? hoverSize + clickIncrease : defaultSize + clickIncrease;
+  updateCursorSize(currentSize, true); // Smooth transition on click
+  
+  // Smoothly return to the default or hover size after the click
+  setTimeout(() => {
+    const returnSize = isHovering ? hoverSize : defaultSize;
+    updateCursorSize(returnSize, true); // Add smooth transition
+  }, animationDuration);
+});
+
 // Event listener for mousemove
 document.addEventListener('mousemove', onMouseMove, false);
 
@@ -127,26 +161,9 @@ document.addEventListener('mousemove', onMouseMove, false);
 initCursor();
 updateCursor();
 
-// Change cursor size on hover over elements with class 'hover-this'
-const hoverElements = document.querySelectorAll('.hover-this');
 
-hoverElements.forEach(element => {
-  element.addEventListener('mouseenter', () => {
-    // Increase cursor size when hovering over the element
-    cursorCircles.forEach(circle => {
-      circle.style.width = `${hoverSize}px`;
-      circle.style.height = `${hoverSize}px`;
-    });
-  });
 
-  element.addEventListener('mouseleave', () => {
-    // Reset cursor size back to default
-    cursorCircles.forEach(circle => {
-      circle.style.width = `${defaultSize}px`;
-      circle.style.height = `${defaultSize}px`;
-    });
-  });
-});
+
 
 // Add listener for window resize to dynamically check for cursor visibility
 window.addEventListener('resize', checkCursorVisibility);
