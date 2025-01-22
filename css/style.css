@@ -306,16 +306,16 @@ nav .close:hover div::after {
 .MainTitleBack {
   position: absolute;
   z-index: 1; /* Place it behind the front title */
-  font-size: 175px; /* Adjust as needed */
+  font-size: 10.9375rem; /* 175px / 16px */
   color: var(--white); /* Adjust text color */
   transform: translateX(-50%); /* Offset by half the element's width to center it */
   font-weight: 900;
   width: 100%;
-  margin-bottom: 450px;
+  margin-bottom: 28.125rem; /* 450px / 16px */
 }
 
 .MainTitleFront {
-  font-size: 80px; /* Adjust as needed */
+  font-size: 5rem; /* 80px / 16px */
   color: var(--white); /* Adjust text color */
   z-index: 2; /* Ensure it's on top of the back title */
   font-weight: 900;
@@ -325,62 +325,58 @@ nav .close:hover div::after {
 
 @media (max-width: 1700px) {
   .MainTitleBack {
-    font-size: 150px; /* Adjust as needed */
+    font-size: 9.375rem; /* 150px / 16px */
   }
   .MainTitleFront {
-    font-size: 70px; /* Adjust as needed */
-
+    font-size: 4.375rem; /* 70px / 16px */
   }
 }
 
 @media (max-width: 1500px) {
   .MainTitleBack {
-    font-size: 130px; /* Adjust as needed */
+    font-size: 8.125rem; /* 130px / 16px */
   }
   .MainTitleFront {
-    font-size: 60px; /* Adjust as needed */
-
+    font-size: 3.75rem; /* 60px / 16px */
   }
 }
 
 @media (max-width: 1300px) {
   .MainTitleBack {
-    font-size: 110px; /* Adjust as needed */
+    font-size: 6.875rem; /* 110px / 16px */
   }
   .MainTitleFront {
-    font-size: 50px; /* Adjust as needed */
-
+    font-size: 3.125rem; /* 50px / 16px */
   }
 }
 
 @media (max-width: 1000px) {
   .MainTitleBack {
     top: 50%; /* Position the element vertically at the center */
-    margin-top: -165px;
-    font-size: 70px; /* Adjust as needed */
+    margin-top: -10.3125rem; /* -165px / 16px */
+    font-size: 4.375rem; /* 70px / 16px */
   }
   .MainTitleFront {
-    font-size: 30px; /* Adjust as needed */
-
+    font-size: 1.875rem; /* 30px / 16px */
   }
 }
 
 @media (max-width: 700px) {
   .MainTitleBack {
     top: 50%; /* Position the element vertically at the center */
-    margin-top: -150px;
-    font-size: 50px; /* Adjust as needed */
+    margin-top: -9.375rem; /* -150px / 16px */
+    font-size: 3.125rem; /* 50px / 16px */
   }
   .MainTitleFront {
-    font-size: 23px; /* Adjust as needed */
+    font-size: 1.4375rem; /* 23px / 16px */
   }
   #container3D {
-    top: -135px !important;
+    top: -8.4375rem !important; /* -135px / 16px */
   }
   #cursor {
     display: none !important;
   }
-  .cursor-circle{
+  .cursor-circle {
     display: none !important;
   }
 }
@@ -388,14 +384,14 @@ nav .close:hover div::after {
 @media (max-width: 500px) {
   .MainTitleBack {
     top: 50%; /* Position the element vertically at the center */
-    margin-top: -140px;
-    font-size: 11vw; /* Adjust as needed */
+    margin-top: -8.75rem; /* -140px / 16px */
+    font-size: 11vw; /* Based on viewport width, no rem conversion needed */
   }
   .MainTitleFront {
-    font-size: 5vw; /* Adjust as needed */
-
+    font-size: 5vw; /* Based on viewport width, no rem conversion needed */
   }
 }
+
 
 .landingPage {
   position: fixed; /* Fix the landing page in place */
@@ -461,8 +457,8 @@ nav .close:hover div::after {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 3rem; /* Increased gap between text and image */
-  max-width: 1200px;
+  gap: 4vw; /* Increased gap between text and image */
+  max-width: 1400px;
   margin: 0 auto;
   padding: 2rem; /* Added padding to the overall content */
 }
@@ -499,6 +495,7 @@ nav .close:hover div::after {
   height: auto;
   border-radius: 10px;
   margin-top: 1rem; 
+  object-fit: cover; /* Ensure the image covers its container */
 }
 
 /* Media Queries for Smaller Screens */
@@ -507,6 +504,7 @@ nav .close:hover div::after {
     flex-direction: column;
     gap: 2rem; /* Reduced gap for small screens */
     margin-top: 10vh;
+    gap: 0;
   }
 
   .text-content {
@@ -561,9 +559,6 @@ nav .close:hover div::after {
   }
 }
 
-
-
-
 .goo {
   display: none;
 }
@@ -605,19 +600,22 @@ nav .close:hover div::after {
   text-decoration: none;
 }
 
-/* .social-icon:hover {
-  color: #0077b5; 
-} */
-
 .social-icon i {
   margin: 0 10px;
+}
+
+/* Style for the container that holds the divider */
+.divider-container {
+  width: 100%; /* Adjust to your desired container width */ 
+  margin: 0 auto; /* Center the progress bar */
 }
 
 /* Style for the thin line (divider) */
 .divider {
   height: 1px;
   background-color: var(--black); /* Light gray color */
-  margin: 20px 0; /* Adjust spacing as needed */
+  width: 0%; /* Start with no width */
 }
+
 
 

@@ -77,34 +77,76 @@ window.addEventListener('scroll', () => {
   lastScrollPosition = scrollPosition; // Update last scroll position
 });
 
+
 document.addEventListener("DOMContentLoaded", function() {
   const socialIcons = document.querySelectorAll('.social-icon');
   
-  // Create an IntersectionObserver to detect when the social icons container is fully in the viewport
-  const observer = new IntersectionObserver((entries, observer) => {
+  // Set initial state of social icons (hidden and off-screen)
+  socialIcons.forEach(icon => {
+    gsap.set(icon, {
+      opacity: 0,  // Initially hidden
+      y: 50        // Initially positioned off-screen (below the viewport)
+    });
+  });
+
+  // Create an IntersectionObserver for the divider to load it when it's in the viewport
+  const divider = document.querySelector('.divider');
+  const dividerObserver = new IntersectionObserver((entries, observer) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
-        // Start the GSAP animation with a delay after the icons are in view
-        socialIcons.forEach((icon, index) => {
-          gsap.from(icon, {
-            y: 50, // Start from below the screen
-            opacity: 0, // Start hidden
-            duration: 0.8, // Animation duration
-            delay: 0.5 + index * 0.2, // Global start delay (1 second) + staggered delay for each icon
-            ease: "power4.out" // Ease for smoothness
-          });
+        // Start the GSAP animation for the divider when it's in view
+        gsap.to(".divider", {
+          duration: 1.5,   // Duration of the animation in seconds
+          width: "100%",  // Animate the width to 100% (full width)
+          ease: "power2.inOut", // Easing function for smooth animation
+          onComplete: function() { // This function will run once the divider animation is complete
+            loadSocialIcons(); // Trigger the social icon animation after the divider animation completes
+          }
         });
-        // Stop observing once the animation starts
+
+        // Stop observing the divider once it's in view and the animation starts
         observer.unobserve(entry.target);
       }
     });
   }, {
-    threshold: 0.5 // Trigger when 50% of the social icons are visible in the viewport
+    threshold: 0.5 // Trigger when 50% of the divider is visible in the viewport
   });
 
-  // Observe the social-media-icons container
-  const socialMediaIconsContainer = document.querySelector('.social-media-icons');
-  observer.observe(socialMediaIconsContainer);
+  // Start observing the divider
+  dividerObserver.observe(divider);
+
+  // Function to load social icons with staggered animation
+  function loadSocialIcons() {
+    const socialIcons = document.querySelectorAll('.social-icon');
+    
+    // Create an IntersectionObserver to detect when the social icons container is fully in the viewport
+    const observer = new IntersectionObserver((entries, observer) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          // Start the GSAP animation with a delay after the icons are in view
+          socialIcons.forEach((icon, index) => {
+            gsap.to(icon, {
+              y: 0,          // Move the icon to its original position
+              opacity: 1,    // Fade the icon into full opacity
+              duration: 0.8, // Animation duration
+              delay: 0.1 + index * 0.2, // Global start delay (0.5 second) + staggered delay for each icon
+              ease: "power4.out" // Ease for smoothness
+            });
+          });
+          // Stop observing once the animation starts
+          observer.unobserve(entry.target);
+        }
+      });
+    }, {
+      threshold: 0.5 // Trigger when 50% of the social icons are visible in the viewport
+    });
+
+    // Observe the social-media-icons container
+    const socialMediaIconsContainer = document.querySelector('.social-media-icons');
+    observer.observe(socialMediaIconsContainer);
+  }
 });
+
+
 
 
