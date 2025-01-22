@@ -70,7 +70,7 @@ body::-webkit-scrollbar-thumb {
 }
 
 h1 {
-  font-size: 40px;
+  font-size: 2.5rem;
   text-align: center;
 }
 
@@ -306,7 +306,7 @@ nav .close:hover div::after {
 .MainTitleBack {
   position: absolute;
   z-index: 1; /* Place it behind the front title */
-  font-size: 10.9375rem; /* 175px / 16px */
+  font-size: 10rem; /* 175px / 16px */
   color: var(--white); /* Adjust text color */
   transform: translateX(-50%); /* Offset by half the element's width to center it */
   font-weight: 900;
@@ -418,7 +418,7 @@ nav .close:hover div::after {
   position: fixed;
   top: 50%;
   left: 50%;
-  width: 100vw;
+  width: 100%;
   height: 0; /* Start with zero height */
   background-color: var(--white);
   transform: translate(-50%, -50%); /* Center both horizontally and vertically */
@@ -499,10 +499,9 @@ nav .close:hover div::after {
 }
 
 /* Media Queries for Smaller Screens */
-@media (max-width: 768px) {
+@media (max-width: 1000px) {
   .new-section-content {
     flex-direction: column;
-    gap: 2rem; /* Reduced gap for small screens */
     margin-top: 10vh;
     gap: 0;
   }
@@ -526,7 +525,7 @@ nav .close:hover div::after {
   }
 
   .image-content img {
-    max-width: 90%; /* Image size reduced to fit screen */
+    max-width: 95%; /* Image size reduced to fit screen */
     margin-top: 1rem;
   }
 
