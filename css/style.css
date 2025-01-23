@@ -315,7 +315,7 @@ nav .close:hover div::after {
 }
 
 .MainTitleFront {
-  font-size: 5rem; /* 80px / 16px */
+  font-size: 4.6rem; /* 80px / 16px */
   color: var(--white); /* Adjust text color */
   z-index: 2; /* Ensure it's on top of the back title */
   font-weight: 900;
