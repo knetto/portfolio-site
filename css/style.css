@@ -29,6 +29,7 @@ body {
   overflow: auto;
   box-sizing: border-box;
   -webkit-text-size-adjust: 100%;
+  scroll-behavior: smooth;
 }
 
 body::-webkit-scrollbar-track {
@@ -184,7 +185,6 @@ nav {
   justify-content: center;
   align-items: center;
   z-index: 9999;
-  pointer-events: none;
 }
 
 
