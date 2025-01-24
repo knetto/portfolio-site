@@ -4,8 +4,8 @@ let menuSpans = document.querySelectorAll('.menu span');
 let mainH2 = document.querySelector('.main-h2');
 let textContent = document.querySelector('.text-content');
 let imageContent = document.querySelector('.image-content');
+let navBar = document.querySelector('.nav-bar'); // Select the nav-bar element
 
-// To track scroll direction and trigger point
 let lastScrollPosition = 0;
 let triggerPoint = window.innerHeight * 0.5;
 
@@ -50,14 +50,36 @@ function updateScrollStyles(scrollPosition) {
   lastScrollPosition = scrollPosition;
 }
 
-// Scroll listener with debounce
+document.addEventListener('DOMContentLoaded', () => {
+  const navBar = document.querySelector('.nav-bar');
+
+  window.addEventListener('scroll', () => {
+    const scrollTop = document.documentElement.scrollTop;
+    const scrollHeight = document.documentElement.scrollHeight;
+    const clientHeight = window.innerHeight;
+    const isAtBottom = Math.ceil(scrollTop + clientHeight) >= scrollHeight;
+
+    if (isAtBottom) {
+      navBar.style.backgroundColor = 'var(--white)';
+    } else {
+      navBar.style.backgroundColor = 'transparent';
+    }
+  });
+});
+
+
+
+// Combined scroll listener with debounce
 window.addEventListener('scroll', debounce(() => {
   const scrollPosition = window.scrollY || document.documentElement.scrollTop;
+
   updateScrollStyles(scrollPosition);
+  updateNavBarBackground();
 }, 50));
 
 // Ensure correct state on page load
 window.addEventListener('load', () => {
   const scrollPosition = window.scrollY || document.documentElement.scrollTop;
   updateScrollStyles(scrollPosition);
+  updateNavBarBackground();
 });
