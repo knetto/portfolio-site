@@ -180,3 +180,69 @@ const observer = new IntersectionObserver((entries) => {
 
 // Start observing the section
 observer.observe(newSection2);
+
+document.addEventListener("DOMContentLoaded", function() {
+  // Function to trigger animations
+  function triggerAnimation(element, animationProps) {
+    gsap.from(element, animationProps);
+  }
+
+  // IntersectionObserver callback function
+  const observer = new IntersectionObserver((entries, observer) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        // Trigger animations when elements come into view
+        if (entry.target.classList.contains('text-content-h2')) {
+          triggerAnimation(entry.target, {
+            opacity: 0,
+            y: 50,
+            duration: 1,
+            delay: 0.5
+          });
+        }
+        if (entry.target.classList.contains('text-content-p')) {
+          triggerAnimation(entry.target, {
+            opacity: 0,
+            y: 30,
+            duration: 1,
+            stagger: 0.3,
+            delay: 0.8
+          });
+        }
+        if (entry.target.classList.contains('image-content-img')) {
+          gsap.fromTo(entry.target, 
+            {
+              opacity: 0,  // initial opacity
+              scale: 0.8    // initial scale
+            }, 
+            {
+              opacity: 1,  // final opacity (fully visible)
+              scale: 1,    // final scale (original size)
+              duration: 1,
+              delay: 0.8
+            }
+          );
+        }
+        observer.unobserve(entry.target); // Stop observing after animation is triggered
+      }
+    });
+  }, {
+    threshold: 0.5 // Trigger when at least 50% of the element is visible
+  });
+
+  // Observe the elements
+  const h2 = document.querySelector(".text-content h2");
+  const p = document.querySelectorAll(".text-content p");
+  const img = document.querySelectorAll(".image-content img");
+
+  // Add classes for easy targeting
+  h2.classList.add('text-content-h2');
+  p.forEach((el) => el.classList.add('text-content-p'));
+  img.forEach((el) => el.classList.add('image-content-img'));
+
+  observer.observe(h2);
+  p.forEach((el) => observer.observe(el));
+  img.forEach((el) => observer.observe(el));
+});
+
+

@@ -493,6 +493,7 @@ nav .close:hover div::after {
   border-radius: 10px;
   margin-top: 1rem; 
   object-fit: cover; /* Ensure the image covers its container */
+  opacity: 0;
 }
 
 /* Media Queries for Smaller Screens */
