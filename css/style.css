@@ -97,15 +97,7 @@ h1 {
   height: 50px;
 }
 
-.menu span {
-  width: 100%;
-  height: 3.5px;
-  background: var(--white);
-  position: absolute;
-  transition: all 0.3s ease;
-  border-radius: 5px;
-  transition: background-color 0.6s ease;
-}
+z
 
 .menu span:first-child {
   top: -15px;
@@ -442,16 +434,16 @@ nav .close:hover div::after {
 }
 
 #new-section {
-  position: fixed;
-  bottom: -100%; /* Start completely off-screen */
+  position: absolute;  /* Change to absolute so it stays in the flow */
+  top: 100%;  /* Initially off-screen */
   left: 0;
   width: 100%;
   height: 100vh;
   color: var(--black);
   display: flex;
-  transition: bottom 0.8s ease; /* Smooth slide-in animation */
-  z-index: 11; /* Above other content */
+  z-index: 11;
   overflow: auto;
+  transition: top 0.8s ease-in-out;  /* Smooth scroll-in and out animation */
 }
 
 .new-section-content {
@@ -467,7 +459,6 @@ nav .close:hover div::after {
 .text-content {
   flex: 1 1 280px;
   padding: 0rem; /* Added padding to text for better readability */
-  transform: translateY(50px); /* Start off-screen for sliding effect */
   transition: transform 0.5s ease 0.3s; /* Smooth fade-in and slide-in */
 }
 
@@ -485,7 +476,6 @@ nav .close:hover div::after {
 .image-content {
   flex: 1 1 280px;
   text-align: center;
-  transform: translateY(400px); /* Start off-screen for sliding effect */
   transition: transform 0.7s ease 0.2s; /* Smooth fade-in and slide-in with delay */
 }
 
@@ -612,3 +602,92 @@ nav .close:hover div::after {
 
 
 
+#new-section-2 {
+  position: absolute;
+  top: 200%;  /* Start below the first section */
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  color: var(--white);
+  display: flex;
+  z-index: 12;  /* Place it above the previous section */
+  overflow: auto;
+  transition: top 0.8s ease-in-out;
+  background-color: var(--black);
+}
+
+.new-section-2-content {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 4vw;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 5%;
+}
+
+.text-content-2 {
+  flex: 1 1 280px;
+  padding: 0rem;
+  transition: transform 0.5s ease 0.3s;
+}
+
+.text-content-2 h2 {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+}
+
+.text-content-2 p {
+  font-size: 1.125rem;
+  line-height: 1.8;
+  margin-bottom: 1rem;
+}
+
+.image-content-2 {
+  flex: 1 1 280px;
+  text-align: center;
+  transition: transform 0.7s ease 0.2s;
+}
+
+.image-content-2 img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 10px;
+  margin-top: 1rem;
+  object-fit: cover;
+}
+
+@media (max-width: 1024px) {
+  .new-section-2-content {
+    flex-direction: column;
+    margin-top: 13vh;
+    gap: 0;
+  }
+
+  .text-content-2 h2 {
+    font-size: 2rem;
+  }
+
+  .text-content-2 p {
+    font-size: 1rem;
+  }
+
+  .image-content-2 {
+    text-align: center;
+    transform: translateY(0);
+  }
+
+  .image-content-2 img {
+    margin-top: 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .text-content-2 h2 {
+    font-size: 1.5rem;
+  }
+
+  .text-content-2 p {
+    font-size: 0.9rem;
+  }
+}

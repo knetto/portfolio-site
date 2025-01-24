@@ -1,5 +1,4 @@
 let scrollBar = document.getElementById('scroll-bar');
-let newSection = document.getElementById('new-section');
 let menuSpans = document.querySelectorAll('.menu span');
 let mainH2 = document.querySelector('.main-h2');
 let textContent = document.querySelector('.text-content');
@@ -23,63 +22,43 @@ function updateScrollStyles(scrollPosition) {
 
     menuSpans.forEach(span => span.style.backgroundColor = 'var(--black)');
     mainH2.style.color = 'var(--black)';
-    scrollBar.style.height = "100vh";
+    scrollBar.style.height = "100vh"; // Fill up the scroll bar to full height
 
-    if (scrollPosition > lastScrollPosition) {
-      newSection.style.bottom = "0";
-      textContent.style.transform = 'translateY(0)';
-      setTimeout(() => {
-        imageContent.style.transform = 'translateY(0)';
-      }, 200);
-    } else {
-      newSection.style.bottom = "-100%";
-    }
+    // Trigger fade-in for text and image content
+    textContent.style.opacity = 1; // Fade in the text content
+    imageContent.style.opacity = 1; // Fade in the image content
   } else {
     document.documentElement.style.setProperty('--navBackground', 'var(--white)');
     document.documentElement.style.setProperty('--navText', 'var(--black)');
 
     menuSpans.forEach(span => span.style.backgroundColor = '');
     mainH2.style.color = '';
-
     scrollBar.style.height = `${progress * 100}vh`;
-    newSection.style.bottom = "-100%";
-    textContent.style.transform = 'translateY(50px)';
-    imageContent.style.transform = 'translateY(400px)';
+
+    // Reset opacity of text and image content
+    textContent.style.opacity = 0;
+    imageContent.style.opacity = 0;
+  }
+
+  // Check if scrolling up, and set the nav-bar background to transparent
+  if (scrollPosition < lastScrollPosition) {
+    navBar.style.backgroundColor = 'transparent'; // Set nav-bar background to transparent when scrolling up
+  } else {
+    navBar.style.backgroundColor = ''; // Reset to default when scrolling down
   }
 
   lastScrollPosition = scrollPosition;
 }
-
-document.addEventListener('DOMContentLoaded', () => {
-  const navBar = document.querySelector('.nav-bar');
-
-  window.addEventListener('scroll', () => {
-    const scrollTop = document.documentElement.scrollTop;
-    const scrollHeight = document.documentElement.scrollHeight;
-    const clientHeight = window.innerHeight;
-    const isAtBottom = Math.ceil(scrollTop + clientHeight) >= scrollHeight;
-
-    if (isAtBottom) {
-      navBar.style.backgroundColor = 'var(--white)';
-    } else {
-      navBar.style.backgroundColor = 'transparent';
-    }
-  });
-});
-
-
 
 // Combined scroll listener with debounce
 window.addEventListener('scroll', debounce(() => {
   const scrollPosition = window.scrollY || document.documentElement.scrollTop;
 
   updateScrollStyles(scrollPosition);
-  updateNavBarBackground();
 }, 50));
 
 // Ensure correct state on page load
 window.addEventListener('load', () => {
   const scrollPosition = window.scrollY || document.documentElement.scrollTop;
   updateScrollStyles(scrollPosition);
-  updateNavBarBackground();
 });

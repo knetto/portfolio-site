@@ -150,3 +150,33 @@ document.addEventListener("DOMContentLoaded", function() {
 
 
 
+const newSection2 = document.getElementById('new-section-2');
+
+
+// Create an IntersectionObserver to track when #new-section-2 is fully visible
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach((entry) => {
+    if (entry.isIntersecting) {
+      // When the section is fully in view, change color of .main-h2 to var(--white)
+      mainH2.style.color = 'var(--white)';
+      
+      // Change color of all .menu span elements to white
+      menuSpans.forEach(span => {
+        span.style.backgroundColor = 'var(--white)';
+      });
+    } else {
+      // Reset color when section is not fully visible
+      mainH2.style.color = 'black';
+      
+      // Reset color of all .menu span elements to black
+      menuSpans.forEach(span => {
+        span.style.backgroundColor = 'black';
+      });
+    }
+  });
+}, {
+  threshold: 1.0  // Trigger when 100% of the section is visible
+});
+
+// Start observing the section
+observer.observe(newSection2);
