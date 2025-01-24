@@ -451,6 +451,7 @@ nav .close:hover div::after {
   display: flex;
   transition: bottom 0.8s ease; /* Smooth slide-in animation */
   z-index: 11; /* Above other content */
+  overflow: auto;
 }
 
 .new-section-content {
@@ -460,13 +461,13 @@ nav .close:hover div::after {
   gap: 4vw; /* Increased gap between text and image */
   max-width: 1400px;
   margin: 0 auto;
-  padding: 2rem; /* Added padding to the overall content */
+  padding: 5%;
 }
 
 .text-content {
   flex: 1;
   min-width: 280px;
-  padding: 1.5rem; /* Added padding to text for better readability */
+  padding: 0rem; /* Added padding to text for better readability */
   transform: translateY(50px); /* Start off-screen for sliding effect */
   transition: transform 0.5s ease 0.3s; /* Smooth fade-in and slide-in */
 }
@@ -499,16 +500,16 @@ nav .close:hover div::after {
 }
 
 /* Media Queries for Smaller Screens */
-@media (max-width: 1000px) {
+@media (max-width: 1024px) {
   .new-section-content {
     flex-direction: column;
     margin-top: 10vh;
     gap: 0;
+    left: 5%;
   }
 
   .text-content {
     transform: translateY(0); /* Reset sliding effect on small screens */
-    padding: 1rem; /* Less padding for smaller screens */
   }
 
   .text-content h2 {
@@ -525,8 +526,7 @@ nav .close:hover div::after {
   }
 
   .image-content img {
-    max-width: 95%; /* Image size reduced to fit screen */
-    margin-top: 1rem;
+    margin-top: 2rem;
   }
 
   .social-media-icons {
@@ -550,11 +550,11 @@ nav .close:hover div::after {
   }
 
   .social-media-icons {
-    gap: 0.8rem; /* More reduced gap on very small screens */
+    gap: 0.5rem !important; /* More reduced gap on very small screens */
   }
 
   .social-icon i {
-    font-size: 1.25rem; /* Further reduced icon size */
+    font-size: 1.5rem; /* Further reduced icon size */
   }
 }
 
