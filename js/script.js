@@ -260,6 +260,36 @@ window.addEventListener('resize', () => {
 });
 
 
+window.addEventListener('load', () => {
+  const previousSection = document.querySelector('#new-section');
+  const previousSection2 = document.querySelector('#new-section-2');
+  const previousSection3 = document.querySelector('#new-section-3'); // Previous section 3 (now considered previous)
+  const newSection4 = document.querySelector('#new-section-4'); // New section 4
+
+  if (previousSection && previousSection2 && previousSection3 && newSection4) {
+    const prevSectionHeight = previousSection.offsetHeight;
+    const prevSection2Height = previousSection2.offsetHeight;
+    const prevSection3Height = previousSection3.offsetHeight;
+    newSection4.style.top = `calc(100vh + ${prevSectionHeight + prevSection2Height + prevSection3Height}px)`; // Adjust top position for new section 4
+    newSection4.style.visibility = 'visible'; // Make it visible after positioning
+  }
+});
+
+window.addEventListener('resize', () => {
+  const previousSection = document.querySelector('#new-section');
+  const previousSection2 = document.querySelector('#new-section-2');
+  const previousSection3 = document.querySelector('#new-section-3'); // Previous section 3 (now considered previous)
+  const newSection4 = document.querySelector('#new-section-4'); // New section 4
+
+  if (previousSection && previousSection2 && previousSection3 && newSection4) {
+    const prevSectionHeight = previousSection.offsetHeight;
+    const prevSection2Height = previousSection2.offsetHeight;
+    const prevSection3Height = previousSection3.offsetHeight;
+    newSection4.style.top = `calc(100vh + ${prevSectionHeight + prevSection2Height + prevSection3Height}px)`; // Adjust top position for new section 4
+  }
+});
+
+
 
 
 
