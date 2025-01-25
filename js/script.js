@@ -148,49 +148,6 @@ document.addEventListener("DOMContentLoaded", function() {
 });
 
 
-
-
-const newSection2 = document.getElementById('new-section-2');
-
-
-// Create an IntersectionObserver to track when #new-section-2 is fully visible
-const observer = new IntersectionObserver((entries) => {
-  entries.forEach((entry) => {
-    if (entry.isIntersecting && entry.intersectionRatio === 1) { // Ensure full visibility (100%)
-      // When the section is fully in view, change color of .main-h2 to var(--white)
-      mainH2.style.color = 'var(--white)';
-      
-      // Change color of all .menu span elements to white
-      menuSpans.forEach(span => {
-        span.style.backgroundColor = 'var(--white)';
-      });
-
-      // Change color of the --navBackground:
-      document.documentElement.style.setProperty('--navBackground', 'var(--white)');
-      document.documentElement.style.setProperty('--navText', 'var(--black)');
-    } else {
-      // Reset color when section is not fully visible
-      mainH2.style.color = 'var(--black)';
-      
-      // Reset color of all .menu span elements to black
-      menuSpans.forEach(span => {
-        span.style.backgroundColor = 'var(--black)';
-      });
-
-       // Change color of the --navBackground:
-       document.documentElement.style.setProperty('--navBackground', 'var(--black)');
-       document.documentElement.style.setProperty('--navText', 'var(--white)');
-    }
-  });
-}, {
-  threshold: 1.0  // Trigger when 100% of the section is visible
-});
-
-// Start observing the target element
-observer.observe(newSection2);
-
-
-
 document.addEventListener("DOMContentLoaded", function() {
   // Function to trigger animations
   function triggerAnimation(element, animationProps) {
@@ -275,4 +232,37 @@ window.addEventListener('resize', () => {
     newSection2.style.top = `calc(100vh + ${prevSectionHeight}px)`;
   }
 });
+
+
+window.addEventListener('load', () => {
+  const previousSection = document.querySelector('#new-section');
+  const previousSection2 = document.querySelector('#new-section-2');
+  const newSection3 = document.querySelector('#new-section-3');
+
+  if (previousSection && previousSection2 && newSection3) {
+    const prevSectionHeight = previousSection.offsetHeight;
+    const prevSection2Height = previousSection2.offsetHeight;
+    newSection3.style.top = `calc(100vh + ${prevSectionHeight + prevSection2Height}px)`;
+    newSection3.style.visibility = 'visible'; // Make it visible after positioning
+  }
+});
+
+window.addEventListener('resize', () => {
+  const previousSection = document.querySelector('#new-section');
+  const previousSection2 = document.querySelector('#new-section-2');
+  const newSection3 = document.querySelector('#new-section-3');
+
+  if (previousSection && previousSection2 && newSection3) {
+    const prevSectionHeight = previousSection.offsetHeight;
+    const prevSection2Height = previousSection2.offsetHeight;
+    newSection3.style.top = `calc(100vh + ${prevSectionHeight + prevSection2Height}px)`;
+  }
+});
+
+
+
+
+
+
+
 
