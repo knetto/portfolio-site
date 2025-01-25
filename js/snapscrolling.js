@@ -1,3 +1,8 @@
+// Ensure GSAP and ScrollToPlugin are loaded
+if (!window.gsap) {
+  console.error('GSAP is not loaded!');
+}
+
 const sections = document.querySelectorAll('section');
 let lastSnappedIndex = null; // Keep track of the last snapped section
 let isSnapping = false; // Prevent multiple snaps during animation
@@ -56,7 +61,7 @@ window.addEventListener('scroll', function () {
     const sectionTop = section.offsetTop;
     const sectionBottom = sectionTop + section.offsetHeight;
 
-    // Threshold for snapping (50% of the section height for symmetry)
+    // Set dynamic snapping threshold based on section's height (50% of section height)
     const threshold = 0.5 * section.offsetHeight;
 
     // Check if the scroll position is within the snapping range of a section
