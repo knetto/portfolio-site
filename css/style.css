@@ -13,8 +13,7 @@
   --cursor-size: 28px;
   --bg: var(--white);
 
-  --text-color: #111;
-  --bg-color: #b9b3a9;
+  --navBarText: var(--white);
 }
 
 * {
@@ -103,7 +102,7 @@ h1 {
 .menu span {
   width: 100%;
   height: 3.5px;
-  background: var(--white);
+  background: var(--navBarText);
   position: absolute;
   transition: all 0.3s ease;
   border-radius: 5px;
@@ -253,7 +252,7 @@ nav h2 {
   position: absolute;
   margin-top: 5vh !important;
   left: 5%;
-  color: var(--white);
+  color: var(--navBarText);
   font-size: 2em;
   opacity: 1;
   pointer-events: none;

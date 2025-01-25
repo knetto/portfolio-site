@@ -20,8 +20,8 @@ function updateScrollStyles(scrollPosition) {
     // document.documentElement.style.setProperty('--navBackground', 'var(--black)');
     // document.documentElement.style.setProperty('--navText', 'var(--white)');
 
-    menuSpans.forEach(span => span.style.backgroundColor = 'var(--black)');
-    mainH2.style.color = 'var(--black)';
+    // menuSpans.forEach(span => span.style.backgroundColor = 'var(--black)');
+    // mainH2.style.color = 'var(--black)';
     scrollBar.style.height = "100vh"; // Fill up the scroll bar to full height
 
     // Trigger fade-in for text and image content
@@ -31,8 +31,8 @@ function updateScrollStyles(scrollPosition) {
     // document.documentElement.style.setProperty('--navBackground', 'var(--white)');
     // document.documentElement.style.setProperty('--navText', 'var(--black)');
 
-    menuSpans.forEach(span => span.style.backgroundColor = '');
-    mainH2.style.color = '';
+    // menuSpans.forEach(span => span.style.backgroundColor = '');
+    // mainH2.style.color = '';
     scrollBar.style.height = `${progress * 100}vh`;
 
     // Reset opacity of text and image content
