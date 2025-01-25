@@ -164,6 +164,10 @@ const observer = new IntersectionObserver((entries) => {
       menuSpans.forEach(span => {
         span.style.backgroundColor = 'var(--white)';
       });
+
+      // Change color of the --navBackground:
+      document.documentElement.style.setProperty('--navBackground', 'var(--white)');
+      document.documentElement.style.setProperty('--navText', 'var(--black)');
     } else {
       // Reset color when section is not fully visible
       mainH2.style.color = 'var(--black)';
@@ -172,6 +176,10 @@ const observer = new IntersectionObserver((entries) => {
       menuSpans.forEach(span => {
         span.style.backgroundColor = 'var(--black)';
       });
+
+       // Change color of the --navBackground:
+       document.documentElement.style.setProperty('--navBackground', 'var(--black)');
+       document.documentElement.style.setProperty('--navText', 'var(--white)');
     }
   });
 }, {

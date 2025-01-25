@@ -25,8 +25,8 @@ function updateScrollStyles(scrollPosition) {
     scrollBar.style.height = "100vh"; // Fill up the scroll bar to full height
 
     // Trigger fade-in for text and image content
-    // textContent.style.opacity = 1;
-    // imageContent.style.opacity = 1; 
+    textContent.style.opacity = 1;
+    imageContent.style.opacity = 1; 
   } else {
     document.documentElement.style.setProperty('--navBackground', 'var(--white)');
     document.documentElement.style.setProperty('--navText', 'var(--black)');
@@ -36,8 +36,8 @@ function updateScrollStyles(scrollPosition) {
     scrollBar.style.height = `${progress * 100}vh`;
 
     // Reset opacity of text and image content
-    // textContent.style.opacity = 0;
-    // imageContent.style.opacity = 0;
+    textContent.style.opacity = 0;
+    imageContent.style.opacity = 0;
   }
 
   // Check if scrolling up, and set the nav-bar background to transparent
