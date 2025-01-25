@@ -1,24 +1,35 @@
-// Get references to your sections
-const newSection2 = document.getElementById('new-section-2');
+// Access the sections you want to monitor
+const section = document.getElementById('new-section');
+const section2 = document.getElementById('new-section-2');
+const section3 = document.getElementById('new-section-3');
+const section4 = document.getElementById('new-section-4');
 
-// Create an IntersectionObserver to track when the second section is in view
+// Set up the Intersection Observer
 const observer = new IntersectionObserver((entries) => {
-  entries.forEach((entry) => {
-    console.log('Section in view:', entry.isIntersecting); // Debugging log
-    
-    if (entry.isIntersecting && entry.intersectionRatio > 0.95) {
-      // When #new-section-2 is in view
-      document.documentElement.style.setProperty('--navBackground', 'var(--white)', 'important');
-      document.documentElement.style.setProperty('--navText', 'var(--black)', 'important');
-    } else {
-      // When #new-section-2 is not in view or not more than 50% in view, reset to default
-      document.documentElement.style.setProperty('--navBackground', 'var(--white)', 'important');
-      document.documentElement.style.setProperty('--navText', 'var(--black)', 'important');
-    }
-  });
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            // Check which section is in view and update styles accordingly
+            if (entry.target === section) {
+                document.documentElement.style.setProperty('--navBackground', 'var(--black)', 'important');
+                document.documentElement.style.setProperty('--navText', 'var(--white)', 'important');
+            } else if (entry.target === section2) {
+                document.documentElement.style.setProperty('--navBackground', 'var(--white)', 'important');
+                document.documentElement.style.setProperty('--navText', 'var(--black)', 'important');
+            } else if (entry.target === section3) {
+                document.documentElement.style.setProperty('--navBackground', 'var(--black)', 'important');
+                document.documentElement.style.setProperty('--navText', 'var(--white)', 'important');
+            } else if (entry.target === section4) {
+                document.documentElement.style.setProperty('--navBackground', 'var(--white)', 'important');
+                document.documentElement.style.setProperty('--navText', 'var(--black)', 'important');
+            }
+        }
+    });
 }, {
-  threshold: 0.95  // Trigger when more than 95% of the section is visible
+    threshold: 0.5  // Trigger when 50% of the section is visible
 });
 
-// Start observing the second section
-observer.observe(newSection2);
+// Start observing each section
+observer.observe(section);
+observer.observe(section2);
+observer.observe(section3);
+observer.observe(section4);

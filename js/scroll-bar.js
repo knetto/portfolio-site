@@ -17,8 +17,8 @@ function updateScrollStyles(scrollPosition) {
   const progress = Math.min(scrollPosition / triggerPoint, 1);
 
   if (scrollPosition >= triggerPoint) {
-    document.documentElement.style.setProperty('--navBackground', 'var(--black)');
-    document.documentElement.style.setProperty('--navText', 'var(--white)');
+    // document.documentElement.style.setProperty('--navBackground', 'var(--black)');
+    // document.documentElement.style.setProperty('--navText', 'var(--white)');
 
     menuSpans.forEach(span => span.style.backgroundColor = 'var(--black)');
     mainH2.style.color = 'var(--black)';
@@ -28,8 +28,8 @@ function updateScrollStyles(scrollPosition) {
     textContent.style.opacity = 1;
     imageContent.style.opacity = 1; 
   } else {
-    document.documentElement.style.setProperty('--navBackground', 'var(--white)');
-    document.documentElement.style.setProperty('--navText', 'var(--black)');
+    // document.documentElement.style.setProperty('--navBackground', 'var(--white)');
+    // document.documentElement.style.setProperty('--navText', 'var(--black)');
 
     menuSpans.forEach(span => span.style.backgroundColor = '');
     mainH2.style.color = '';
