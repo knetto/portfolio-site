@@ -17,36 +17,18 @@ function updateScrollStyles(scrollPosition) {
   const progress = Math.min(scrollPosition / triggerPoint, 1);
 
   if (scrollPosition >= triggerPoint) {
-    // document.documentElement.style.setProperty('--navBackground', 'var(--black)');
-    // document.documentElement.style.setProperty('--navText', 'var(--white)');
-
-    // menuSpans.forEach(span => span.style.backgroundColor = 'var(--black)');
-    // mainH2.style.color = 'var(--black)';
     scrollBar.style.height = "100vh"; // Fill up the scroll bar to full height
 
     // Trigger fade-in for text and image content
     textContent.style.opacity = 1;
     imageContent.style.opacity = 1; 
   } else {
-    // document.documentElement.style.setProperty('--navBackground', 'var(--white)');
-    // document.documentElement.style.setProperty('--navText', 'var(--black)');
-
-    // menuSpans.forEach(span => span.style.backgroundColor = '');
-    // mainH2.style.color = '';
     scrollBar.style.height = `${progress * 100}vh`;
 
     // Reset opacity of text and image content
     textContent.style.opacity = 0;
     imageContent.style.opacity = 0;
   }
-
-  // Check if scrolling up, and set the nav-bar background to transparent
-  if (scrollPosition < lastScrollPosition) {
-    navBar.style.backgroundColor = 'transparent'; // Set nav-bar background to transparent when scrolling up
-  } else {
-    navBar.style.backgroundColor = ''; // Reset to default when scrolling down
-  }
-
   lastScrollPosition = scrollPosition;
 }
 
