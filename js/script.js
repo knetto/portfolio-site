@@ -210,19 +210,10 @@ const observer = new IntersectionObserver((entries, observer) => {
 
 
 
-
-
-
-
-
-
-
-
-// Ensure GSAP is loaded in your project
 document.addEventListener('DOMContentLoaded', () => {
   const circle = document.querySelector('#blob-circle');
 
-  // Set up the blob animation
+  // Set up the initial state
   gsap.set(circle, { x: 0, y: 0 });
 
   // Mouse move listener for interactive effect
@@ -236,24 +227,23 @@ document.addEventListener('DOMContentLoaded', () => {
     const distX = (clientX - centerX) / 200;
     const distY = (clientY - centerY) / 200;
 
-    // Animate the circle towards the mouse
+    // Animate the blob effect
     gsap.to(circle, {
       x: distX,
       y: distY,
-      scale: 1.1,
-      duration: 0.5,
+      borderRadius: `${50 + distX}% ${50 - distX}% ${50 - distY}% ${50 + distY}%`,
+      duration: 0.4,
       ease: 'power3.out',
     });
   });
 
-  // Reset animation when mouse leaves the container
+  // Reset animation when mouse leaves
   document.addEventListener('mouseleave', () => {
     gsap.to(circle, {
       x: 0,
       y: 0,
-      scale: 1,
-      borderRadius: '50%', // Reset to a perfect circle
-      duration: 1,
+      borderRadius: '50%',
+      duration: 0.6,
       ease: 'elastic.out(1, 0.3)',
     });
   });
