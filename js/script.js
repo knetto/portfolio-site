@@ -255,9 +255,9 @@ gsap.registerPlugin(ScrollTrigger);
 
 window.addEventListener('DOMContentLoaded', () => {
   // Fade-in text from the bottom with ScrollTrigger
-  gsap.from('.heading', {
-    opacity: 0,
-    y: 50, // Starts from 50px below
+  gsap.to('.heading', {
+    opacity: 1,
+    y: -50, 
     duration: 1.5, // Duration of the animation
     ease: 'power2.out', // Ease-out effect for smooth animation
     scrollTrigger: {
@@ -268,9 +268,9 @@ window.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  gsap.from('.subheading', {
-    opacity: 0,
-    y: 50, // Starts from 50px below
+  gsap.to('.subheading', {
+    opacity: 1,
+    y: -50, 
     duration: 1.5, // Duration of the animation
     ease: 'power2.out', // Ease-out effect for smooth animation
     scrollTrigger: {
