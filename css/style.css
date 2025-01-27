@@ -794,8 +794,8 @@ nav .close:hover div::after {
         align-items: center;
         position: absolute;
         top: 50%;
-        /* transform: translate(0%, -50%); */
-        user-select: none; /* Prevent image highlighting */
+        transform: translate(0%, -50%);
+        user-select: none; 
       }
       
       #image-track {
@@ -805,7 +805,7 @@ nav .close:hover div::after {
         top: 50%;
         left: 50%;
         transform: translate(0%, -50%); 
-        user-select: none; /* -- Prevent image highlighting -- */
+        user-select: none; 
       }
       
       #image-track > .image {
