@@ -297,3 +297,24 @@ window.addEventListener('DOMContentLoaded', () => {
 });
 
 
+// Wait until the page is loaded to initialize Lenis
+document.addEventListener("DOMContentLoaded", function() {
+  // Initialize Lenis
+  const lenis = new Lenis({
+      duration: 1.2,  // Scroll speed
+      easing: (t) => t * (2 - t), // Easing function
+      smoothWheel: true,  // Enable mouse wheel smoothing
+      smoothTouch: false, // Disable touch smoothing (you can enable it)
+      touchMultiplier: 2, // Adjust touch scroll speed
+      wheelMultiplier: 1, // Adjust mouse wheel scroll speed
+      scrollBehavior: 'smooth'  // CSS smooth scrolling
+  });
+
+  // Animation loop to keep smooth scrolling updated
+  function animate(time) {
+      lenis.raf(time);  // Update Lenis with the current time
+      requestAnimationFrame(animate);  // Keep the animation frame loop running
+  }
+
+  requestAnimationFrame(animate);  // Start the animation loop
+});
