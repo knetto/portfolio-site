@@ -218,5 +218,45 @@ const observer = new IntersectionObserver((entries, observer) => {
 
 
 
+// Ensure GSAP is loaded in your project
+document.addEventListener('DOMContentLoaded', () => {
+  const circle = document.querySelector('#blob-circle');
+
+  // Set up the blob animation
+  gsap.set(circle, { x: 0, y: 0 });
+
+  // Mouse move listener for interactive effect
+  document.addEventListener('mousemove', (event) => {
+    const { clientX, clientY } = event;
+    const circleBounds = circle.getBoundingClientRect();
+    const centerX = circleBounds.left + circleBounds.width / 2;
+    const centerY = circleBounds.top + circleBounds.height / 2;
+
+    // Calculate distances
+    const distX = (clientX - centerX) / 200;
+    const distY = (clientY - centerY) / 200;
+
+    // Animate the circle towards the mouse
+    gsap.to(circle, {
+      x: distX,
+      y: distY,
+      scale: 1.1,
+      duration: 0.5,
+      ease: 'power3.out',
+    });
+  });
+
+  // Reset animation when mouse leaves the container
+  document.addEventListener('mouseleave', () => {
+    gsap.to(circle, {
+      x: 0,
+      y: 0,
+      scale: 1,
+      borderRadius: '50%', // Reset to a perfect circle
+      duration: 1,
+      ease: 'elastic.out(1, 0.3)',
+    });
+  });
+});
 
 
