@@ -250,3 +250,50 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 
+// Load the GSAP library and ScrollTrigger plugin
+gsap.registerPlugin(ScrollTrigger);
+
+window.addEventListener('DOMContentLoaded', () => {
+  // Fade-in text from the bottom with ScrollTrigger
+  gsap.from('.heading', {
+    opacity: 0,
+    y: 50, // Starts from 50px below
+    duration: 1.5, // Duration of the animation
+    ease: 'power2.out', // Ease-out effect for smooth animation
+    scrollTrigger: {
+      trigger: '.heading', // Element to watch
+      start: 'top 80%', // Trigger the animation when top of the element reaches 80% of the viewport height
+      end: 'top 20%', // Optional, end point to reverse or loop the animation
+      once: true, // Make sure the animation only happens once
+    }
+  });
+
+  gsap.from('.subheading', {
+    opacity: 0,
+    y: 50, // Starts from 50px below
+    duration: 1.5, // Duration of the animation
+    ease: 'power2.out', // Ease-out effect for smooth animation
+    scrollTrigger: {
+      trigger: '.subheading',
+      start: 'top 80%',
+      end: 'top 20%',
+      once: true,
+    }
+  });
+
+  // Add animation for the circle with ScrollTrigger
+  gsap.to('.circle', {
+    opacity: 1, // Make the circle fully visible
+    scale: 1, // Scale the circle back to its original size
+    duration: 1.5, // Duration of the animation
+    ease: 'power2.out', // Ease-out effect for smooth animation
+    scrollTrigger: {
+      trigger: '.circle',
+      start: 'top 80%',
+      end: 'top 20%',
+      once: true,
+    }
+  });
+});
+
+

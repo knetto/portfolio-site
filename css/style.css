@@ -678,15 +678,18 @@ nav .close:hover div::after {
 
 .circle {
   position: absolute;
-  width: 40vh; /* Circle size (adjust as needed) */
-  height: 40vh; /* Ensure it's a circle by making width and height equal */
+  width: 500px; /* Circle size (adjust as needed) */
+  height: 500px; /* Ensure it's a circle by making width and height equal */
   background-color: var(--white); /* Adjust color if needed */
   border-radius: 50%; /* Makes it a circle */
   top: 50%; /* Vertically center */
   left: -3vw; /* Adjust left position for overlap */
   transform: translateY(-50%); /* Center the circle vertically */
   z-index: 1; /* Place behind the heading */
+  opacity: 0; /* Start as invisible */
+  transform: translateY(-50%) scale(0); /* Start small */
 }
+
 
 @media screen and (max-width: 1600px) {
   .circle {
