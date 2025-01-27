@@ -2,7 +2,7 @@ gsap.registerPlugin(ScrollTrigger);
 
 // Scroll-triggered animation for the content
 gsap.to("#new-section-3 .new-section-3-content", {
-  xPercent: -1700,  // Reduce the horizontal movement distance for slower animation
+  xPercent: -155,  // Reduce the horizontal movement distance for slower animation
   ease: "none",     // No easing to make it consistent
   scrollTrigger: {
     trigger: "#new-section-3",  // When this section is triggered

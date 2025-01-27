@@ -786,34 +786,96 @@ nav .close:hover div::after {
         z-index: 13;
         overflow-x: hidden;
         background-color: var(--white);
-      }
-      
-      .new-section-3-content {
+        justify-content: flex-start; /* Ensures the content aligns to the left */
+    }
+    
+    .new-section-3-content {
         display: flex;
         flex-direction: row;
-        align-items: center;
         position: absolute;
         top: 50%;
-        transform: translate(0%, -50%);
-        user-select: none; 
-      }
-      
-      #image-track {
+        left: 0; /* Align content to the left */
+        transform: translateY(-50%); /* Keep it vertically centered */
+        user-select: none;
+    }
+    
+    #image-track {
         display: flex;
         gap: 4vmin;
         position: absolute;
         top: 50%;
         left: 50%;
-        transform: translate(0%, -50%); 
-        user-select: none; 
-      }
-      
-      #image-track > .image {
+        transform: translate(0%, -50%);
+        user-select: none;
+    }
+    
+    #image-track > .image {
         width: 70vmin;
         height: 56vmin;
         object-fit: cover;
         object-position: 100% center;
+    }
+    
+    .text-container {
+        margin-right: 80vw;
+        text-align: left;
+        margin-left: 20vw;
+        width: 35vw;
+    }
+    
+    h2 {
+        font-size: 3rem;
+        margin-bottom: 2vmin;
+    }
+    
+    .subtext{
+      font-size: 1.5rem;
+    }
+
+    @media screen and (max-width: 1920px) {
+      h2 {
+        font-size: 2.5rem;
+    }
+    .subtext{
+      font-size: 1.5rem;
+    }
+    }
+    @media screen and (max-width: 1000px) {
+    .text-container {
+      margin-right: 80vw;
+      text-align: left;
+      margin-left: 5vw;
+      width: 50vw;
+  }
+    }
+    @media screen and (max-width: 650px) {
+      h2 {
+        font-size: 2rem;
+    }
+    .subtext{
+      font-size: 1.3rem;
+    }
+      .text-container {
+        margin-right: 90vw;
+        text-align: left;
+        margin-left: 5vw;
+        width: 70vw;
+    }
       }
+      @media screen and (max-width: 400px) {
+        h2 {
+          font-size: 1.8rem;
+      }
+      .subtext{
+        font-size: 1.1rem;
+      }
+        .text-container {
+          margin-right: 100vw;
+          text-align: left;
+          margin-left: 5vw;
+          width: 75vw;
+      }
+        }
       
 
 #new-section-4 {
