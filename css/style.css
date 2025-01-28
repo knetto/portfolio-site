@@ -797,8 +797,9 @@ nav .close:hover div::after {
         left: 0; /* Align content to the left */
         transform: translateY(-50%); /* Keep it vertically centered */
         user-select: none;
+        /* width: 100%; */
     }
-    
+   
     #image-track {
         display: flex;
         gap: 4vmin;
