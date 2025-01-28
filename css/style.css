@@ -808,6 +808,7 @@ nav .close:hover div::after {
         left: 50%;
         transform: translate(0%, -50%);
         user-select: none;
+        margin-right: 5vw
     }
     
     #image-track > .image {
