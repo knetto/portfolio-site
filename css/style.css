@@ -800,7 +800,7 @@ nav .close:hover div::after {
         /* width: 100%; */
     }
    
-    #image-track {
+    .image-track {
         display: flex;
         gap: 4vmin;
         position: absolute;
@@ -811,7 +811,7 @@ nav .close:hover div::after {
         margin-right: 5vw
     }
     
-    #image-track > .image {
+    .image-track > .image {
         width: 75vmin;
         height: 56vmin;
         object-fit: cover;
@@ -880,28 +880,26 @@ nav .close:hover div::after {
         }
       
 
-#new-section-4 {
-  position: relative;
-  left: 0;
-  width: 100%;
-  height: 100vh;
-  color: var(--white);
-  display: flex;
-  z-index: 13;
-  overflow: auto;
-  background-color: var(--black);
-}
-
-.new-section-4-content {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  gap: 4vw;
-  max-width: 1400px;
-  margin: 0 auto;
-  padding: 5%;
-}
-
-
-
-
+        #new-section-4 {
+          position: relative;
+          left: 0;
+          width: 100%;
+          height: 100vh;
+          color: var(--white);
+          display: flex;
+          z-index: 13;
+          overflow-x: hidden;
+          background-color: var(--black);
+          justify-content: flex-start; /* Ensures the content aligns to the left */
+      }
+      
+      .new-section-4-content {
+          display: flex;
+          flex-direction: row;
+          position: absolute;
+          top: 50%;
+          left: 0; /* Align content to the left */
+          transform: translateY(-50%); /* Keep it vertically centered */
+          user-select: none;
+          /* width: 100%; */
+      }

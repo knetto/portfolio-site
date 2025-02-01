@@ -1,30 +1,49 @@
+// Section 3 logic (existing)
 gsap.registerPlugin(ScrollTrigger);
 
-// Select the whole content container
-const content = document.querySelector('.new-section-3-content');
+// Section 3
+const section3Content = document.querySelector('.new-section-3-content');
+const extraScrollWidth3 = window.innerWidth * 0.05;
 
-// Set a value to extend the scroll width using viewport width (5vw)
-const extraScrollWidth = window.innerWidth * 0.05; // 5% of the viewport width for extra scroll on the right
-
-gsap.to(content, {
-    x: () => -(content.scrollWidth + extraScrollWidth - window.innerWidth), // Move the entire content horizontally with extra scroll
-    ease: 'none', // Smooth, continuous scrolling
+gsap.to(section3Content, {
+    x: () => -(section3Content.scrollWidth + extraScrollWidth3 - window.innerWidth),
+    ease: 'none',
     scrollTrigger: {
         trigger: '#new-section-3',
-        start: 'top top',   // Pin at the top of the section
-        end: () => '+=' + (content.scrollWidth + extraScrollWidth), // End based on the content width + extra 5vw
-        scrub: true,  // Smooth scrubbing effect
-        pin: true,    // Pin the section during scroll
-        anticipatePin: 1, // Adjust if necessary to prevent issues with pinning
-        // markers: true,  // Optional: to see the start/end points (remove in production)
+        start: 'top top',
+        end: () => '+=' + (section3Content.scrollWidth + extraScrollWidth3),
+        scrub: true,
+        pin: true,
+        anticipatePin: 1,
         onUpdate: (self) => {
-            // Apply the same logic used in the mouse move to scroll-based movement
             const percentage = self.progress * -100;
-
-            // Animate the images based on scroll position
             gsap.to("#new-section-3 .image", {
                 objectPosition: `${100 + percentage}% center`,
-                duration: 0.1,  // A quick animation for each image movement
+                duration: 0.1,
+            });
+        }
+    }
+});
+
+// Section 4 - New code
+const section4Content = document.querySelector('.new-section-4-content');
+const extraScrollWidth4 = window.innerWidth * 0.05;
+
+gsap.to(section4Content, {
+    x: () => -(section4Content.scrollWidth + extraScrollWidth4 - window.innerWidth),
+    ease: 'none',
+    scrollTrigger: {
+        trigger: '#new-section-4',
+        start: 'top top',
+        end: () => '+=' + (section4Content.scrollWidth + extraScrollWidth4),
+        scrub: true,
+        pin: true,
+        anticipatePin: 1,
+        onUpdate: (self) => {
+            const percentage = self.progress * -100;
+            gsap.to("#new-section-4 .image", {
+                objectPosition: `${100 + percentage}% center`,
+                duration: 0.1,
             });
         }
     }

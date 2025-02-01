@@ -301,7 +301,7 @@ window.addEventListener('DOMContentLoaded', () => {
 document.addEventListener("DOMContentLoaded", function() {
   // Initialize Lenis
   const lenis = new Lenis({
-      duration: 1,  // Scroll speed
+      duration: 0.7,  // Scroll speed
       easing: (t) => t * (2 - t), // Easing function
       smoothWheel: true,  // Enable mouse wheel smoothing
       smoothTouch: false, // Disable touch smoothing (you can enable it)
