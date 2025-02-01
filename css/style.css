@@ -817,6 +817,17 @@ nav .close:hover div::after {
         object-fit: cover;
         object-position: 100% center;
     }
+
+    /* Fullscreen styling */
+    .image:-webkit-full-screen {
+      object-fit: contain;
+      background: black;
+  }
+
+  .image:fullscreen {
+      object-fit: contain;
+      background: black;
+  }
     
     .text-container {
         margin-right: 80vw;

@@ -318,3 +318,20 @@ document.addEventListener("DOMContentLoaded", function() {
 
   requestAnimationFrame(animate);  // Start the animation loop
 });
+
+
+ // Add click event to all images
+ document.querySelectorAll('.image').forEach(image => {
+  image.addEventListener('click', () => {
+      // Trigger fullscreen
+      if (document.fullscreenElement) {
+          document.exitFullscreen();
+      } else {
+          if (image.requestFullscreen) {
+              image.requestFullscreen();
+          } else if (image.webkitRequestFullscreen) { /* Safari */
+              image.webkitRequestFullscreen();
+          }
+      }
+  });
+});
