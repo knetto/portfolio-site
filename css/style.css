@@ -903,3 +903,27 @@ nav .close:hover div::after {
           user-select: none;
           /* width: 100%; */
       }
+
+      #new-section-5 {
+        position: relative;
+        left: 0;
+        width: 100%;
+        height: 100vh;
+        color: var(--black);
+        display: flex;
+        z-index: 13;
+        overflow-x: hidden;
+        background-color: var(--white);
+        justify-content: flex-start; /* Ensures the content aligns to the left */
+    }
+    
+    .new-section-5-content {
+        display: flex;
+        flex-direction: row;
+        position: absolute;
+        top: 50%;
+        left: 0; /* Align content to the left */
+        transform: translateY(-50%); /* Keep it vertically centered */
+        user-select: none;
+        /* width: 100%; */
+    }

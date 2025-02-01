@@ -48,3 +48,27 @@ gsap.to(section4Content, {
         }
     }
 });
+
+// Section 4 - New code
+const section5Content = document.querySelector('.new-section-5-content');
+const extraScrollWidth5 = window.innerWidth * 0.05;
+
+gsap.to(section5Content, {
+    x: () => -(section5Content.scrollWidth + extraScrollWidth4 - window.innerWidth),
+    ease: 'none',
+    scrollTrigger: {
+        trigger: '#new-section-5',
+        start: 'top top',
+        end: () => '+=' + (section5Content.scrollWidth + extraScrollWidth4),
+        scrub: true,
+        pin: true,
+        anticipatePin: 1,
+        onUpdate: (self) => {
+            const percentage = self.progress * -100;
+            gsap.to("#new-section-5 .image", {
+                objectPosition: `${100 + percentage}% center`,
+                duration: 0.1,
+            });
+        }
+    }
+});
