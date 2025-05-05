@@ -335,3 +335,48 @@ document.addEventListener("DOMContentLoaded", function() {
       }
   });
 });
+
+
+// 1) register the plugin first
+gsap.registerPlugin(ScrollTrigger);
+
+// 2) wait until DOM is ready
+window.addEventListener('DOMContentLoaded', () => {
+  // 3) find every .text-container
+  document.querySelectorAll('.text-container').forEach(container => {
+    const title = container.querySelector('h2');
+    const sub   = container.querySelector('p.subtext');
+
+    // 4a) animate the title
+    gsap.from(title, {
+      x: -100,
+      opacity: 0,
+      duration: 0.8,
+      ease: 'power2.out',
+      scrollTrigger: {
+        trigger: container,
+        start: 'top 80%',
+        once: true
+      }
+    });
+
+    // 4b) animate the subtext, slightly delayed
+    gsap.from(sub, {
+      x: -100,
+      opacity: 0,
+      duration: 0.8,
+      delay: 0.2,
+      ease: 'power2.out',
+      scrollTrigger: {
+        trigger: container,
+        start: 'top 80%',
+        once: true
+      }
+    });
+  });
+});
+
+// 5) ensure ScrollTrigger recalculates positions after everything loads
+window.addEventListener('load', () => {
+  ScrollTrigger.refresh();
+});
