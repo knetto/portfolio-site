@@ -49,7 +49,7 @@ gsap.to(section4Content, {
     }
 });
 
-// Section 4 - New code
+// Section 5 - New code
 const section5Content = document.querySelector('.new-section-5-content');
 const extraScrollWidth5 = window.innerWidth * 0.05;
 
