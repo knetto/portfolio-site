@@ -4,6 +4,7 @@ const section = document.getElementById('new-section');
 const section2 = document.getElementById('new-section-2');
 const section3 = document.getElementById('new-section-3');
 const section4 = document.getElementById('new-section-4');
+const section5 = document.getElementById('new-section-5');
 
 // Mapping of sections to their style configurations
 const sectionStyles = [
@@ -34,6 +35,13 @@ const sectionStyles = [
         text: 'var(--black)',
         barText: 'var(--white)',
         log: 'Section 4 is in view'
+    },
+    {
+        section: section5,
+        background: 'var(--black)',
+        text: 'var(--white)',
+        barText: 'var(--black)',
+        log: 'Section 5 is in view'
     }
 ];
 
