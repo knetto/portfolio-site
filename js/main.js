@@ -1,194 +1,131 @@
+// js/main.js
 import * as THREE from "https://cdn.skypack.dev/three@0.129.0/build/three.module.js";
 import { GLTFLoader } from "https://cdn.skypack.dev/three@0.129.0/examples/jsm/loaders/GLTFLoader.js";
 
-// Create the scene
-const scene = new THREE.Scene();
+// —— 1) Preloader “barrier” flags ——
+let pageReady   = false;
+let modelReady  = false;
 
-// Create an Orthographic camera for isometric view
-const camera = new THREE.OrthographicCamera(
-  -innerWidth / 32, // Left
-  innerWidth / 32,   // Right
-  innerHeight / 32,  // Top
-  -innerHeight / 32, // Bottom
-  1,                // Near
-  1000              // Far
-);
-
-// Set the camera position for an isometric view
-camera.position.set(10, 10, 10);  // Position the camera at (10, 10, 10)
-camera.lookAt(new THREE.Vector3(0, 0, 0)); // Make the camera look at the origin
-
-// Create a renderer and set its size
-const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
-renderer.setSize(innerWidth, innerHeight);
-document.body.appendChild(renderer.domElement);
-
-// Append the renderer to the DOM
-document.getElementById("container3D").appendChild(renderer.domElement);
-
-// Load the 3D model (replace with the correct path to your model)
-const loader = new GLTFLoader();
-let roomObject;
-let rotating = true; // Flag to control rotation animation
-
-loader.load(
-  './3dModels/Room/scene.gltf',  // Path to the 3D model file
-  function (gltf) {
-    // Add the loaded model to the scene
-    roomObject = gltf.scene;
-
-    // Set the initial small scale for the model (start even smaller)
-    roomObject.scale.set(0.05, 0.05, 0.05);  // Start very small for faster growth
-
-    // Lower the model by adjusting its Y position (e.g., set to -1)
-    roomObject.position.y = -20;
-
-    // Add the model to the scene
-    scene.add(roomObject);
-    
-    // Start the rotation animation
+function maybeStartAnimations() {
+  if (pageReady && modelReady) {
+    // hide spinner
+    document.body.classList.add('loaded');
+    // now kick off your model animations
     animateRotation();
-
-    // Start the smooth scaling transition
     smoothScaleModel();
-  },
-  function (xhr) {
-    // Track loading progress
-    console.log((xhr.loaded / xhr.total * 100) + '% loaded');
-  },
-  function (error) {
-    // Log any loading errors
-    console.error('Error loading model: ', error);
   }
-);
+}
 
-// Add some lights to illuminate the model
-const topLight = new THREE.DirectionalLight(0xffffff, 1);
-topLight.position.set(500, 500, 500); // Set position of light
-scene.add(topLight);
-
-const ambientLight = new THREE.AmbientLight(0x333333, 1);  // Low-intensity light
-scene.add(ambientLight);
-
-// Track mouse movement to rotate the object
-let mouseX = 0; // Mouse X position
-window.addEventListener('mousemove', (event) => {
-  // Get the mouse position in relation to the window width
-  mouseX = (event.clientX / window.innerWidth) * 2 - 1; // Normalize to [-1, 1]
+// wait for all HTML/CSS/img/scripts to finish
+window.addEventListener('load', () => {
+  pageReady = true;
+  maybeStartAnimations();
 });
 
-// Function to animate the model's rotation with ease-in and ease-out effect
+// —— 2) three.js setup ——
+const scene    = new THREE.Scene();
+const camera   = new THREE.OrthographicCamera(
+  -innerWidth/32, innerWidth/32,
+   innerHeight/32, -innerHeight/32,
+   1, 1000
+);
+camera.position.set(10,10,10);
+camera.lookAt(0,0,0);
+
+const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+renderer.setSize(innerWidth, innerHeight);
+document.getElementById("container3D").appendChild(renderer.domElement);
+
+// lights
+const topLight    = new THREE.DirectionalLight(0xffffff, 1);
+topLight.position.set(500,500,500);
+scene.add(topLight);
+scene.add(new THREE.AmbientLight(0x333333,1));
+
+// loader + model
+const loader   = new GLTFLoader();
+let roomObject;
+let rotating = true;
+
+loader.load(
+  './3dModels/Room/scene.gltf',
+  (gltf) => {
+    roomObject = gltf.scene;
+    // start tiny & low
+    roomObject.scale.set(0.05,0.05,0.05);
+    roomObject.position.y = -20;
+    scene.add(roomObject);
+    // signal ready
+    modelReady = true;
+    maybeStartAnimations();
+  },
+  xhr => console.log( (xhr.loaded/xhr.total*100).toFixed(0) + '% loaded' ),
+  err => console.error('Model load error:', err)
+);
+
+// track mouse for subtle rotation
+let mouseX = 0;
+window.addEventListener('mousemove', e => {
+  mouseX = (e.clientX/window.innerWidth)*2 - 1;
+});
+
+// —— 3) animation helpers ——
 function animateRotation() {
-  if (rotating && roomObject) {
-    const totalRotation = Math.PI * 2; // Full 360 degrees in radians
-    let rotationProgress = 0;
-    let startTime = null;
+  if (!roomObject) return;
+  const totalRot = Math.PI*2;
+  let startTime = null;
 
-    // Ease-in-out function for smooth rotation
-    function easeInOut(t) {
-      if (t < 0.5) {
-        return 4 * t * t * t; // Ease-in: acceleration
-      } else {
-        return 1 - Math.pow(-2 * t + 2, 3) / 2; // Ease-out: deceleration
-      }
-    }
-
-    // Rotate function that uses ease-in-out
-    function rotate(timestamp) {
-      if (!startTime) startTime = timestamp; // Set the start time once
-
-      // Calculate elapsed time as a fraction of the total animation duration
-      const elapsedTime = (timestamp - startTime) / 1000; // Convert to seconds
-      let progress = elapsedTime * 1.5; // Adjust multiplier for faster/slower animation
-
-      // Apply ease-in-out effect to the progress
-      let easedProgress = easeInOut(progress);
-
-      // Update rotation based on eased progress
-      rotationProgress = easedProgress * totalRotation;
-
-      if (rotationProgress < totalRotation) {
-        roomObject.rotation.y = rotationProgress;
-        requestAnimationFrame(rotate); // Continue rotating
-      } else {
-        roomObject.rotation.y = totalRotation; // Ensure it reaches 360 degrees exactly
-        rotating = false; // Stop rotation after completing 360 degrees
-      }
-    }
-
-    rotate(0); // Start rotating with ease-in-out effect
+  function easeInOut(t) {
+    return t<0.5
+      ? 4*t*t*t
+      : 1 - Math.pow(-2*t+2,3)/2;
   }
+
+  function frame(ts) {
+    if (!startTime) startTime = ts;
+    const elapsed = (ts - startTime)/1000 * 1.5; // speed factor
+    const prog    = Math.min(elapsed, 1);
+    roomObject.rotation.y = easeInOut(prog)*totalRot;
+    if (prog < 1) requestAnimationFrame(frame);
+    else rotating = false;
+  }
+  requestAnimationFrame(frame);
 }
 
-// Function to smoothly scale the model to the appropriate size
 function smoothScaleModel() {
-  if (roomObject) {
-    // Define the target scale based on window width
-    const width = window.innerWidth;
-    let targetScale = 1;
+  if (!roomObject) return;
+  const w = window.innerWidth;
+  let target = w<700 ? 0.5 : w<1000 ? 0.8 : 1;
+  const start = roomObject.scale.x;
+  const duration = 700; // ms
+  const t0 = performance.now();
 
-    if (width < 700) {
-      targetScale = 0.5; // Smaller screens
-    } else if (width < 1000) {
-      targetScale = 0.8; // Medium screens
-    } else {
-      targetScale = 1; // Larger screens
-    }
-
-    // Smoothly transition to the target scale
-    const scaleDuration = 700; // Shorter duration (500 ms for faster scaling)
-    const startScale = roomObject.scale.x;
-    const scaleStartTime = performance.now();
-
-    function scaleTransition() {
-      const elapsedTime = performance.now() - scaleStartTime;
-      const progress = Math.min(elapsedTime / scaleDuration, 1);
-
-      // Interpolate between the start and target scale values
-      const newScale = startScale + (targetScale - startScale) * progress;
-
-      // Apply the new scale
-      roomObject.scale.set(newScale, newScale, newScale);
-
-      // Continue the transition until the target scale is reached
-      if (progress < 1) {
-        requestAnimationFrame(scaleTransition);
-      }
-    }
-
-    scaleTransition(); // Start the smooth scaling transition
+  function frame() {
+    const now  = performance.now();
+    const prog = Math.min((now-t0)/duration,1);
+    const s    = start + (target - start)*prog;
+    roomObject.scale.set(s,s,s);
+    if (prog<1) requestAnimationFrame(frame);
   }
+  requestAnimationFrame(frame);
 }
 
-// Render the scene
-function animate() {
-  requestAnimationFrame(animate);
-
-  // Slightly rotate the object based on mouseX movement
+// —— 4) render loop + resize ——
+function renderLoop() {
+  requestAnimationFrame(renderLoop);
   if (!rotating && roomObject) {
-    roomObject.rotation.y = mouseX * Math.PI * 0.01; // Scale rotation to make it subtle
+    roomObject.rotation.y = mouseX * Math.PI * 0.01;
   }
-
-  // Render the scene from the camera's perspective
   renderer.render(scene, camera);
 }
+renderLoop();
 
-// Start the animation loop (rendering)
-animate();
-
-// Resize the renderer and model if the window is resized
-window.addEventListener("resize", () => {
-  // Adjust camera frustum for isometric view
-  camera.left = -innerWidth / 32;
-  camera.right = innerWidth / 32;
-  camera.top = innerHeight / 32;
-  camera.bottom = -innerHeight / 32;
-  camera.updateProjectionMatrix(); // Update the camera projection matrix after resizing
-
-  // Resize the renderer
+window.addEventListener('resize', () => {
+  camera.left   = -innerWidth/32;
+  camera.right  =  innerWidth/32;
+  camera.top    =  innerHeight/32;
+  camera.bottom = -innerHeight/32;
+  camera.updateProjectionMatrix();
   renderer.setSize(innerWidth, innerHeight);
-
-  // Call function to adjust the model scale smoothly
   smoothScaleModel();
-  renderer.render(scene, camera);
 });
