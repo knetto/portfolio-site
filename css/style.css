@@ -103,7 +103,7 @@ h1 {
   pointer-events: none;
   mix-blend-mode: difference;  
   filter: url(#goo);
-  z-index: 9999;
+  z-index: 99999;
 }
 
 .cursor-circle {
@@ -971,3 +971,23 @@ nav .close:hover div::after {
       opacity: 0;
       visibility: hidden;
     }
+
+    .fullscreen-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0);
+      pointer-events: none;
+      z-index: 997;
+    }
+    
+    .fullscreen-img {
+      position: fixed;
+      object-fit: cover;
+      will-change: width, height, left, top, clip-path;
+      cursor: none;
+      user-select: none;
+      z-index: 998;
+    }
+    
+    
+    

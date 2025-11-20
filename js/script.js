@@ -320,21 +320,118 @@ document.addEventListener("DOMContentLoaded", function() {
 });
 
 
- // Add click event to all images
- document.querySelectorAll('.image').forEach(image => {
-  image.addEventListener('click', () => {
-      // Trigger fullscreen
-      if (document.fullscreenElement) {
-          document.exitFullscreen();
-      } else {
-          if (image.requestFullscreen) {
-              image.requestFullscreen();
-          } else if (image.webkitRequestFullscreen) { /* Safari */
-              image.webkitRequestFullscreen();
-          }
-      }
+document.querySelectorAll("img.image").forEach(img => {
+  // img.style.cursor = "zoom-in";
+
+  img.addEventListener("click", () => {
+    const rect = img.getBoundingClientRect();
+
+    const natW = img.naturalWidth;
+    const natH = img.naturalHeight;
+    const ratio = natW / natH;
+
+    // Lock scroll
+    document.body.style.overflow = "hidden";
+
+    // Backdrop
+    const backdrop = document.createElement("div");
+    backdrop.className = "fullscreen-backdrop";
+    document.body.appendChild(backdrop);
+
+    // Clone to animate
+    const clone = img.cloneNode(true);
+    clone.className = "fullscreen-img";
+    clone.style.transform = "none";
+    document.body.appendChild(clone);
+
+    // Initial visible state (square-ish)
+    Object.assign(clone.style, {
+      left: rect.left + "px",
+      top: rect.top + "px",
+      width: rect.width + "px",
+      height: rect.height + "px",
+      clipPath: "inset(0%)"
+    });
+
+    clone.getBoundingClientRect(); // force layout
+
+    // Target fullscreen size based on original aspect ratio
+    const maxW = window.innerWidth * 0.95;
+    const maxH = window.innerHeight * 0.95;
+    let targetW, targetH;
+
+    if (ratio > maxW / maxH) {
+      targetW = maxW;
+      targetH = targetW / ratio;
+    } else {
+      targetH = maxH;
+      targetW = targetH * ratio;
+    }
+
+    const tl = gsap.timeline();
+
+    tl.set(backdrop, { pointerEvents: "auto" })
+
+      .to(backdrop, {
+        background: "rgba(0,0,0,0.92)",
+        duration: 0.6,
+        ease: "power2.out"
+      }, 0)
+
+      .to(clone, {
+        left: "50%",
+        top: "50%",
+        xPercent: -50,
+        yPercent: -50,
+        width: targetW,
+        height: targetH,
+        clipPath: "inset(0% 0% 0% 0%)",
+        duration: 0.9,
+        ease: "power3.out"
+      }, 0);
+
+    function close() {
+      const tl2 = gsap.timeline({
+        onComplete: () => {
+          clone.remove();
+          backdrop.remove();
+          document.removeEventListener("keydown", escHandler);
+          document.body.style.overflow = ""; // Restore scroll
+        }
+      });
+
+      tl2.to(backdrop, {
+        background: "rgba(0,0,0,0)",
+        duration: 0.4,
+        ease: "power2.in"
+      }, 0)
+
+      .to(clone, {
+        left: rect.left + "px",
+        top: rect.top + "px",
+        width: rect.width + "px",
+        height: rect.height + "px",
+        xPercent: 0,
+        yPercent: 0,
+        clipPath: "inset(0%)",
+        duration: 0.55,
+        ease: "power3.inOut"
+      }, 0);
+    }
+
+    const escHandler = e => (e.key === "Escape") && close();
+    document.addEventListener("keydown", escHandler);
+
+    // Close triggers
+    clone.addEventListener("click", close);
+    backdrop.addEventListener("click", close);
   });
 });
+
+
+
+
+
 
 
 // 1) register the plugin first
