@@ -1089,5 +1089,139 @@ nav .close:hover div::after {
 
 
     
-/* contact section */
+
+/* CONTACT SECTION — Light Version */
+#contact-section {
+  position: relative;
+  width: 100vw;
+  min-height: 100vh;
+  background: var(--white);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: var(--black);
+  padding: 6rem 2rem;
+  z-index: 12;
+}
+
+.form-group input,
+.form-group textarea,
+.contact-btn {
+  box-sizing: border-box;
+}
+
+
+.contact-content {
+  width: 100%;
+  max-width: 900px;
+  text-align: center;
+}
+
+#contact-section h2 {
+  font-size: 4rem;
+  font-weight: 900;
+  margin-bottom: 20px;
+  color: var(--black);
+}
+
+.contact-subtext {
+  font-size: 1.35rem;
+  max-width: 600px;
+  margin: 0 auto 3rem;
+  opacity: 0.85;
+  color: var(--black);
+}
+
+.contact-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+
+.form-group input,
+.form-group textarea {
+  width: 100%;
+  padding: 1.1rem 1.4rem;
+  background: transparent;
+  border: 2px solid var(--black);
+  border-radius: 8px;
+  color: var(--black);
+  font-size: 1.1rem;
+  transition: border-color .3s, background .3s;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+  outline: none;
+  border-color: #00000099;
+  background: #00000010;
+}
+
+.form-group textarea {
+  height: 160px;
+  resize: none;
+}
+
+.contact-btn {
+  align-self: center;
+  width: 100%;
+  background: var(--black);
+  color: var(--white);
+  padding: 1.2rem 2rem;
+  border-radius: 50px;
+  border: none;
+  font-size: 1.3rem;
+  font-weight: 800;
+  cursor: none;
+  transition: 0.35s ease;
+}
+
+.contact-btn:hover {
+  background: transparent;
+  outline: 3px solid var(--black);
+  color: var(--black);
+}
+
+/* MOBILE */
+@media (max-width: 600px) {
+  #contact-section h2 {
+    font-size: 2.8rem;
+  }
+  .contact-subtext {
+    font-size: 1.15rem;
+  }
+}
+
+.form-group {
+  text-align: left;
+}
+
+
+.error-message {
+  display: block;
+  text-align: left;
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin-top: 6px;
+  padding-left: 4px;
+  color: var(--black);
+  opacity: 0.75;
+}
+
+input.error, textarea.error {
+  border-color: var(--black) !important;
+  background: #00000010;
+}
+
+.error-message {
+  transform: translateY(-4px);
+  opacity: 0;
+  transition: 0.25s ease;
+}
+
+input.error + .error-message,
+textarea.error + .error-message {
+  transform: translateY(0);
+  opacity: 0.75;
+}
 

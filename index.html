@@ -44,7 +44,7 @@
       <li class="hover-this"><a href="#"><span>Home</span></a></li>
       <li class="hover-this"><a href="#about" id="about-link"><span>About</span></a></li>
       <li class="hover-this"><a href="#projects"><span>Projects</span></a></li>
-      <li class="hover-this"><a href="#"><span>Contact</span></a></li>
+      <li class="hover-this"><a href="#contact"><span>Contact</span></a></li>
     </ul>
   </nav>
 </div>
@@ -53,7 +53,7 @@
 
 
 
-<div class="landingPage">
+<div class="landingPage"  id="section-main">
   <main>
     <div id="container3D"></div>
 
@@ -200,22 +200,38 @@
   </div>
 </section>
 
-<section id="contact-section">
-  <div class="contact-content">
-    <div class="contact-text">
-      <h2 class="contact-heading">Get in Touch</h2>
-      <p class="contact-sub">Have a question or want to work together?</p>
 
-      <a href="mailto:corneschipper2003@gmail.com" class="contact-btn">
-        Say Hello →
-      </a>
-    </div>
+<section id="contact-section">
+  <div class="contact-content" id="contact">
+    <h2>Let’s Connect</h2>
+    <p class="contact-subtext">
+      Have a question, want to collaborate, or just say hi? Drop a message below!
+    </p>
+
+    <form id="contactForm" class="contact-form" action="https://formspree.io/f/yourFormID" method="POST" novalidate>
+  
+      <div class="form-group">
+        <input type="text" id="name" name="name" placeholder="Your Name" required>
+        <small class="error-message"></small>
+      </div>
+    
+      <div class="form-group">
+        <input type="email" id="email" name="email" placeholder="Email Address" required>
+        <small class="error-message"></small>
+      </div>
+    
+      <div class="form-group">
+        <textarea id="message" name="message" placeholder="Your Message" required></textarea>
+        <small class="error-message"></small>
+      </div>
+    
+      <button type="submit" class="contact-btn hover-this">
+        Send Message →
+      </button>
+    </form>
+    
   </div>
 </section>
-
-
-
-
 
 
 
