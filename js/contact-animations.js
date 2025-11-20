@@ -46,38 +46,11 @@ gsap.from(".contact-btn", {
   });
   
 
-  // Form validation script
-document.getElementById('contactForm').addEventListener('submit', function(e) {
-    let isValid = true;
-  
-    const fields = [
-      { id: 'name', message: 'Please enter your name.' },
-      { id: 'email', message: 'Please enter a valid email address.' },
-      { id: 'message', message: 'Please write a message before sending.' }
-    ];
-  
-    fields.forEach(field => {
-      const input = document.getElementById(field.id);
-      const errorMessage = input.nextElementSibling;
-  
-      if (!input.value.trim() || (field.id === 'email' && !input.validity.valid)) {
-        errorMessage.textContent = field.message;
-        input.classList.add('error');
-        isValid = false;
-      } else {
-        errorMessage.textContent = '';
-        input.classList.remove('error');
-      }
-    });
-  
-    if (!isValid) {
-      e.preventDefault(); // stop form from submitting if errors exist
-    }
-  });
+ 
   
 
 
-  const contactForm = document.getElementById("contactForm");
+const contactForm = document.getElementById("contactForm");
 const successMessage = document.getElementById("successMessage");
 const loadingMessage = document.getElementById("loadingMessage");
 
@@ -88,16 +61,19 @@ contactForm.addEventListener("submit", async function (e) {
 
   const fields = [
     { id: "name", message: "Please enter your name." },
-    { id: "email", message: "Please enter a valid email address." },
+    { id: "email", message: "Please enter a valid email address (example@mail.com)." },
     { id: "message", message: "Please write a message before sending." }
   ];
-
+  
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+  
   // Validation check
   fields.forEach(field => {
     const input = document.getElementById(field.id);
     const errorMessage = input.nextElementSibling;
-
-    if (!input.value.trim() || (field.id === "email" && !input.validity.valid)) {
+  
+    if (!input.value.trim() ||
+        (field.id === "email" && !emailRegex.test(input.value))) {
       errorMessage.textContent = field.message;
       input.classList.add("error");
       isValid = false;
@@ -106,8 +82,9 @@ contactForm.addEventListener("submit", async function (e) {
       input.classList.remove("error");
     }
   });
-
-  if (!isValid) return; // STOP RIGHT HERE if validation fails
+  
+  if (!isValid) return;
+  
 
   // If valid → proceed with animation + sending
   const formData = new FormData(contactForm);
