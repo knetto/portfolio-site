@@ -1366,3 +1366,33 @@ textarea.error + .error-message {
 }
 
 
+.touch-link {
+  position: relative;
+  text-decoration: none;
+  color: var(--black);
+  font-weight: 600;
+}
+
+.touch-link span {
+  position: relative;
+}
+
+.touch-link span::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -4px;
+  height: 2px;
+  width: 100%;
+  background: var(--black);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.35s ease;
+}
+
+.touch-link:hover span::after {
+  transform: scaleX(1);
+}
+
+
+
