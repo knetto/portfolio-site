@@ -45,11 +45,6 @@ gsap.from(".contact-btn", {
     window.addEventListener("load", () => ScrollTrigger.refresh());
   });
   
-
- 
-  
-
-
 const contactForm = document.getElementById("contactForm");
 const successMessage = document.getElementById("successMessage");
 const loadingMessage = document.getElementById("loadingMessage");

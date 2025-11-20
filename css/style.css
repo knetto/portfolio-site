@@ -1003,6 +1003,7 @@ nav .close:hover div::after {
       color: var(--white);
       overflow: hidden;
       z-index: 12;
+      text-align: center;
     }
     
     .new-section-otherProjects-content {
