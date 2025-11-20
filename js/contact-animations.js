@@ -48,54 +48,57 @@ gsap.from(".contact-btn", {
 
 
   const contactForm = document.getElementById("contactForm");
-const successMessage = document.getElementById("successMessage");
-const loadingMessage = document.getElementById("loadingMessage");
-
-contactForm.addEventListener("submit", async function (e) {
-  e.preventDefault();
-
-  const formData = new FormData(contactForm);
-
-  // Animate form out
-  contactForm.style.transform = "translateX(150%)";
-  contactForm.style.opacity = "0";
-
-  // Show loading state
-  loadingMessage.classList.add("show");
-
-  const response = await fetch(contactForm.action, {
-    method: "POST",
-    body: formData,
-    headers: { Accept: "application/json" }
-  });
-
-  // Hide loading state
-  loadingMessage.classList.remove("show");
-
-  if (response.ok) {
-    contactForm.reset();
-
-    // Show success message
-    successMessage.classList.add("show");
-
+  const successMessage = document.getElementById("successMessage");
+  const loadingMessage = document.getElementById("loadingMessage");
+  
+  contactForm.addEventListener("submit", async function (e) {
+    e.preventDefault();
+  
+    const formData = new FormData(contactForm);
+  
+    // Animate form out
+    contactForm.style.transform = "translateX(150%)";
+    contactForm.style.opacity = "0";
+  
+    // Show loading state
+    loadingMessage.classList.add("show");
+    const startTime = Date.now();
+    const minLoadingTime = 1200; // minimum 1.2 seconds visible
+  
+    const response = await fetch(contactForm.action, {
+      method: "POST",
+      body: formData,
+      headers: { Accept: "application/json" }
+    });
+  
+    const elapsedTime = Date.now() - startTime;
+    const remainingTime = Math.max(minLoadingTime - elapsedTime, 0);
+  
     setTimeout(() => {
-      successMessage.classList.remove("show");
-
-      // Bring the form back from the left
-      contactForm.style.transform = "translateX(-150%)";
-      contactForm.style.opacity = "0";
-
-      setTimeout(() => {
-        contactForm.style.transform = "translateX(0)";
-        contactForm.style.opacity = "1";
-      }, 400);
-
-    }, 2500); // success message visible 2.5 seconds
-    
-  } else {
-    alert("Oops! Something went wrong. Please try again later.");
-  }
-});
+      loadingMessage.classList.remove("show");
+  
+      if (response.ok) {
+        contactForm.reset();
+        successMessage.classList.add("show");
+  
+        setTimeout(() => {
+          successMessage.classList.remove("show");
+  
+          contactForm.style.transform = "translateX(-150%)";
+          contactForm.style.opacity = "0";
+  
+          setTimeout(() => {
+            contactForm.style.transform = "translateX(0)";
+            contactForm.style.opacity = "1";
+          }, 400);
+        }, 2500);
+  
+      } else {
+        alert("Oops! Something went wrong. Please try again later.");
+      }
+    }, remainingTime);
+  });
+  
 
   
   
