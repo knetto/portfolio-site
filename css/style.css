@@ -990,4 +990,104 @@ nav .close:hover div::after {
     }
     
     
+
+    /* other projects section */
+    #new-section-otherProjects {
+      position: relative;
+      width: 100vw;
+      height: 100vh;
+      background: var(--black);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: var(--white);
+      overflow: hidden;
+      z-index: 12;
+    }
     
+    .new-section-otherProjects-content {
+      max-width: 1500px;
+      width: 100%;
+      padding: 5%;
+    }
+    
+    .text-content-otherProjects {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 100%;
+    }
+    
+    /* Left Title */
+    .heading-other {
+      font-size: 6.5rem;
+      font-weight: 900;
+      line-height: 1.1;
+      width: 55%;
+      mix-blend-mode: difference;
+      color: var(--white);
+    }
+    
+    /* Circle Button */
+    .circle-btn {
+      width: 220px;
+      height: 220px;
+      border-radius: 50%;
+      background: var(--white);
+      color: var(--black);
+      border: none;
+      font-size: 1.8rem;
+      font-weight: 800;
+      transform: scale(1);
+      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), 
+        background 0.3s, color 0.3s;
+      box-shadow: 0 0 0 0 rgba(255,255,255,.2);
+      animation: pulse 2.8s infinite;
+    }
+    
+    /* Hover animation */
+    .circle-btn:hover {
+      transform: scale(1.12);
+      background: transparent;
+      color: var(--white);
+      outline: 3px solid var(--white);
+    }
+    
+    /* Slight floating/pulse animation */
+    @keyframes pulse {
+      0% {
+        box-shadow: 0 0 0 0 rgba(255,255,255,.15);
+      }
+      70% {
+        box-shadow: 0 0 0 22px rgba(255,255,255,0);
+      }
+      100% {
+        box-shadow: 0 0 0 0 rgba(255,255,255,0);
+      }
+    }
+    
+    /* Responsive */
+    @media (max-width: 900px) {
+      .text-content-otherProjects {
+        flex-direction: column;
+        text-align: center;
+        gap: 35px;
+      }
+    
+      .heading-other {
+        width: 100%;
+        font-size: 4rem;
+      }
+    
+      .circle-btn {
+        width: 160px;
+        height: 160px;
+        font-size: 1.4rem;
+      }
+    }
+    
+
+
+    
+/* contact section */
+
