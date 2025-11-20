@@ -1225,3 +1225,42 @@ textarea.error + .error-message {
   opacity: 0.75;
 }
 
+.success-center-message {
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(0.9);
+  transition: opacity 0.4s ease, transform 0.5s ease;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  background: var(--white);
+  color: var(--black);
+  padding: 24px 40px;
+  border-radius: 12px;
+  font-size: 1.2rem;
+  font-weight: 600;
+  text-align: center;
+  pointer-events: none;
+  z-index: 9999;
+}
+
+.success-center-message.show {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+}
+
+
+.contact-form {
+  position: relative;
+  transition: transform 0.7s ease, opacity 0.6s ease;
+}
+
+.contact-content {
+  position: relative; /* Needed so success message can center over it */
+}
+
+.success-center-message {
+  pointer-events: none;
+  z-index: 9999;
+}
+
+

@@ -479,6 +479,7 @@ window.addEventListener('load', () => {
 });
 
 
+// Form validation script
 document.getElementById('contactForm').addEventListener('submit', function(e) {
   let isValid = true;
 
@@ -506,3 +507,5 @@ document.getElementById('contactForm').addEventListener('submit', function(e) {
     e.preventDefault(); // stop form from submitting if errors exist
   }
 });
+
+

@@ -208,30 +208,40 @@
       Have a question, want to collaborate, or just say hi? Drop a message below!
     </p>
 
-    <form id="contactForm" class="contact-form" action="https://formspree.io/f/yourFormID" method="POST" novalidate>
-  
+    <form id="contactForm" class="contact-form" action="https://formspree.io/f/xeondogw" method="POST" novalidate>
       <div class="form-group">
         <input type="text" id="name" name="name" placeholder="Your Name" required>
         <small class="error-message"></small>
       </div>
-    
+      
       <div class="form-group">
         <input type="email" id="email" name="email" placeholder="Email Address" required>
         <small class="error-message"></small>
       </div>
-    
+
       <div class="form-group">
         <textarea id="message" name="message" placeholder="Your Message" required></textarea>
         <small class="error-message"></small>
       </div>
-    
+
       <button type="submit" class="contact-btn hover-this">
         Send Message →
       </button>
     </form>
+
+    <!-- Success message should be OUTSIDE the form -->
+    <div id="loadingMessage" class="success-center-message">
+      📤 Sending your message...
+    </div>
     
+    <div id="successMessage" class="success-center-message">
+      ✨ Message sent! Thanks for reaching out — I'll reply soon.
+    </div>
+    
+
   </div>
 </section>
+
 
 
 
@@ -263,6 +273,8 @@
   <script src="js\nav-bg.js"></script>
   <script src="js\snapscrolling.js"></script>
   <script src="js/vertical-scroll.js"></script>
+  <script src="js/contact-animations.js"></script>
+
 
 
   <script src="https://unpkg.com/lenis@1.1.20/dist/lenis.min.js"></script> 
