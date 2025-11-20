@@ -479,33 +479,5 @@ window.addEventListener('load', () => {
 });
 
 
-// Form validation script
-document.getElementById('contactForm').addEventListener('submit', function(e) {
-  let isValid = true;
-
-  const fields = [
-    { id: 'name', message: 'Please enter your name.' },
-    { id: 'email', message: 'Please enter a valid email address.' },
-    { id: 'message', message: 'Please write a message before sending.' }
-  ];
-
-  fields.forEach(field => {
-    const input = document.getElementById(field.id);
-    const errorMessage = input.nextElementSibling;
-
-    if (!input.value.trim() || (field.id === 'email' && !input.validity.valid)) {
-      errorMessage.textContent = field.message;
-      input.classList.add('error');
-      isValid = false;
-    } else {
-      errorMessage.textContent = '';
-      input.classList.remove('error');
-    }
-  });
-
-  if (!isValid) {
-    e.preventDefault(); // stop form from submitting if errors exist
-  }
-});
 
 

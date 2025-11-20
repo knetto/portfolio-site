@@ -46,58 +46,117 @@ gsap.from(".contact-btn", {
   });
   
 
-
-  const contactForm = document.getElementById("contactForm");
-  const successMessage = document.getElementById("successMessage");
-  const loadingMessage = document.getElementById("loadingMessage");
+  // Form validation script
+document.getElementById('contactForm').addEventListener('submit', function(e) {
+    let isValid = true;
   
-  contactForm.addEventListener("submit", async function (e) {
-    e.preventDefault();
+    const fields = [
+      { id: 'name', message: 'Please enter your name.' },
+      { id: 'email', message: 'Please enter a valid email address.' },
+      { id: 'message', message: 'Please write a message before sending.' }
+    ];
   
-    const formData = new FormData(contactForm);
+    fields.forEach(field => {
+      const input = document.getElementById(field.id);
+      const errorMessage = input.nextElementSibling;
   
-    // Animate form out
-    contactForm.style.transform = "translateX(150%)";
-    contactForm.style.opacity = "0";
-  
-    // Show loading state
-    loadingMessage.classList.add("show");
-    const startTime = Date.now();
-    const minLoadingTime = 1200; // minimum 1.2 seconds visible
-  
-    const response = await fetch(contactForm.action, {
-      method: "POST",
-      body: formData,
-      headers: { Accept: "application/json" }
+      if (!input.value.trim() || (field.id === 'email' && !input.validity.valid)) {
+        errorMessage.textContent = field.message;
+        input.classList.add('error');
+        isValid = false;
+      } else {
+        errorMessage.textContent = '';
+        input.classList.remove('error');
+      }
     });
   
-    const elapsedTime = Date.now() - startTime;
-    const remainingTime = Math.max(minLoadingTime - elapsedTime, 0);
-  
-    setTimeout(() => {
-      loadingMessage.classList.remove("show");
-  
-      if (response.ok) {
-        contactForm.reset();
-        successMessage.classList.add("show");
-  
-        setTimeout(() => {
-          successMessage.classList.remove("show");
-  
-          contactForm.style.transform = "translateX(-150%)";
-          contactForm.style.opacity = "0";
-  
-          setTimeout(() => {
-            contactForm.style.transform = "translateX(0)";
-            contactForm.style.opacity = "1";
-          }, 400);
-        }, 2500);
-  
-      } else {
-        alert("Oops! Something went wrong. Please try again later.");
-      }
-    }, remainingTime);
+    if (!isValid) {
+      e.preventDefault(); // stop form from submitting if errors exist
+    }
   });
+  
+
+
+  const contactForm = document.getElementById("contactForm");
+const successMessage = document.getElementById("successMessage");
+const loadingMessage = document.getElementById("loadingMessage");
+
+contactForm.addEventListener("submit", async function (e) {
+  e.preventDefault();
+
+  let isValid = true;
+
+  const fields = [
+    { id: "name", message: "Please enter your name." },
+    { id: "email", message: "Please enter a valid email address." },
+    { id: "message", message: "Please write a message before sending." }
+  ];
+
+  // Validation check
+  fields.forEach(field => {
+    const input = document.getElementById(field.id);
+    const errorMessage = input.nextElementSibling;
+
+    if (!input.value.trim() || (field.id === "email" && !input.validity.valid)) {
+      errorMessage.textContent = field.message;
+      input.classList.add("error");
+      isValid = false;
+    } else {
+      errorMessage.textContent = "";
+      input.classList.remove("error");
+    }
+  });
+
+  if (!isValid) return; // STOP RIGHT HERE if validation fails
+
+  // If valid → proceed with animation + sending
+  const formData = new FormData(contactForm);
+
+  // Animate form out
+  contactForm.style.transform = "translateX(150%)";
+  contactForm.style.opacity = "0";
+
+  // Show loading state
+  loadingMessage.classList.add("show");
+  const startTime = Date.now();
+  const minLoadingTime = 1200;
+
+  const response = await fetch(contactForm.action, {
+    method: "POST",
+    body: formData,
+    headers: { Accept: "application/json" }
+  });
+
+  const elapsedTime = Date.now() - startTime;
+  const remainingTime = Math.max(minLoadingTime - elapsedTime, 0);
+
+  setTimeout(() => {
+    loadingMessage.classList.remove("show");
+
+    if (response.ok) {
+      contactForm.reset();
+      successMessage.classList.add("show");
+
+      setTimeout(() => {
+        successMessage.classList.remove("show");
+
+        contactForm.style.transform = "translateX(-150%)";
+        contactForm.style.opacity = "0";
+
+        setTimeout(() => {
+          contactForm.style.transform = "translateX(0)";
+          contactForm.style.opacity = "1";
+        }, 400);
+
+      }, 2500);
+
+    } else {
+      alert("Oops! Something went wrong. Please try again later.");
+    }
+
+  }, remainingTime);
+});
+
   
 
   
