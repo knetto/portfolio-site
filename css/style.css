@@ -1316,7 +1316,7 @@ textarea.error + .error-message {
   transition: opacity 0.3s ease, transform 0.3s ease;
 }
 
-.footer a:hover {
+.footer-columns a:hover {
   opacity: 1;
   transform: translateX(4px);
 }
@@ -1339,26 +1339,27 @@ textarea.error + .error-message {
   align-items: center;
 }
 
-
-
-.footer-icons {
-  margin-bottom: 20px;
-}
-
-.footer-icons i {
-  font-size: 1.4rem;
+.footer-icons a {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
   margin: 0 12px;
-  opacity: 0.6;
-  transition: opacity .3s, transform .3s;
-  cursor: none;
+  text-decoration: none;
+  /* opacity: 0.6;
+  transition: opacity .3s, transform .3s; */
 }
 
-.footer-icons i:hover {
+/* .footer-icons a:hover {
   opacity: 1;
   transform: translateY(-4px);
-}
+} */
 
+.footer-icons i {
+  font-size: 1.6rem;
+
+}
 .footer-bottom p {
+  margin-top: 12px;
   font-size: 0.85rem;
   opacity: 0.5;
   pointer-events: none;
