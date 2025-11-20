@@ -1345,14 +1345,8 @@ textarea.error + .error-message {
   align-items: center;
   margin: 0 12px;
   text-decoration: none;
-  /* opacity: 0.6;
-  transition: opacity .3s, transform .3s; */
 }
 
-/* .footer-icons a:hover {
-  opacity: 1;
-  transform: translateY(-4px);
-} */
 
 .footer-icons i {
   font-size: 1.6rem;
