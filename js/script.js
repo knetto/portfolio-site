@@ -538,3 +538,52 @@ toggleBtn.addEventListener("click", () => {
 });
 
 
+window.addEventListener('load', function() {
+
+  const themeToggle = document.getElementById("theme-toggle");
+
+  let tl = gsap.timeline({
+    delay: 1.1,
+    onComplete: () => {
+      // Tooltip logic happens 2s AFTER title animation ends
+      gsap.delayedCall(2, () => {
+
+        themeToggle.classList.add("show-tooltip");
+
+        gsap.fromTo(themeToggle,
+          { '--tooltip-scale': 0 },
+          {
+            '--tooltip-scale': 1,
+            duration: 0.35,
+            ease: 'back.out(1.8)',
+            onComplete: () => {
+              gsap.to(themeToggle, {
+                '--tooltip-scale': 0,
+                duration: 0.3,
+                delay: 2, // stays visible for 2s
+                ease: 'back.in(1.8)',
+                onComplete: () => {
+                  themeToggle.classList.remove("show-tooltip");
+                }
+              });
+            }
+          }
+        );
+
+      });
+
+    }
+  });
+
+  tl.to('.MainTitle div', {
+    duration: 0.5,
+    y: 0,
+    opacity: 1,
+    stagger: 0.3,
+    ease: "power3.out",
+  });
+
+});
+
+
+
