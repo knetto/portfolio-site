@@ -77,3 +77,6 @@ function updateNavStyle(section) {
 
 // Ensure styling updates smoothly while scrolling
 window.addEventListener('scroll', applyStyle);
+
+// Ensure styling updates smoothly while scrolling
+window.addEventListener('click', applyStyle);

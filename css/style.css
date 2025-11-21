@@ -1501,7 +1501,7 @@ textarea.error + .error-message {
 
 }
 .footer-bottom p {
-  margin-top: 12px;
+  margin-top: 30spx;
   font-size: 0.85rem;
   opacity: 0.5;
   pointer-events: none;

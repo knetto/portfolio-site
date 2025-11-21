@@ -587,3 +587,19 @@ window.addEventListener('load', function() {
 
 
 
+document.getElementById("explore-btn").addEventListener("click", (e) => {
+  e.preventDefault();
+
+  const tl = gsap.timeline({
+    onComplete: () => {
+      window.location.href = "projects.html";
+    }
+  });
+
+  tl.to("body", {
+    opacity: 0,
+    y: -50,
+    duration: 0.6,
+    ease: "power2.inOut"
+  });
+});
