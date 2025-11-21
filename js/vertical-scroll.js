@@ -37,3 +37,4 @@ const speed = 1; // 1× normal speed
 window.addEventListener('resize', () => {
   ScrollTrigger.refresh();
 });
+

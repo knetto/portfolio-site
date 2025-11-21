@@ -1101,7 +1101,8 @@ nav .close:hover div::after {
   justify-content: center;
   align-items: center;
   color: var(--black);
-  padding: 6rem 2rem;
+  padding-top: 6rem;
+  padding-bottom:  2rem;
   z-index: 12;
 }
 
@@ -1116,6 +1117,8 @@ nav .close:hover div::after {
   width: 100%;
   max-width: 900px;
   text-align: center;
+  margin-right: 10%;
+  margin-left: 10%;
 }
 
 #contact-section h2 {
@@ -1198,12 +1201,13 @@ nav .close:hover div::after {
 }
 
 
+/* 🔹 ERROR MESSAGES — Responsive */
 .error-message {
   display: block;
   text-align: left;
-  font-size: 0.85rem;
+  font-size: clamp(0.75rem, 2.8vw, 0.9rem);
   font-weight: 600;
-  margin-top: 6px;
+  margin-top: 4px;
   padding-left: 4px;
   color: var(--black);
   opacity: 0.75;
@@ -1215,7 +1219,7 @@ input.error, textarea.error {
 }
 
 .error-message {
-  transform: translateY(-4px);
+  transform: translateY(-3px);
   opacity: 0;
   transition: 0.25s ease;
 }
@@ -1223,25 +1227,29 @@ input.error, textarea.error {
 input.error + .error-message,
 textarea.error + .error-message {
   transform: translateY(0);
-  opacity: 0.75;
+  opacity: 0.9;
 }
 
+/* 🔹 SUCCESS POPUP — Fully responsive */
 .success-center-message {
   opacity: 0;
-  transform: translate(-50%, -50%) scale(0.9);
-  transition: opacity 0.4s ease, transform 0.5s ease;
   position: absolute;
   top: 50%;
   left: 50%;
+  transform: translate(-50%, -50%) scale(0.9);
+  transition: opacity .4s ease, transform .5s ease;
   background: var(--white);
   color: var(--black);
-  padding: 24px 40px;
+  padding: clamp(14px, 5vw, 26px) clamp(18px, 7vw, 40px);
   border-radius: 12px;
-  font-size: 1.2rem;
+  font-size: clamp(0.95rem, 3.5vw, 1.25rem);
   font-weight: 600;
   text-align: center;
   pointer-events: none;
+  width: max-content;
+  max-width: 90%; /* Prevents overflow on small screens */
   z-index: 9999;
+  word-wrap: break-word;
 }
 
 .success-center-message.show {
@@ -1249,6 +1257,14 @@ textarea.error + .error-message {
   transform: translate(-50%, -50%) scale(1);
 }
 
+/* Extra tiny screens (like iPhone SE) */
+@media (max-width: 400px) {
+  .success-center-message {
+    font-size: 1rem;
+    padding: 14px 20px;
+    border-radius: 10px;
+  }
+}
 
 .contact-form {
   position: relative;
