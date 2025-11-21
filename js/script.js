@@ -505,13 +505,6 @@ const colors = [
   { black: "#1C1C1D", white: "#FFE5B4" }, // Soft buttery beige (classy warm)
 ];
 
-
-
-
-
-
-
-
 let currentTheme = 0;
 const root = document.documentElement;
 const toggleBtn = document.getElementById("theme-toggle");
@@ -520,7 +513,6 @@ function applyTheme(index) {
   root.style.setProperty("--black", colors[index].black);
   root.style.setProperty("--white", colors[index].white);
 
-  // Update elements relying on theme colors
   root.style.setProperty("--navBackground", colors[index].white);
   root.style.setProperty("--navText", colors[index].black);
   root.style.setProperty("--scrollbarTrack", colors[index].black);
@@ -533,6 +525,13 @@ function applyTheme(index) {
   toggleBtn.style.borderColor = colors[index].white;
 }
 
+// 🔥 Pick a random theme on load
+window.addEventListener("load", () => {
+  currentTheme = Math.floor(Math.random() * colors.length);
+  applyTheme(currentTheme);
+});
+
+// 📌 Click to cycle
 toggleBtn.addEventListener("click", () => {
   currentTheme = (currentTheme + 1) % colors.length;
   applyTheme(currentTheme);
