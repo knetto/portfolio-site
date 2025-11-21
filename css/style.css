@@ -15,6 +15,9 @@
 
   --navBarText: var(--white);
 
+
+  --pulseColor: color-mix(in srgb, var(--navBarText) 40%, transparent);
+
   transition:
     background-color 0.5s ease,
     color 0.5s ease,
@@ -351,21 +354,18 @@ nav .close:hover div::after {
   transition: background 0.3s ease, border-color 0.3s ease, transform 0.2s ease;
   z-index: 9999;
   box-shadow: 0 0 0 0 var(--black);
-  animation: pulseColorChange 2.8s infinite cubic-bezier(0.16, 1, 0.3, 1);
+  animation: pulseColorChange 7.8s infinite cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 
 @keyframes pulseColorChange {
   0% {
-    /* transform: translateX(-50%) scale(1); */
     box-shadow: 0 0 0 0 color-mix(in srgb, var(--navBarText) 40%, transparent);
   }
-  70% {
-    /* transform: translateX(-50%) scale(1.1); */
+  36% { /* (2.8 / 7.8 ≈ 36%) end of pulse animation */
     box-shadow: 0 0 12px 12px color-mix(in srgb, var(--navBarText) 0%, transparent);
   }
-  100% {
-    /* transform: translateX(-50%) scale(1); */
+  100% { /* rest of the time: stay off */
     box-shadow: 0 0 0 0 transparent;
   }
 }
