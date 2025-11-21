@@ -587,19 +587,54 @@ window.addEventListener('load', function() {
 
 
 
-document.getElementById("explore-btn").addEventListener("click", (e) => {
-  e.preventDefault();
+// Explore button animation (only on index.html)
+const exploreBtn = document.getElementById("explore-btn");
+if (exploreBtn) {
+  exploreBtn.addEventListener("click", (e) => {
+    e.preventDefault();
 
-  const tl = gsap.timeline({
-    onComplete: () => {
-      window.location.href = "projects.html";
-    }
-  });
+    const tl = gsap.timeline({
+      onComplete: () => (window.location.href = "projects.html")
+    });
 
-  tl.to("body", {
-    opacity: 0,
-    y: -50,
-    duration: 0.6,
-    ease: "power2.inOut"
+    tl.to("body", {
+      opacity: 0,
+      y: -50,
+      duration: 0.6,
+      ease: "power2.inOut"
+    });
   });
+}
+
+// Fade in body on page load
+gsap.from("body", {
+  opacity: 0,
+  duration: 0.6,
+  ease: "power2.out"
 });
+
+// Auto Year Update
+const yearEl = document.getElementById("current-year");
+if (yearEl) {
+  yearEl.textContent = new Date().getFullYear();
+}
+
+// Auto Age Update (only on pages with age element)
+const ageEl = document.getElementById("age");
+if (ageEl) {
+  function calculateAge(birthDate) {
+    const today = new Date();
+    const birth = new Date(birthDate);
+
+    let age = today.getFullYear() - birth.getFullYear();
+    const hasHadBirthdayThisYear =
+      today.getMonth() > birth.getMonth() ||
+      (today.getMonth() === birth.getMonth() && today.getDate() >= birth.getDate());
+
+    if (!hasHadBirthdayThisYear) age--;
+    return age;
+  }
+
+  ageEl.textContent = calculateAge("2003-12-14");
+}
+

@@ -1,19 +1,177 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    under construction come back later.
-</body>
+  <title>Corné's portfolio</title>
+  <link rel="stylesheet" href="css/style.css">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 
-<script>
-    gsap.from("body", {
-      opacity: 0,
-      duration: 0.6,
-      ease: "power2.out"
-    });
-  </script>  
-</html>
+
+  <!-- Favicon Basic -->
+  <link rel="icon" type="image/x-icon" href="/img/favicon/favicon.ico">
+  <link rel="icon" type="image/png" sizes="16x16" href="/img/favicon/favicon-16x16.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/img/favicon/favicon-32x32.png">
+
+  <!-- Apple Touch -->
+  <link rel="apple-touch-icon" href="/img/favicon/apple-touch-icon.png">
+
+  <!-- Android + PWA -->
+  <link rel="manifest" href="/img/favicon/site.webmanifest">
+
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-CQ0C0Q3SBK"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+
+    gtag('config', 'G-CQ0C0Q3SBK');
+  </script>
+
+</head>
+<body> 
+  <svg xmlns="http://www.w3.org/2000/svg" class="goo" version="1.1" width="100%">
+    <defs>
+        <filter id="goo">
+            <feGaussianBlur in="SourceGraphic" stdDeviation="6" result="blur"></feGaussianBlur>
+            <feColorMatrix in="blur" mode="matrix" values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 35 -15" result="goo"></feColorMatrix>
+            <feComposite in="SourceGraphic" in2="goo" operator="atop"></feComposite>
+        </filter>
+    </defs>
+</svg>
+
+  <div id="cursor"></div>
+
+<div class="nav-bar">
+  <h2 class="main-h2">Corné</h2>
+  <div class="hover-this" id="theme-toggle" data-tooltip="Switch theme"></div>
+
+
+  <div class="container hover-this">
+    <div class="menu" id="button8">
+      <span></span>
+      <span></span>
+      <span></span>   
+    </div>
+  </div>
+
+  <nav>
+    <h2>Corné</h2>
+    <div class="close hover-this">
+      <div></div>
+    </div>
+    <ul>
+      <li class="hover-this"><a href="index.html#"><span>Home</span></a></li>
+      <li class="hover-this"><a href="index.html#about"><span>About</span></a></li>
+      <li class="hover-this"><a href="index.html#projects"><span>Projects</span></a></li>
+      <li class="hover-this"><a href="index.html#contact"><span>Contact</span></a></li>
+    </ul>
+  </nav>
+</div>
+
+
+
+
+
+
+<div class="vh100">hoi</div>
+
+
+
+
+
+
+<footer class="footer">
+    <div class="footer-columns">
+      <div class="footer-col">
+        <h4>Corné</h4>
+        <p class="footer-sub">Portfolio & Creative Developer</p>
+      </div>
+  
+      <div class="footer-col">
+        <h5>Explore</h5>
+        <a href="index.html#about" class="">About</a>
+        <a href="index.html#projects" class="">Projects</a>
+        <a href="index.html#contact" class="">Contact</a>
+      </div>
+  
+      <div class="footer-col">
+        <h5>Social</h5>
+        <a href="https://www.linkedin.com/in/corné-schipper-338600214" target="_blank" class="">LinkedIn</a>
+        <a href="https://www.instagram.com/corne_schipper/" target="_blank" class="">Instagram</a>
+        <a href="mailto:corneschipper2003@gmail.com" class="">Email</a>
+      </div>
+  
+      <div class="footer-col">
+        <h5>Gaming & Media</h5>
+        <a href="https://www.youtube.com/@knetto5002" target="_blank" class="">YouTube</a>
+        <a href="https://steamcommunity.com/profiles/76561198830225766/" target="_blank" class="">Steam</a>
+        <a href="https://open.spotify.com/user/6f3qiens9ht4xttb03xhzbx5l" target="_blank" class="">Spotify</a>
+      </div>
+    </div>
+  
+    <div class="footer-divider"></div>
+  
+    <div class="footer-bottom">
+      <div class="footer-icons">
+        <a href="https://www.linkedin.com/in/corné-schipper-338600214" target="_blank" aria-label="LinkedIn">
+          <i class="fab fa-linkedin hover-this"></i>
+        </a>
+      
+        <a href="https://www.instagram.com/corne_schipper/" target="_blank" aria-label="Instagram">
+          <i class="fab fa-instagram hover-this"></i>
+        </a>
+      
+        <a href="mailto:corneschipper2003@gmail.com" aria-label="Email">
+          <i class="fas fa-envelope hover-this"></i>
+        </a>
+      
+        <a href="https://www.youtube.com/@knetto5002" target="_blank" aria-label="YouTube">
+          <i class="fab fa-youtube hover-this"></i>
+        </a>
+      </div>
+      
+      <p>© <span id="current-year"></span> Corné Schipper. All rights reserved.</p>
+    </div>
+  </footer>
+  
+  
+  
+  
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.7/dist/gsap.min.js"></script>
+  
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.7/dist/Flip.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.7/dist/ScrollTrigger.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.7/dist/Observer.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.7/dist/ScrollToPlugin.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.7/dist/Draggable.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.7/dist/MotionPathPlugin.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.7/dist/EaselPlugin.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.7/dist/PixiPlugin.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.7/dist/TextPlugin.min.js"></script>
+  
+  <script type="module" src="js/main.js"></script>
+  
+  <!-- RoughEase, ExpoScaleEase and SlowMo are all included in the EasePack file -->    
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.7/dist/EasePack.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.7/dist/CustomEase.min.js"></script>
+  
+  
+    <script src="https://cdn.jsdelivr.net/npm/particles.js@2/particles.js"></script>
+    <script src="js/script.js"></script>
+    <script src="js/mouse.js"></script>
+    <script src="js/menu.js"></script>
+    <script src="js/scroll-bar.js"></script>
+    <script src="js/particle-bg.js"></script>
+    <script src="js\nav-bg.js"></script>
+    <script src="js\snapscrolling.js"></script>
+    <script src="js/vertical-scroll.js"></script>
+    <script src="js/contact-animations.js"></script>
+  
+  
+  
+    <script src="https://unpkg.com/lenis@1.1.20/dist/lenis.min.js"></script> 
+  
+    <script src="https://kit.fontawesome.com/d4b04772d6.js" crossorigin="anonymous"></script>
+  
+  </body>
+  </html>

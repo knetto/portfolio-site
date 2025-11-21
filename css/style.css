@@ -1536,5 +1536,8 @@ textarea.error + .error-message {
   transform: scaleX(1);
 }
 
-
-
+.vh100 {
+  height: 100vh;
+  color: white;
+  background: red; /* just to see it clearly */
+}
