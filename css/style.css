@@ -1795,8 +1795,6 @@ textarea.error + .error-message {
 }
 
 .project-card.expanded {
-  width: 85vw;
-  height: 85vh;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
@@ -1813,4 +1811,34 @@ textarea.error + .error-message {
 
 .image-wrapper.remove-gradient::after {
   opacity: 0 !important;
+}
+
+.close-project {
+  position: absolute;
+  top: 18px;
+  right: 22px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.2);
+  backdrop-filter: blur(8px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 10000;
+  font-size: 22px;
+  color: var(--black);
+  user-select: none;
+  transition: 0.25s ease;
+}
+
+.close-project:hover {
+  background: rgba(255,255,255,0.35);
+}
+
+body.dimmed .projects-container,
+body.dimmed .nav-bar {
+  filter: blur(10px) brightness(.6);
+  pointer-events: none;
 }

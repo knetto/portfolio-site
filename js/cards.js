@@ -16,48 +16,48 @@ document.querySelectorAll('.view-btn').forEach(btn => {
     }, 0);
     tl.to(card, { backgroundColor: "var(--navBarText)" }, 0.15);
 
-    // Phase 2 — outward expansion
-    tl.add(() => {
+// Perfect 4-direction expansion directly into centered position
+tl.add(() => {
 
-      const state = Flip.getState(card);
+  const rect = card.getBoundingClientRect();
+  const clone = card.cloneNode(true);
+  clone.classList.add("big-card");
+  document.body.appendChild(clone);
 
-      // 👉 Clone so original stays in place
-      const clone = card.cloneNode(true);
-      clone.classList.add("big-card");
-      document.body.appendChild(clone);
+  const start = {
+    top: rect.top,
+    left: rect.left,
+    width: rect.width,
+    height: rect.height,
+  };
 
-      // match current card's exact screen coords
-      const rect = card.getBoundingClientRect();
-      gsap.set(clone, {
-        top: rect.top,
-        left: rect.left,
-        width: rect.width,
-        height: rect.height
-      });
+  const endW = window.innerWidth * 0.95;
+  const endH = window.innerHeight * 0.95;
 
-      // 🕒 Wait a moment after fill
-      gsap.delayedCall(0.4, () => {
-        Flip.from(state, {
-          targets: clone,
-          scale: 1,
-          duration: 1.1,
-          ease: "power4.inOut",
-          absolute: true,
-          onStart: () => {
-            // finally animate to overlay size
-            gsap.to(clone, {
-              width: "85vw",
-              height: "85vh",
-              top: "50%",
-              left: "50%",
-              xPercent: -50,
-              yPercent: -50,
-              duration: 1.1,
-              ease: "power4.inOut"
-            });
-          }
-        });
-      });
+  const endTop = (window.innerHeight - endH) / 2;
+  const endLeft = (window.innerWidth - endW) / 2;
+
+  gsap.set(clone, {
+    position: "fixed",
+    ...start,
+    xPercent: 0,
+    yPercent: 0,
+    transform: "none",
+  });
+
+  // Pause after fill
+  gsap.delayedCall(0.25, () => {
+    gsap.to(clone, {
+      duration: 1.2,
+      ease: "power4.inOut",
+      width: endW,
+      height: endH,
+      top: endTop,
+      left: endLeft,
     });
+  });
+
+});
+
   });
 });
