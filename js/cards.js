@@ -38,8 +38,8 @@ function openCard(card) {
   const startTop = rect.top;
   const startLeft = rect.left;
 
-  const endW = window.innerWidth * 0.95;
-  const endH = window.innerHeight * 0.95;
+  const endW = window.innerWidth * 1;
+  const endH = window.innerHeight * 1;
 
   const finalTop = (window.innerHeight - endH) / 2;
   const finalLeft = (window.innerWidth - endW) / 2;
@@ -70,6 +70,7 @@ function openCard(card) {
     height: endH,
     top: finalTop,
     left: finalLeft,
+    borderRadius: "0px", // 🔥 Smoothly removes rounded corners
     onComplete: () => {
       document.body.classList.add("dimmed");
       document.body.style.overflow = "hidden";
@@ -95,6 +96,7 @@ function closeCard() {
     height: rect.height,
     top: rect.top,
     left: rect.left,
+    borderRadius: window.getComputedStyle(activeOriginal).borderRadius, // restore
     onComplete: () => {
 
       // Reverse wipe first
