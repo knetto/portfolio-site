@@ -371,7 +371,7 @@ nav .close:hover div::after {
   font-size: 12px;
   white-space: nowrap;
   background: var(--navBarText);
-  color: var(--navBarBg, #111);
+  color: var(--navText);
   border-radius: 4px;
   opacity: 0;
   pointer-events: none;

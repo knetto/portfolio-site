@@ -34,32 +34,37 @@ onComplete: () => {
 );
 
 // JavaScript for the magnetic effect
-const magneticElements = document.querySelectorAll('.hover-this');
+// Disable magnetic effect on coarse (touch) devices
+if (window.matchMedia("(pointer: fine)").matches) {
+  const magneticElements = document.querySelectorAll('.hover-this');
 
-magneticElements.forEach(element => {
-const magneticEffect = (e) => {
-  const rect = element.getBoundingClientRect();
-  const offsetX = e.clientX - rect.left - rect.width / 2;
-  const offsetY = e.clientY - rect.top - rect.height / 2;
-  const maxDistance = 100; // Maximum distance for the magnetic effect
-  const distance = Math.min(
-    Math.sqrt(offsetX * offsetX + offsetY * offsetY),
-    maxDistance
-  );
-  const strength = (1 - distance / maxDistance) * 70; // Effect strength
-  const dx = (offsetX / rect.width) * strength;
-  const dy = (offsetY / rect.height) * strength;
+  magneticElements.forEach(element => {
 
-  element.style.transform = `translate(${dx}px, ${dy}px)`;
-};
+    const magneticEffect = (e) => {
+      const rect = element.getBoundingClientRect();
+      const offsetX = e.clientX - rect.left - rect.width / 2;
+      const offsetY = e.clientY - rect.top - rect.height / 2;
+      const maxDistance = 100;
+      const distance = Math.min(
+        Math.sqrt(offsetX * offsetX + offsetY * offsetY),
+        maxDistance
+      );
+      const strength = (1 - distance / maxDistance) * 70;
+      const dx = (offsetX / rect.width) * strength;
+      const dy = (offsetY / rect.height) * strength;
 
-const resetEffect = () => {
-  element.style.transform = `translate(0, 0)`;
-};
+      element.style.transform = `translate(${dx}px, ${dy}px)`;
+    };
 
-element.addEventListener('mousemove', magneticEffect);
-element.addEventListener('mouseleave', resetEffect);
-});
+    const resetEffect = () => {
+      element.style.transform = `translate(0, 0)`;
+    };
+
+    element.addEventListener('mousemove', magneticEffect);
+    element.addEventListener('mouseleave', resetEffect);
+  });
+}
+
 
 
 
