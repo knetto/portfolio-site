@@ -15,6 +15,8 @@
 
   --navBarText: var(--white);
 
+  --overlayOpacity: 1;
+
 
   --pulseColor: color-mix(in srgb, var(--navBarText) 40%, transparent);
 
@@ -1670,6 +1672,8 @@ textarea.error + .error-message {
   border-radius: 20px;
   overflow: hidden;
   transition: transform .3s ease;
+  position: relative;
+  overflow: hidden;
 }
 
 /* IMAGE SECTION — full visible with angled bottom */
@@ -1707,23 +1711,26 @@ textarea.error + .error-message {
   height: 100%;
   pointer-events: none;
   
-  /* Default gradient (purple → pink) */
   background: linear-gradient(
     180deg,
-    var(--white) 0%,  /* top color */
-    var(--white) 100%  /* bottom color */
+    var(--white) 0%,
+    var(--white) 100%
   );
 
-  mix-blend-mode: multiply; /* blends with the image */
-  transition: opacity .35s ease;
-  
+  mix-blend-mode: multiply;
+
+  /* Clip shape matches angled image */
   clip-path: polygon(
     0 0,
     100% 0,
     100% 88%,
     0 95%
   );
+
+  /* GSAP will animate this */
+  opacity: var(--overlayOpacity);
 }
+
 
 /* Hover = reveal full image + remove gradient slightly */
 .project-card:hover .image-wrapper::after {
