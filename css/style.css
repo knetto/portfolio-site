@@ -230,7 +230,7 @@ nav {
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 9999;
+  z-index: 99999;
   pointer-events: none;
 }
 
@@ -1777,7 +1777,7 @@ textarea.error + .error-message {
   position: fixed;
   top: 0;
   left: 0;
-  z-index: 999;
+  z-index: 99;
   border-radius: 25px;
 }
 
@@ -1792,7 +1792,7 @@ textarea.error + .error-message {
   border-radius: 25px;
   width: 100%;
   height: 100%;
-  z-index: 999;
+  z-index: 99;
   pointer-events: auto;
 }
 
@@ -1801,36 +1801,217 @@ textarea.error + .error-message {
 }
 
 .big-card {
-  background: var(--navBarText);
+  background: var(--white);
   border-radius: 25px;
   overflow: hidden;
 }
 
-body.dimmed .projects-container,
-body.dimmed .nav-bar {
-  filter: blur(10px) brightness(.6);
-  pointer-events: none;
+.fullscreen-active {
+  --navBarText: var(--black)!important;
+  --navBackground: var(--black)!important;
+  --navText: var(--white)!important;
 }
 
-.close-project {
+
+
+
+
+
+.fullscreen-extra {
   position: absolute;
-  top: 18px;
-  right: 22px;
+  bottom: 50%;
+  left: 50%;
+  transform: translate(-50%, 50%) translateY(20px);
+  width: 80%;
+  max-width: 1200px;
+  
+  background: transparent;
+  opacity: 0;
+  transition: opacity .7s ease, transform .7s ease;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  pointer-events: none; /* prevents interfering with image */
+}
+
+.fullscreen-extra.visible {
+  opacity: 1;
+  transform: translate(-50%, 50%) translateY(0px);
+}
+
+/* Inner grid layout */
+.fullscreen-extra .extra-inner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  gap: 60px;
+}
+
+/* Typography */
+.fullscreen-extra h2 {
+  font-size: clamp(2.4rem, 4vw, 4rem);
+  font-weight: 700;
+  margin-bottom: 18px;
+  color: var(--black);
+}
+
+.fullscreen-extra p {
+  font-size: clamp(1rem, 1.4vw, 1.2rem);
+  line-height: 1.55;
+  opacity: .8;
+}
+
+/* Image side */
+.extra-image img {
+  width: 100%;
+  height: auto;
+  border-radius: 18px;
+  object-fit: cover;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.15);
+}
+
+/**********************
+  MOBILE RESPONSIVE
+**********************/
+@media (max-width: 850px) {
+  .fullscreen-extra .extra-inner {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+
+  .fullscreen-extra {
+    width: 90%;
+    bottom: 40%;
+  }
+
+  .extra-image img {
+    max-width: 70%;
+    margin: 0 auto;
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* button close big card */
+
+.close-wrapper {
+  position: fixed;
+  bottom: 32px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 200;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+/* Show only when fullscreen card is open */
+.fullscreen-active .close-wrapper {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Button Shape and Animation */
+.close-button {
   width: 40px;
   height: 40px;
-  border-radius: 50%;
-  background: rgba(255,255,255,0.2);
-  backdrop-filter: blur(8px);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 999;
-  font-size: 22px;
-  color: var(--black);
-  user-select: none;
-  transition: 0.25s ease;
+  position: relative;
+  display: block;
+  cursor: pointer;
 }
 
-.close-project:hover {
-  background: rgba(255,255,255,0.35);
+.close-button > div {
+  position: relative;
 }
+
+.close-button-block {
+  width: 40px;
+  height: 20px;
+  position: relative;
+  overflow: hidden;
+}
+
+.close-button-block:before,
+.close-button-block:after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: calc(55% - 4px);
+  width: 4px;
+  height: 25px;
+  background: var(--black);
+  transform-origin: bottom center;
+  transition: all ease-out 280ms;
+}
+
+.close-button-block:last-of-type {
+  transform: rotate(180deg);
+}
+
+.close-button .in .close-button-block:before {
+  transition-delay: 280ms;
+  transform: translateX(20px) translateY(-20px) rotate(45deg);
+}
+
+.close-button .in .close-button-block:after {
+  transition-delay: 280ms;
+  transform: translateX(-22px) translateY(-22px) rotate(-45deg);
+}
+
+.close-button .out {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.close-button .out .close-button-block:before {
+  transform: translateX(-5px) translateY(5px) rotate(45deg);
+}
+
+.close-button .out .close-button-block:after {
+  transform: translateX(5px) translateY(5px) rotate(-45deg);
+}
+
+.close-button:hover .in .close-button-block:before {
+  transform: translateX(-5px) translateY(5px) rotate(45deg);
+}
+
+.close-button:hover .in .close-button-block:after {
+  transform: translateX(5px) translateY(5px) rotate(-45deg);
+}
+
+.close-button:hover .out .close-button-block:before {
+  transform: translateX(-20px) translateY(20px) rotate(45deg);
+}
+
+.close-button:hover .out .close-button-block:after {
+  transform: translateX(20px) translateY(20px) rotate(-45deg);
+}
+
+
