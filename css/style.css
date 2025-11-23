@@ -341,7 +341,7 @@ nav .close:hover div::after {
 #theme-toggle {
   position: fixed;
   top: 5%;
-  left: 49.5%;
+  left: 50%;
   transform: translateX(-50%);
   width: 22px;
   height: 22px;
@@ -1536,8 +1536,247 @@ textarea.error + .error-message {
   transform: scaleX(1);
 }
 
-.vh100 {
+
+
+
+
+
+
+
+
+
+
+
+
+/* PROJECTS PAGE CSS */
+
+
+
+.hero-section {
   height: 100vh;
-  color: white;
-  background: red; /* just to see it clearly */
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start; /* puts content higher */
+  padding-top: 15vh; /* control exact height from top */
 }
+
+.content-center {
+  text-align: center;
+}
+
+.work-title {
+  font-size: clamp(1.6rem, 4vw, 2.6rem); /* scales with screen width */
+  font-weight: 600;
+  color: var(--navBarText);
+  margin-bottom: 45px; /* smaller gap to buttons */
+}
+
+.section-title {
+  width: 100%;
+  text-align: center;
+  margin-top: 100px;
+  margin-bottom: 30px;
+}
+
+.section-title h2 {
+  font-size: 2.2rem;
+  font-weight: 600;
+  color: var(--navBarText);
+  opacity: 0.95;
+  transition: color 0.3s ease;
+}
+
+/* Mobile */
+@media (max-width: 600px) {
+  .section-title h2 {
+    font-size: 1.6rem;
+    padding: 0 10px;
+  }
+}
+
+.category-buttons {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 35px;
+  margin: 25px 0 60px;
+}
+
+
+
+
+.category-buttons button {
+  font-size: 1.4rem;
+  font-weight: 500;
+  background: transparent;
+  color: var(--navBarText);
+  padding: 10px 22px;
+  border: 2px solid var(--navBarText);
+  border-radius: 50px;
+  cursor: none; /* to match your custom cursor */
+  transition: 0.3s ease;
+}
+
+.category-buttons button:hover {
+  background: var(--navBarText);
+  color: var(--navText);
+}
+
+/* Active state — JS can toggle this class */
+.category-buttons button.active {
+  background: var(--navBarText);
+  color: var(--navText);
+}
+
+/* Mobile */
+@media (max-width: 600px) {
+  .category-buttons {
+    gap: 20px;
+  }
+
+  .category-buttons button {
+    font-size: 1.1rem;
+    padding: 8px 16px;
+    border-width: 1.8px;
+  }
+}
+
+
+
+
+.projects-section {
+  width: 100%;
+  min-height: 100vh;
+  padding-top: 140px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* PROJECTS GRID */
+.projects-container {
+  width: 100%;
+  max-width: 1200px;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(250px, 1fr));
+  gap: 45px;
+}
+
+/* CARD BASE */
+.project-card {
+  background: var(--white);
+  color: var(--black);
+  border-radius: 20px;
+  overflow: hidden;
+  transition: transform .3s ease;
+}
+
+.project-card:hover {
+  /* transform: translateY(-6px); */
+}
+
+/* IMAGE SECTION — full visible with angled bottom */
+.image-wrapper {
+  width: 100%;
+  position: relative;
+  overflow: hidden;
+  border-radius: 20px 20px 0 0;
+}
+
+.image-wrapper img {
+  width: 100%;
+  height: auto;
+  display: block;
+  object-fit: cover;
+
+  /* Only bottom angled line */
+  clip-path: polygon(
+    0 0,
+    100% 0,
+    100% 88%,
+    0 95%
+  );
+
+  transition: clip-path .35s ease;
+}
+
+/* Hover = reveal full rectangle image */
+.project-card:hover .image-wrapper img {
+  clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
+}
+
+/* CONTENT SECTION */
+.project-content {
+  padding: 32px;
+  background: var(--white);
+}
+
+/* Title */
+.project-card h3 {
+  font-size: 1.7rem;
+  font-weight: 600;
+  margin-bottom: 16px;
+}
+
+/* Section labels */
+.role strong, 
+.contribution strong {
+  font-size: .8rem;
+  letter-spacing: .05em;
+  opacity: .7;
+  margin-bottom: 4px;
+  display: block;
+}
+
+/* Text */
+.role p, 
+.contribution p {
+  font-size: .95rem;
+  opacity: .75;
+  margin-bottom: 14px;
+}
+
+/* Button */
+.view-btn {
+  padding: 6px 18px;
+  background: transparent;
+  border: 2px solid var(--black);
+  border-radius: 30px;
+  font-size: .85rem;
+  cursor: none;
+  transition: .25s;
+}
+
+.view-btn:hover {
+  background: var(--black);
+  color: var(--white);
+}
+
+/* DARK MODE SUPPORT */
+[data-theme="dark"] .project-card,
+[data-theme="dark"] .project-content {
+  background: var(--black);
+  color: var(--navBarText);
+}
+
+[data-theme="dark"] .view-btn {
+  border-color: var(--navBarText);
+  color: var(--navBarText);
+}
+
+[data-theme="dark"] .view-btn:hover {
+  background: var(--navBarText);
+  color: var(--black);
+}
+
+/* RESPONSIVE */
+@media (max-width: 800px) {
+  .projects-container {
+    grid-template-columns: 1fr;
+  }
+}
+
+
+
+

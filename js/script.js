@@ -643,3 +643,8 @@ if (ageEl) {
   ageEl.textContent = calculateAge("2003-12-14");
 }
 
+
+
+//project page logic
+
+document.getElementById("btn-school").classList.add("active");
