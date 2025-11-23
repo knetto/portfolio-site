@@ -1790,7 +1790,7 @@ textarea.error + .error-message {
   position: fixed;
   top: 0;
   left: 0;
-  z-index: 99999;
+  z-index: 999;
   border-radius: 25px;
 }
 
@@ -1813,6 +1813,18 @@ textarea.error + .error-message {
   opacity: 0 !important;
 }
 
+.big-card {
+  background: var(--navBarText);
+  border-radius: 25px;
+  overflow: hidden;
+}
+
+body.dimmed .projects-container,
+body.dimmed .nav-bar {
+  filter: blur(10px) brightness(.6);
+  pointer-events: none;
+}
+
 .close-project {
   position: absolute;
   top: 18px;
@@ -1825,8 +1837,7 @@ textarea.error + .error-message {
   display: flex;
   align-items: center;
   justify-content: center;
-  cursor: pointer;
-  z-index: 10000;
+  z-index: 999;
   font-size: 22px;
   color: var(--black);
   user-select: none;
@@ -1835,10 +1846,4 @@ textarea.error + .error-message {
 
 .close-project:hover {
   background: rgba(255,255,255,0.35);
-}
-
-body.dimmed .projects-container,
-body.dimmed .nav-bar {
-  filter: blur(10px) brightness(.6);
-  pointer-events: none;
 }
