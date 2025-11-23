@@ -104,6 +104,8 @@ gsap.to(img, {
   ease: "power3.out",
   onComplete: () => {
     // Longer fade + longer delay after wipe
+
+    
     gsap.to(content, {
       opacity: 1,
       duration: 0.6,   // ← smoother fade-in

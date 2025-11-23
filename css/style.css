@@ -1711,12 +1711,6 @@ textarea.error + .error-message {
   height: 100%;
   pointer-events: none;
   
-  background: linear-gradient(
-    180deg,
-    var(--white) 0%,
-    var(--white) 100%
-  );
-
   mix-blend-mode: multiply;
 
   /* Clip shape matches angled image */
@@ -1729,13 +1723,6 @@ textarea.error + .error-message {
 
   /* GSAP will animate this */
   opacity: var(--overlayOpacity);
-}
-
-
-/* Hover = reveal full image + remove gradient slightly */
-.project-card:hover .image-wrapper::after {
-  opacity: 0; /* adjust to taste */
-  /* clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%); */
 }
 
 /* CONTENT SECTION */
