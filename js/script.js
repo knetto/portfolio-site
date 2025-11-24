@@ -302,27 +302,26 @@ window.addEventListener('DOMContentLoaded', () => {
 });
 
 
-// Wait until the page is loaded to initialize Lenis
 document.addEventListener("DOMContentLoaded", function() {
-  // Initialize Lenis
-  const lenis = new Lenis({
-      duration: 0.7,  // Scroll speed
-      easing: (t) => t * (2 - t), // Easing function
-      smoothWheel: true,  // Enable mouse wheel smoothing
-      smoothTouch: false, // Disable touch smoothing (you can enable it)
-      touchMultiplier: 2, // Adjust touch scroll speed
-      wheelMultiplier: 1, // Adjust mouse wheel scroll speed
-      scrollBehavior: 'smooth'  // CSS smooth scrolling
+
+  window.lenis = new Lenis({
+    duration: 0.7,
+    easing: (t) => t * (2 - t),
+    smoothWheel: true,
+    smoothTouch: false,
+    touchMultiplier: 2,
+    wheelMultiplier: 1,
+    scrollBehavior: "smooth"
   });
 
-  // Animation loop to keep smooth scrolling updated
-  function animate(time) {
-      lenis.raf(time);  // Update Lenis with the current time
-      requestAnimationFrame(animate);  // Keep the animation frame loop running
+  function raf(time) {
+    window.lenis.raf(time);
+    requestAnimationFrame(raf);
   }
 
-  requestAnimationFrame(animate);  // Start the animation loop
+  requestAnimationFrame(raf);
 });
+
 
 
 document.querySelectorAll("img.image").forEach(img => {

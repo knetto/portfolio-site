@@ -1,5 +1,6 @@
 let activeClone = null;
 let activeOriginal = null;
+let fullscreenLenis = null;
 
 document.querySelectorAll('.view-btn').forEach(btn => {
   btn.addEventListener('click', () => {
@@ -65,8 +66,36 @@ function openCard(card) {
     left: finalLeft,
     borderRadius: "0px",
     onComplete: () => {
+      // Stop page scrolling (Lenis)
+window.lenis.stop();
+
+activeClone.style.overflow = "hidden"; // during animation
+setTimeout(() => {
+  activeClone.style.overflowY = "auto";
+}, 50);
+
+// Start Lenis scroll inside fullscreen card
+fullscreenLenis = new Lenis({
+  wrapper: activeClone,
+  content: activeClone,
+  duration: 0.7,
+  smoothWheel: true,
+  smoothTouch: true,
+  gestureDirection: "vertical"
+});
+
+function rafFullscreen(time) {
+  if (fullscreenLenis) fullscreenLenis.raf(time);
+  requestAnimationFrame(rafFullscreen);
+}
+requestAnimationFrame(rafFullscreen);
+
       document.body.classList.add("dimmed", "fullscreen-active");
       document.body.style.overflow = "hidden";
+        // 🔥 Enable scrolling ONLY now
+    activeClone.style.overflowY = "auto";
+    activeClone.style.overflowX = "hidden";
+    activeClone.style.pointerEvents = "auto";
 
       // Show close button
       const closeBtn = document.getElementById("close-fullscreen");
@@ -96,6 +125,9 @@ function closeCard() {
   document.body.style.overflow = "";
 
   const rect = activeOriginal.getBoundingClientRect();
+// Disable scrolling instantly when closing starts
+activeClone.style.overflow = "hidden";
+
   const img = activeOriginal.querySelector('.image-wrapper img');
   const content = activeOriginal.querySelector('.project-content');
 
@@ -116,6 +148,14 @@ function closeCard() {
     borderRadius: window.getComputedStyle(activeOriginal).borderRadius,
     onComplete: () => {
 
+      if (fullscreenLenis) {
+        fullscreenLenis.destroy();
+        fullscreenLenis = null;
+      }
+      
+      // Restore smooth page scroll
+      window.lenis.start();
+      
       // Reverse wipe first
       gsap.to(img, {
         duration: 0.5,
@@ -145,5 +185,55 @@ document.addEventListener("keydown", e => {
 
 // Close button support
 document.querySelector(".close-wrapper").addEventListener("click", closeCard);
+
+
+// (function() {
+//   let lastY = 0;
+
+//   function findScrollable(el) {
+//     while (el && el !== document.body) {
+//       const style = window.getComputedStyle(el);
+//       const overflowY = style.overflowY;
+//       if ((overflowY === 'auto' || overflowY === 'scroll') &&
+//           el.scrollHeight > el.clientHeight) {
+//         return el;
+//       }
+//       el = el.parentNode;
+//     }
+//     return null;
+//   }
+
+//   // Mouse wheel scroll
+//   document.addEventListener('wheel', function(e) {
+//     const scrollEl = findScrollable(e.target);
+
+//     if (scrollEl) {
+//       e.preventDefault();
+//       e.stopPropagation();
+//       scrollEl.scrollTop += e.deltaY;
+//     } else if (document.body.classList.contains("fullscreen-active")) {
+//       e.preventDefault();
+//     }
+//   }, { passive: false });
+
+//   // Touch scroll
+//   document.addEventListener('touchstart', e => {
+//     lastY = e.touches[0].clientY;
+//   }, { passive: true });
+
+//   document.addEventListener('touchmove', e => {
+//     const scrollEl = findScrollable(e.target);
+//     const currentY = e.touches[0].clientY;
+//     const deltaY = lastY - currentY;
+//     lastY = currentY;
+
+//     if (scrollEl) {
+//       e.preventDefault();
+//       scrollEl.scrollTop += deltaY;
+//     } else if (document.body.classList.contains("fullscreen-active")) {
+//       e.preventDefault();
+//     }
+//   }, { passive: false });
+// })();
 
 
