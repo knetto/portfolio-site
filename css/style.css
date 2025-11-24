@@ -1840,9 +1840,14 @@ textarea.error + .error-message {
   align-items: center;
   justify-content: center;
   opacity: 0;
-  pointer-events: none;
+  pointer-events: auto !important;
   transition: opacity .6s ease, transform .6s ease;
   z-index: 99;
+  overflow-y: auto; /* enable scroll */
+  align-items: flex-start; /* important: stop vertical centering */
+  padding: 60px 0; /* optional breathing room */
+  padding-top: min(25vh);
+  overscroll-behavior: contain;
 }
 
 
@@ -1853,22 +1858,20 @@ textarea.error + .error-message {
   pointer-events: auto;
 }
 
-/* Full screen spacing + perfect centering */
+/* Fullscreen layout container */
 .extra-layout {
-  width: min(1400px, 85vw);
+  width: min(1400px, 92vw);
   display: grid;
   grid-template-columns: 1.15fr 1fr;
-  gap: 90px;
-  align-items: center;
-  justify-items: center;
-  margin: 0 auto;
+  gap: 60px;
+  align-items: flex-start;
 
-  /* Full center in screen */
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  margin: 0 auto;
+  padding-top: 80px; /* space from top */
+  padding-bottom: 120px; /* space at bottom */
+  position: relative;
 }
+
 
 /* Clean floating image */
 .extra-media img {
@@ -1888,11 +1891,13 @@ textarea.error + .error-message {
 .extra-content {
   color: var(--black);
   max-width: 520px;
-  text-align: left; /* ⬅️ force left alignment */
+  text-align: left;
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
+  justify-content: center; /* ⬅️ This centers vertically */
+  height: 100%;
 }
+
 
 .small-label {
   text-transform: uppercase;
@@ -1942,6 +1947,20 @@ textarea.error + .error-message {
 }
 
 
+/* Gallery inside expanded card */
+.image-gallery {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 24px;
+  margin-top: 48px;
+}
+
+.image-gallery img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  border-radius: 16px;
+}
 
 
 
