@@ -110,7 +110,7 @@ function openCard(card) {
         cloneExtra.style.display = "block";
         activeClone.appendChild(cloneExtra);
         
-        // Activate scrolling animations for image gallery
+        // Activate scrolling animations for image gallery and videos
         requestAnimationFrame(() => initFullscreenScrollAnimations(activeClone));
 
         // Animate the project-extra content with modern effects
@@ -124,9 +124,9 @@ function openCard(card) {
   });
 }
 
-// Modern animation for project-extra content with slide-in effects
+// Modern animation for project-extra content with scroll-triggered effects
 function animateProjectExtra(container) {
-  // Animate the layout elements
+  // Animate the layout elements (always animate these as they're at the top)
   const layout = container.querySelector('.extra-layout');
   if (layout) {
     const media = layout.querySelector('.extra-media');
@@ -160,7 +160,7 @@ function animateProjectExtra(container) {
     }, 0.3);
   }
   
-  // Animate the project description
+  // Animate the project description (always animate as it's near top)
   const description = container.querySelector('.project-description');
   if (description) {
     gsap.from(description, {
@@ -172,7 +172,7 @@ function animateProjectExtra(container) {
     });
   }
   
-  // Animate the divider line
+  // Animate the divider line (always animate as it's near top)
   const divider = container.querySelector('.divider-line');
   if (divider) {
     gsap.from(divider, {
@@ -183,26 +183,37 @@ function animateProjectExtra(container) {
     });
   }
   
-  // Animate video gallery
+  // Set up scroll-triggered animations for video gallery (same as images)
   const videos = container.querySelectorAll('.video-wrapper');
   if (videos.length) {
-    gsap.from(videos, {
-      duration: 0.8,
-      y: 40,
-      opacity: 0,
-      stagger: 0.1,
-      delay: 0.8,
-      ease: "power3.out"
+    videos.forEach((video, index) => {
+      const tl = gsap.timeline({
+        scrollTrigger: {
+          trigger: video,
+          start: "top 90%", // Trigger sooner
+          end: "bottom 20%",
+          toggleActions: "play none none none", // Only play on enter, no reverse
+          container: activeClone
+        }
+      });
+      
+      // All videos slide up from bottom (same as images)
+      tl.from(video, { y: 60, opacity: 0 })
+        .to(video, {
+          y: 0,
+          opacity: 1,
+          duration: 0.8,
+          ease: "power2.out"
+        });
+      
+      // Store the ScrollTrigger instance for cleanup
+      scrollTriggerInstances.push(tl.scrollTrigger);
     });
   }
   
   // Set up scroll-triggered animations for image gallery with slide-in effects
   const galleryImages = container.querySelectorAll('.image-gallery img');
   if (galleryImages.length) {
-    // Reset any existing ScrollTrigger instances
-    scrollTriggerInstances.forEach(instance => instance.kill());
-    scrollTriggerInstances = [];
-    
     // Create slide-in animations for each image (all from bottom)
     galleryImages.forEach((img, index) => {
       const tl = gsap.timeline({
@@ -210,7 +221,7 @@ function animateProjectExtra(container) {
           trigger: img,
           start: "top 90%", // Trigger sooner
           end: "bottom 20%",
-          toggleActions: "play none none reverse",
+          toggleActions: "play none none none", // Only play on enter, no reverse
           container: activeClone
         }
       });
@@ -232,7 +243,9 @@ function animateProjectExtra(container) {
 
 function initFullscreenScrollAnimations(wrapper) {
   const revealImgs = wrapper.querySelectorAll(".image-gallery img");
+  const revealVideos = wrapper.querySelectorAll(".video-wrapper");
 
+  // Animate images
   revealImgs.forEach((img, index) => {
     // Set initial positions - all from bottom
     gsap.set(img, { y: 80, opacity: 0 });
@@ -245,14 +258,33 @@ function initFullscreenScrollAnimations(wrapper) {
       scrollTrigger: {
         trigger: img,
         start: "top 90%", // Trigger sooner
-        toggleActions: "play none none reverse",
+        toggleActions: "play none none none", // Only play on enter, no reverse
+        scroller: wrapper // very important for fullscreen scrolling!
+      }
+    });
+  });
+
+  // Animate videos (same as images)
+  revealVideos.forEach((video, index) => {
+    // Set initial positions - all from bottom
+    gsap.set(video, { y: 80, opacity: 0 });
+
+    gsap.to(video, {
+      y: 0,
+      opacity: 1,
+      duration: 0.9,
+      ease: "power3.out",
+      scrollTrigger: {
+        trigger: video,
+        start: "top 90%", // Trigger sooner
+        toggleActions: "play none none none", // Only play on enter, no reverse
         scroller: wrapper // very important for fullscreen scrolling!
       }
     });
   });
 }
 
-// 🧲 Close Fullscreen Card with proper easing and delay
+// 🧲 Close Fullscreen Card with proper easing and longer delay
 function closeCard() {
   if (!activeClone || !activeOriginal) return;
 
@@ -335,9 +367,9 @@ function closeCard() {
     }, 0); // Start at same time as fullscreenExtra
   }
 
-  // Add a proper delay after fade out completes
+  // Add a longer delay after fade out completes
   closeTl.to({}, {
-    duration: 0.5, // Small but noticeable delay (0.1 seconds)
+    duration: 0.5, // Longer delay (0.5 seconds)
     ease: "none"
   });
 
