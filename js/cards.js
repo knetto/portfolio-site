@@ -252,7 +252,7 @@ function initFullscreenScrollAnimations(wrapper) {
   });
 }
 
-// 🧲 Close Fullscreen Card with faster animation
+// 🧲 Close Fullscreen Card with proper easing and delay
 function closeCard() {
   if (!activeClone || !activeOriginal) return;
 
@@ -267,27 +267,17 @@ function closeCard() {
   const content = activeOriginal.querySelector('.project-content');
   const wrapper = activeOriginal.querySelector('.image-wrapper');
 
-  // ⭐ Remove injected fullscreen content
-  const fullscreenExtra = activeClone.querySelector(".fullscreen-extra");
-  if (fullscreenExtra) fullscreenExtra.remove();
-
-  // Hide button
+  // Hide button immediately
   document.getElementById("close-fullscreen").style.display = "none";
 
   // Kill all ScrollTrigger instances
   scrollTriggerInstances.forEach(instance => instance.kill());
   scrollTriggerInstances = [];
 
-  // Faster close animation (0.7s instead of 1.2s)
-  gsap.to(activeClone, {
-    duration: 0.7, // Faster close
-    ease: "power3.in", // Different easing for faster feel
-    width: rect.width,
-    height: rect.height,
-    top: rect.top,
-    left: rect.left,
-    borderRadius: window.getComputedStyle(activeOriginal).borderRadius,
+  // Create a timeline for the close sequence
+  const closeTl = gsap.timeline({
     onComplete: () => {
+      // Final cleanup after ALL animations are done
       if (fullscreenLenis) {
         fullscreenLenis.destroy();
         fullscreenLenis = null;
@@ -301,24 +291,73 @@ function closeCard() {
       
       // Reverse wipe with faster animation
       gsap.to(img, {
-        duration: 0.4, // Faster
+        duration: 0.4,
         clipPath: "polygon(0 0, 100% 0, 100% 88%, 0 95%)",
         ease: "power2.out",
         onComplete: () => {
           gsap.to(content, {
             opacity: 1,
-            duration: 0.4, // Faster
-            delay: 0.2, // Shorter delay
+            duration: 0.4,
+            delay: 0.2,
             ease: "power2.out"
           });
         }
       });
 
-      activeClone.remove();
-      activeClone = null;
+      // Remove the cloned card
+      if (activeClone) {
+        activeClone.remove();
+        activeClone = null;
+      }
       activeOriginal = null;
     }
   });
+
+  // Fade out all content inside the fullscreen card with linear easing
+  const fullscreenExtra = activeClone.querySelector(".fullscreen-extra");
+  
+  if (fullscreenExtra) {
+    // Linear easing for consistent fade out
+    closeTl.to(fullscreenExtra, {
+      duration: 0.3,
+      opacity: 0,
+      ease: "none" // Linear - no easing curve
+    });
+  }
+
+  // Also fade out any other visible content in the clone with linear easing
+  const visibleContent = activeClone.querySelectorAll('.project-content, .image-wrapper, .big-card > *:not(.fullscreen-extra)');
+  if (visibleContent.length) {
+    closeTl.to(visibleContent, {
+      duration: 0.25,
+      opacity: 0,
+      ease: "none" // Linear - no easing curve
+    }, 0); // Start at same time as fullscreenExtra
+  }
+
+  // Add a proper delay after fade out completes
+  closeTl.to({}, {
+    duration: 0.5, // Small but noticeable delay (0.1 seconds)
+    ease: "none"
+  });
+
+  // THEN close the card itself - after fade outs AND delay
+  closeTl.to(activeClone, {
+    duration: 0.7,
+    ease: "power3.in",
+    width: rect.width,
+    height: rect.height,
+    top: rect.top,
+    left: rect.left,
+    borderRadius: window.getComputedStyle(activeOriginal).borderRadius
+  });
+
+  // Remove the extra content after all animations complete
+  if (fullscreenExtra) {
+    closeTl.add(() => {
+      fullscreenExtra.remove();
+    });
+  }
 }
 
 // ESC support
