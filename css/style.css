@@ -243,7 +243,7 @@ nav.open {
 }
 
 nav {
-  padding-top: env(safe-area-inset-top);
+  padding-top: env(safe-area-inset-top) !important;
 }
 
 nav ul {
