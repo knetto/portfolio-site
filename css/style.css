@@ -1674,6 +1674,8 @@ textarea.error + .error-message {
   display: grid;
   grid-template-columns: repeat(2, minmax(250px, 1fr));
   gap: 45px;
+  padding-left: 20px;
+  padding-right: 20px;
 }
 
 /* Make project cards stack on mobile */
