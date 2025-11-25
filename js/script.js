@@ -1,3 +1,109 @@
+const colors = [
+  // 🟢 Original 8 (untouched)
+  { black: "#0A0A0A", white: "#EEEBE0" }, // Minimal classic
+  { black: "#0D0D0D", white: "#B9E6FF" }, // Cyber ice blue
+  { black: "#0B0B0C", white: "#FFC8DD" }, // Soft candy
+  { black: "#101011", white: "#E4FF8D" }, // Neon lime glow
+  { black: "#0E0F10", white: "#FFDBA4" }, // Peach cream
+  { black: "#111111", white: "#C5BFF9" }, // Lavender tech
+  { black: "#0E0D0F", white: "#F9AFAE" }, // Rose blush
+  { black: "#131415", white: "#C2FBD7" }, // Fresh mint
+
+  // 🔥 NEW — more variation (12)
+  { black: "#0F0F10", white: "#FF4E4E" }, // Neon danger red (gaming UI)
+  { black: "#121214", white: "#00FFCA" }, // Tropical aqua neon (Miami cyber)
+  { black: "#131316", white: "#FFD700" }, // Gold accent (luxury high-end)
+  { black: "#151618", white: "#40E0D0" }, // Turquoise tech (smooth UI)
+  { black: "#0C0C0C", white: "#FF7EDB" }, // Vaporwave magenta
+  { black: "#171819", white: "#8AFF00" }, // Toxic radioactive green (energetic)
+  { black: "#101010", white: "#FF9F1C" }, // Sunset punch orange (bold)
+  { black: "#18191A", white: "#89C2D9" }, // Muted soft cyan (calmer theme)
+  { black: "#0D0E0F", white: "#FF5F00" }, // Warm vivid orange (retro neon)
+  { black: "#1A1A1B", white: "#B983FF" }, // Electric violet (creative coding)
+  { black: "#0B0C0D", white: "#82FF9E" }, // Pastel mint gaming (lighter)
+  { black: "#1C1C1D", white: "#FFE5B4" }, // Soft buttery beige (classy warm)
+];
+
+let currentTheme = 0;
+const root = document.documentElement;
+const toggleBtn = document.getElementById("theme-toggle");
+
+function applyTheme(index) {
+  root.style.setProperty("--black", colors[index].black);
+  root.style.setProperty("--white", colors[index].white);
+
+  root.style.setProperty("--navBackground", colors[index].white);
+  root.style.setProperty("--navText", colors[index].black);
+  root.style.setProperty("--scrollbarTrack", colors[index].black);
+  root.style.setProperty("--scrollbar", colors[index].black);
+  root.style.setProperty("--scrollbarThumb", colors[index].white);
+  root.style.setProperty("--bg", colors[index].white);
+  root.style.setProperty("--navBarText", colors[index].white);
+
+  toggleBtn.style.backgroundColor = colors[index].black;
+  toggleBtn.style.borderColor = colors[index].white;
+}
+
+// 🔥 Pick a random theme on load
+window.addEventListener("load", () => {
+  currentTheme = Math.floor(Math.random() * colors.length);
+  applyTheme(currentTheme);
+});
+
+// 📌 Click to cycle
+toggleBtn.addEventListener("click", () => {
+  currentTheme = (currentTheme + 1) % colors.length;
+  applyTheme(currentTheme);
+});
+
+
+window.addEventListener('load', function() {
+
+  const themeToggle = document.getElementById("theme-toggle");
+
+  let tl = gsap.timeline({
+    delay: 1.1,
+    onComplete: () => {
+      // Tooltip logic happens 2s AFTER title animation ends
+      gsap.delayedCall(2, () => {
+
+        themeToggle.classList.add("show-tooltip");
+
+        gsap.fromTo(themeToggle,
+          { '--tooltip-scale': 0 },
+          {
+            '--tooltip-scale': 1,
+            duration: 0.35,
+            ease: 'back.out(1.8)',
+            onComplete: () => {
+              gsap.to(themeToggle, {
+                '--tooltip-scale': 0,
+                duration: 0.3,
+                delay: 2, // stays visible for 2s
+                ease: 'back.in(1.8)',
+                onComplete: () => {
+                  themeToggle.classList.remove("show-tooltip");
+                }
+              });
+            }
+          }
+        );
+
+      });
+
+    }
+  });
+
+  tl.to('.MainTitle div', {
+    duration: 0.5,
+    y: 0,
+    opacity: 1,
+    stagger: 0.3,
+    ease: "power3.out",
+  });
+
+});
+
 // Wait for the page to load and then trigger the animation
 window.addEventListener('load', function() {
 let tl = gsap.timeline({ delay: 1.1 }); // Delay before starting animation
@@ -483,111 +589,7 @@ window.addEventListener('load', () => {
 });
 
 
-const colors = [
-  // 🟢 Original 8 (untouched)
-  { black: "#0A0A0A", white: "#EEEBE0" }, // Minimal classic
-  { black: "#0D0D0D", white: "#B9E6FF" }, // Cyber ice blue
-  { black: "#0B0B0C", white: "#FFC8DD" }, // Soft candy
-  { black: "#101011", white: "#E4FF8D" }, // Neon lime glow
-  { black: "#0E0F10", white: "#FFDBA4" }, // Peach cream
-  { black: "#111111", white: "#C5BFF9" }, // Lavender tech
-  { black: "#0E0D0F", white: "#F9AFAE" }, // Rose blush
-  { black: "#131415", white: "#C2FBD7" }, // Fresh mint
 
-  // 🔥 NEW — more variation (12)
-  { black: "#0F0F10", white: "#FF4E4E" }, // Neon danger red (gaming UI)
-  { black: "#121214", white: "#00FFCA" }, // Tropical aqua neon (Miami cyber)
-  { black: "#131316", white: "#FFD700" }, // Gold accent (luxury high-end)
-  { black: "#151618", white: "#40E0D0" }, // Turquoise tech (smooth UI)
-  { black: "#0C0C0C", white: "#FF7EDB" }, // Vaporwave magenta
-  { black: "#171819", white: "#8AFF00" }, // Toxic radioactive green (energetic)
-  { black: "#101010", white: "#FF9F1C" }, // Sunset punch orange (bold)
-  { black: "#18191A", white: "#89C2D9" }, // Muted soft cyan (calmer theme)
-  { black: "#0D0E0F", white: "#FF5F00" }, // Warm vivid orange (retro neon)
-  { black: "#1A1A1B", white: "#B983FF" }, // Electric violet (creative coding)
-  { black: "#0B0C0D", white: "#82FF9E" }, // Pastel mint gaming (lighter)
-  { black: "#1C1C1D", white: "#FFE5B4" }, // Soft buttery beige (classy warm)
-];
-
-let currentTheme = 0;
-const root = document.documentElement;
-const toggleBtn = document.getElementById("theme-toggle");
-
-function applyTheme(index) {
-  root.style.setProperty("--black", colors[index].black);
-  root.style.setProperty("--white", colors[index].white);
-
-  root.style.setProperty("--navBackground", colors[index].white);
-  root.style.setProperty("--navText", colors[index].black);
-  root.style.setProperty("--scrollbarTrack", colors[index].black);
-  root.style.setProperty("--scrollbar", colors[index].black);
-  root.style.setProperty("--scrollbarThumb", colors[index].white);
-  root.style.setProperty("--bg", colors[index].white);
-  root.style.setProperty("--navBarText", colors[index].white);
-
-  toggleBtn.style.backgroundColor = colors[index].black;
-  toggleBtn.style.borderColor = colors[index].white;
-}
-
-// 🔥 Pick a random theme on load
-window.addEventListener("load", () => {
-  currentTheme = Math.floor(Math.random() * colors.length);
-  applyTheme(currentTheme);
-});
-
-// 📌 Click to cycle
-toggleBtn.addEventListener("click", () => {
-  currentTheme = (currentTheme + 1) % colors.length;
-  applyTheme(currentTheme);
-});
-
-
-window.addEventListener('load', function() {
-
-  const themeToggle = document.getElementById("theme-toggle");
-
-  let tl = gsap.timeline({
-    delay: 1.1,
-    onComplete: () => {
-      // Tooltip logic happens 2s AFTER title animation ends
-      gsap.delayedCall(2, () => {
-
-        themeToggle.classList.add("show-tooltip");
-
-        gsap.fromTo(themeToggle,
-          { '--tooltip-scale': 0 },
-          {
-            '--tooltip-scale': 1,
-            duration: 0.35,
-            ease: 'back.out(1.8)',
-            onComplete: () => {
-              gsap.to(themeToggle, {
-                '--tooltip-scale': 0,
-                duration: 0.3,
-                delay: 2, // stays visible for 2s
-                ease: 'back.in(1.8)',
-                onComplete: () => {
-                  themeToggle.classList.remove("show-tooltip");
-                }
-              });
-            }
-          }
-        );
-
-      });
-
-    }
-  });
-
-  tl.to('.MainTitle div', {
-    duration: 0.5,
-    y: 0,
-    opacity: 1,
-    stagger: 0.3,
-    ease: "power3.out",
-  });
-
-});
 
 
 
