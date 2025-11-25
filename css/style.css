@@ -2053,7 +2053,9 @@ textarea.error + .error-message {
 }
 
 
-
+.white-space {
+  height: 120px; /* extra breathing room at bottom */
+}
 
 
 
