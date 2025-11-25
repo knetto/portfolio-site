@@ -231,8 +231,8 @@ nav {
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 99999;
-  pointer-events: none;
+  z-index: 9999999;
+  pointer-events: auto;
 }
 
 
@@ -1754,9 +1754,10 @@ textarea.error + .error-message {
   margin-bottom: 16px;
 }
 
-/* Section labels */
-.role strong, 
-.contribution strong {
+
+/* Only affect elements inside this Projects page */
+.projects-section .role strong,
+.projects-section .contribution strong {
   font-size: .8rem;
   letter-spacing: .05em;
   opacity: .7;
@@ -1764,13 +1765,13 @@ textarea.error + .error-message {
   display: block;
 }
 
-/* Text */
-.role p, 
-.contribution p {
+.projects-section .role p,
+.projects-section .contribution p {
   font-size: .95rem;
   opacity: .75;
   margin-bottom: 14px;
 }
+
 
 /* Button */
 .view-btn {
@@ -1922,7 +1923,7 @@ textarea.error + .error-message {
   order: 0;
 }
 
-.subtext {
+.subtext-card {
   font-size: 1.05rem;
   line-height: 1.55;
   opacity: .78;

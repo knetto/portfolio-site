@@ -399,3 +399,4 @@ document.addEventListener("keydown", e => {
 
 // Close button support
 document.querySelector(".close-wrapper").addEventListener("click", closeCard);
+
