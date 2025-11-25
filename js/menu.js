@@ -10,6 +10,7 @@ var tl = gsap.timeline({
 });
 
 open.addEventListener("click", () => {
+  document.querySelector("nav").classList.add("open");
   if (tl.reversed()) {
     tl.play();
     scheduleFirstBubble();
@@ -26,6 +27,7 @@ open.addEventListener("click", () => {
 });
 
 close.addEventListener("click", () => {
+  document.querySelector("nav").classList.remove("open");
   stopBubbleLoop();
   tl.reverse();
 });
@@ -72,3 +74,11 @@ function stopBubbleLoop() {
   clearInterval(bubbleLoop);
   hideBubble();
 }
+
+open.addEventListener("click", () => {
+  document.body.classList.add("no-scroll");
+});
+
+close.addEventListener("click", () => {
+  document.body.classList.remove("no-scroll");
+});
