@@ -2058,7 +2058,10 @@ textarea.error + .error-message {
 }
 
 
-
+.fullscreen-extra {
+  transform-origin: top center;
+  will-change: transform, opacity;
+}
 
 
 
