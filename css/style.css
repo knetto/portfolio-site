@@ -1865,7 +1865,7 @@ textarea.error + .error-message {
 
   margin: 0 auto;
   padding-top: 80px; /* space from top */
-  padding-bottom: 120px; /* space at bottom */
+  padding-bottom: 40px; /* space at bottom */
   position: relative;
 }
 
@@ -2000,27 +2000,56 @@ textarea.error + .error-message {
 
 .project-description {
   width: min(1400px, 92vw);
-  margin: 60px auto 0;
+  margin: 0px auto 2%;
+  padding: 10px 0;
 
   display: flex;
   flex-direction: column;
-  align-items: flex-start; /* ⭐ Align text to the left edge */
+  align-items: flex-start;
   text-align: left;
 
   color: var(--black);
 }
 
+/* Section Title */
 .project-description h3 {
-  font-size: 1.4rem;
+  font-size: 1.8rem;
   font-weight: 700;
-  margin-bottom: 12px;
+  margin-bottom: 20px;
+  letter-spacing: -0.02em;
 }
 
+/* Main text */
 .project-description p {
   font-size: 1.05rem;
   line-height: 1.55;
-  opacity: .85;
-  max-width: 900px; /* Wider for better alignment under image */
+  opacity: .78;
+  max-width: 1050px; /* makes it wider across the page */
+}
+
+/* Add subtle fade animation when entering fullscreen */
+.fullscreen-extra.visible .project-description {
+  animation: fadeUp .6s ease both;
+  animation-delay: .2s;
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.divider-line {
+  width: min(1400px, 92vw);
+  height: 2px;
+  background: rgba(0, 0, 0, 0.12); /* subtle line */
+  margin: 0 auto 2.5%; /* spacing above + below */
+  border-radius: 2px;
 }
 
 
@@ -2066,7 +2095,7 @@ textarea.error + .error-message {
   -webkit-backdrop-filter: blur(12px);
   
   background: rgba(255, 255, 255, 0.03); /* Barely visible */
-  border: 1px solid rgba(255, 255, 255, 0.06); /* Subtle edge */
+  /* border: 1px solid rgba(255, 255, 255, 0.06); Subtle edge */
   
   display: flex;
   justify-content: center;
