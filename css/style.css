@@ -1583,6 +1583,7 @@ textarea.error + .error-message {
   font-weight: 600;
   color: var(--navBarText);
   margin-bottom: 45px; /* smaller gap to buttons */
+  opacity: 0;
 }
 
 .section-title {
@@ -1614,6 +1615,7 @@ textarea.error + .error-message {
   align-items: center;
   gap: 35px;
   margin: 25px 0 60px;
+  opacity: 0;
 }
 
 
@@ -1675,7 +1677,7 @@ textarea.error + .error-message {
 .projects-section {
   width: 100%;
   min-height: 100vh;
-  padding-top: 140px;
+  padding-top: 5%;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -2086,7 +2088,16 @@ textarea.error + .error-message {
   will-change: transform, opacity;
 }
 
+/* Add to your existing CSS */
+.project-card {
+  opacity: 0;
+  transform: translateY(100px);
+}
 
+/* Ensure smooth transitions for the transform */
+.project-card {
+  transition: transform 0.3s ease;
+}
 
 
 
