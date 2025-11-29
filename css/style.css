@@ -1677,13 +1677,14 @@ textarea.error + .error-message {
 .projects-section {
   width: 100%;
   min-height: 100vh;
-  padding-top: 5%;
+  padding-top: 18vh;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  padding-left: 50px;
-  padding-right: 50px;
+  align-items: center; /* This centers child elements horizontally */
+  padding-left: 30px;
+  padding-right: 30px;
   padding-bottom: 5%;
+  box-sizing: border-box; /* Add this to include padding in width calculation */
 }
 
 /* PROJECTS GRID */
@@ -1693,8 +1694,7 @@ textarea.error + .error-message {
   display: grid;
   grid-template-columns: repeat(2, minmax(250px, 1fr));
   gap: 45px;
-  /* padding-left: 20px;
-  padding-right: 20px; */
+  /* Remove any left/right padding if present */
 }
 
 /* Make project cards stack on mobile */

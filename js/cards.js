@@ -136,51 +136,6 @@ function setupContentAnimations() {
   });
 }
 
-// Enhanced hover animations for interactive elements
-function initHoverAnimations() {
-  // Hover animations for category buttons
-  const categoryButtons = document.querySelectorAll('.category-buttons button');
-  
-  categoryButtons.forEach(button => {
-      button.addEventListener('mouseenter', () => {
-          gsap.to(button, {
-              scale: 1.05,
-              duration: 0.3,
-              ease: "power2.out"
-          });
-      });
-      
-      button.addEventListener('mouseleave', () => {
-          gsap.to(button, {
-              scale: 1,
-              duration: 0.3,
-              ease: "power2.out"
-          });
-      });
-  });
-
-  // Hover animations for view buttons
-  const viewButtons = document.querySelectorAll('.view-btn');
-  
-  viewButtons.forEach(button => {
-      button.addEventListener('mouseenter', () => {
-          gsap.to(button, {
-              x: 10,
-              duration: 0.3,
-              ease: "power2.out"
-          });
-      });
-      
-      button.addEventListener('mouseleave', () => {
-          gsap.to(button, {
-              x: 0,
-              duration: 0.3,
-              ease: "power2.out"
-          });
-      });
-  });
-}
-
 // Re-initialize animations when filtering categories
 function reinitAnimations() {
   // Kill existing ScrollTriggers
@@ -203,7 +158,6 @@ function reinitAnimations() {
 // Initialize everything when DOM is loaded
 document.addEventListener('DOMContentLoaded', function() {
   initProjectAnimations();
-  initHoverAnimations();
 });
 
 // Optional: Add resize handler to recalculate ScrollTriggers
