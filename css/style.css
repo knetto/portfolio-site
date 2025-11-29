@@ -1148,7 +1148,7 @@ nav .close:hover div::after {
       align-items: center;
       color: var(--white);
       overflow: hidden;
-      z-index: 9992;
+      z-index: 997;
       text-align: center;
     }
     
@@ -1685,6 +1685,45 @@ textarea.error + .error-message {
   padding-right: 30px;
   padding-bottom: 5%;
   box-sizing: border-box; /* Add this to include padding in width calculation */
+}
+
+.title-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start; /* title sticks to top */
+  gap: 12px; /* prevent crashing when title wraps */
+  margin-bottom: 16px;
+}
+
+.title-row h3 {
+  margin: 0;
+  line-height: 1.2; /* slightly more breathable */
+}
+
+.project-date {
+  font-size: 0.75rem;
+  font-weight: 600;
+  opacity: 0.6;
+  background: var(--black);
+  color: var(--white);
+  padding: 4px 12px;
+  border-radius: 20px;
+  white-space: nowrap;
+  display: flex;
+  align-items: center; /* keeps text centered inside */
+  height: 100%;
+}
+
+/* 📱 MOBILE RESPONSIVE */
+@media (max-width: 550px) {
+  .title-row {
+    flex-direction: column; /* date drops below title */
+    align-items: flex-start; /* keep clean left alignment */
+    gap: 6px;
+  }
+  .project-date{
+    margin-top: -15px;
+  }
 }
 
 /* PROJECTS GRID */

@@ -95,7 +95,10 @@
       </div>
   
       <div class="project-content">
-        <h3>Park-In Spot</h3>
+        <div class="title-row">
+          <h3>Park-In Spot</h3>
+          <span class="project-date">April 2024</span>
+        </div>
   
         <div class="role">
           <strong>ROLE</strong>
@@ -207,79 +210,93 @@
 
 
 
-   <!-- CARD 2 -->
-   <div class="project-card">
-    <div class="image-wrapper">
-      <img class="image" src="img/BukkitVisionPro/20240320_203746.jpg" alt="Project Image" loading="lazy">
-    </div>
+<!-- CARD 2 -->
+<div class="project-card">
+  <div class="image-wrapper">
+    <img class="image" src="img/BukkitVisionPro/20240320_203746.jpg" alt="Bukkit Vision Pro" loading="lazy">
+  </div>
 
-    <div class="project-content">
+  <div class="project-content">
+    <div class="title-row">
       <h3>Bukkit Vision Pro</h3>
-
-      <div class="role">
-        <strong>ROLE</strong>
-        <p>Robot Builder & Logic Developer</p>
-      </div>
-
-      <div class="contribution">
-        <strong>CONTRIBUTION</strong>
-        <p>I built and programmed the self-driving robot car and created the logic to find and drive to the nearest free parking spot.</p>
-      </div>
-
-      <button class="hover-this view-btn">View Project →</button>
+      <span class="project-date">March 2024</span>
     </div>
-    <div class="card-fill"></div>
 
-    <div class="project-extra" style="display:none;">
-      <div class="extra-layout">
-        
-        <!-- LEFT IMAGE -->
-        <div class="extra-media">
-          <img src="img/Parking/IMG-20240419-WA0010.jpg" alt="" loading="lazy">
-        </div>
-    
-        <!-- RIGHT CONTENT -->
-        <div class="extra-content">
-          <span class="small-label">PARK-IN SPOT</span>
-    
-          <div class="divider-card"></div>
+    <div class="role">
+      <strong>ROLE</strong>
+      <p>Hardware Builder & AR Developer</p>
+    </div>
 
-          <h1 class="headline">
-            Autonomous parking that picks the closest open spot
-          </h1>
-    
-          <p class="subtext-card">
-            Our system connects your agenda to a smart parking
-            network. When you head to the supermarket, for example,
-            the robot selects the closest available parking spot near
-            that building and drives there autonomously.
-          </p>
-        </div>
+    <div class="contribution">
+      <strong>CONTRIBUTION</strong>
+      <p>
+        I built the AR stereo vision system, implemented geolocation-based navigation through a game-style compass, 
+        and developed the Arduino detection system that triggers reactive lighting when trash is thrown into the helmet.
+      </p>
+    </div>
+
+    <button class="hover-this view-btn">View Project →</button>
+  </div>
+  <div class="card-fill"></div>
+
+  <div class="project-extra" style="display:none;">
+    <div class="extra-layout">
+      
+      <!-- LEFT IMAGE -->
+      <div class="extra-media">
+        <img src="img/BukkitVisionPro/20240320_203746.jpg" alt="Helmet Photo" loading="lazy">
       </div>
+  
+      <!-- RIGHT CONTENT -->
+      <div class="extra-content">
+        <span class="small-label">Bukkit Vision Pro</span>
+  
+        <div class="divider-card"></div>
 
-      <div class="project-description">
-        <h3>How It Works</h3>
-        <p>
-          The system uses a Python script with OpenCV and a webcam to 
-          monitor the parking area. It identifies which parking spots are 
-          currently free and calculates the closest available one based 
-          on the user’s agenda or planned destination.
-        </p>
+        <h1 class="headline">
+          Making people aware of littering
+        </h1>
   
-        <p>
-          Once a parking spot number is selected, the robot car 
-          automatically follows a black line on the floor using 
-          infrared (IR) sensors to navigate through the parking layout. 
-          When it reaches the assigned spot, it performs the final parking 
-          maneuver autonomously.
-        </p>
-  
-        <p>
-          I handled the robot hardware, embedded programming, motor control, 
-          and navigation logic. My teammates built the vision system and 
-          the environment setup.
+        <p class="subtext-card">
+          Bukkit Vision Pro is a pair of festival helmets designed to make cleaning up trash playful. 
+          Throw trash from one helmet into the “trash-bin helmet” and real-world LED disco lights activate, while the AR world responds too. 
+          Floating virtual trash surrounds you in AR and reacts to the music around you, 
+          visualizing the impact of littering in a fun and engaging way.
         </p>
       </div>
+    </div>
+
+    <div class="project-description">
+      <h3>How It Works</h3>
+
+      <p>
+        Each helmet uses the phone’s stereo cameras for AR vision. Floating trash 
+        appears in the digital scene and reacts to the music around you.
+      </p>
+
+      <p>
+        When players successfully throw real objects into the trash-bin helmet, 
+        an Arduino sensor system detects it and triggers festival-style lighting 
+        around both helmets, rewarding recycling in real life.
+      </p>
+      <br>
+      <p>
+        The AR interface includes a game-style navigation compass that uses 
+        geolocation data from the phone to help you find:
+        <br>• your teammate wearing the other helmet<br>
+        • key festival places (e.g. McDonald's 😄)
+      </p>
+
+      <p>
+        To raise awareness of alcohol consumption, 
+        the AR visuals become increasingly distorted as the user drinks more, simulating the gradual loss of perception caused by intoxication.
+      </p>
+      <br>
+      <p>
+        I developed the full trash-bin detection and reactive lighting system in Arduino, built the AR stereo camera and geolocation-based navigation compass, 
+        and contributed to the floating trash interaction features in Unity.
+      </p>
+    </div>
 
     <div class="divider-line"></div>
 
@@ -287,16 +304,7 @@
       <div class="video-gallery">
         <div class="video-wrapper">
           <iframe loading="lazy"
-            src="https://www.youtube-nocookie.com/embed/mltczj9MeHI" 
-            title="YouTube video"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowfullscreen>
-          </iframe>
-        </div>
-      
-        <div class="video-wrapper">
-          <iframe loading="lazy"
-            src="https://www.youtube-nocookie.com/embed/r5hOvmnlhXY" 
+            src="https://www.youtube-nocookie.com/embed/9SpB4gjQLsU" 
             title="YouTube video"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
             allowfullscreen>
@@ -305,16 +313,19 @@
       </div>
       
       <div class="image-gallery">
-        <img class="imageHidden" src="img/Parking/20240416_181420.jpg" alt="Project Image" loading="lazy">
-        <img class="imageHidden" src="img/Parking/20240416_181423.jpg" alt="Project Image" loading="lazy">
-        <img class="imageHidden" src="img/Parking/20240416_181427.jpg" alt="Project Image" loading="lazy">
-        <img class="imageHidden" src="img/Parking/20240416_181705.jpg" alt="Project Image" loading="lazy">
-        <img class="imageHidden" src="img/Parking/20240416_181721.jpg" alt="Project Image" loading="lazy">
-        <img class="imageHidden" src="img/Parking/20240418_172644.jpg" alt="Project Image" loading="lazy">
-        <img class="imageHidden" src="img/Parking/20240419_133405.jpg" alt="Project Image" loading="lazy">
-        <img class="imageHidden" src="img/Parking/IMG-20240419-WA0009.jpg" alt="Project Image" loading="lazy">
-        <img class="imageHidden" src="img/Parking/IMG-20240419-WA0012.jpg" alt="Project Image" loading="lazy">
-        <img class="imageHidden" src="img/Parking/IMG-20240419-WA0008.jpg" alt="Project Image" loading="lazy">
+        <img class="imageHidden" src="img/BukkitVisionPro/20240319_160437.jpg" alt="Project Image" loading="lazy">
+        <img class="imageHidden" src="img/BukkitVisionPro/20240320_200839.jpg" alt="Project Image" loading="lazy">
+        <img class="imageHidden" src="img/BukkitVisionPro/20240320_200848 (1).jpg" alt="Project Image" loading="lazy">
+        <img class="imageHidden" src="img/BukkitVisionPro/20240320_204105 (1).jpg" alt="Project Image" loading="lazy">
+        <img class="imageHidden" src="img/BukkitVisionPro/20240321_173311.jpg" alt="Project Image" loading="lazy">
+        <img class="imageHidden" src="img/BukkitVisionPro/bottels plaatsen.png" alt="Project Image" loading="lazy">
+        <img class="imageHidden" src="img/BukkitVisionPro/disformed bottels .png" alt="Project Image" loading="lazy">
+        <img class="imageHidden" src="img/BukkitVisionPro/dj booth model adden .png" alt="Project Image" loading="lazy">
+        <img class="imageHidden" src="img/BukkitVisionPro/Screenshot_20240319-145842_arGameStereo.jpg" alt="Project Image" loading="lazy">
+        <img class="imageHidden" src="img/BukkitVisionPro/Screenshot_20240321_175119_arGameStereo.jpg" alt="Project Image" loading="lazy">
+        <img class="imageHidden" src="img/BukkitVisionPro/20240321_173303.jpg" alt="Project Image" loading="lazy">
+        <img class="imageHidden" src="img/BukkitVisionPro/Screenshot_20240318_154822_arGameStereo.jpg" alt="Project Image" loading="lazy">
+
       </div>   
 
         <div class="white-space"></div>

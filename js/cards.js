@@ -74,12 +74,14 @@ function animateCardContent(card) {
   const role = content.querySelector('.role');
   const contribution = content.querySelector('.contribution');
   const button = content.querySelector('.view-btn');
+  const date = content.querySelector('.project-date');
+
 
   // Set initial state for content elements (hidden and shifted left)
-  gsap.set([h3, role, contribution, button], {
-      opacity: 0,
-      x: -50
-  });
+  gsap.set([h3, date, role, contribution, button], {
+    opacity: 0,
+    x: -50
+});
 
   // Create timeline for sequential animations
   const tl = gsap.timeline({ delay: 0.3 });
@@ -90,6 +92,12 @@ function animateCardContent(card) {
       duration: 0.6,
       ease: "power2.out"
   })
+  .to(date, {
+      opacity: 0.7,
+      x: 0,
+      duration: 0.5,
+      ease: "power2.out"
+  }, "-=0.3") // slightly overlap for smooth feeling
   .to(role, {
       opacity: 1,
       x: 0,
