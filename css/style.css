@@ -1133,6 +1133,7 @@ nav .close:hover div::after {
       cursor: none;
       user-select: none;
       z-index: 998;
+      pointer-events: none;
     }
     
     

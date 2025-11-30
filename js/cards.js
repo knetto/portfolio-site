@@ -29,7 +29,7 @@ function initProjectAnimations() {
     {
         opacity: 0,
         x: -100,
-        immediateRender: false // This prevents GSAP from setting initial values immediately
+        immediateRender: false
     },
     {
         opacity: 1,
@@ -76,7 +76,6 @@ function animateCardContent(card) {
   const button = content.querySelector('.view-btn');
   const date = content.querySelector('.project-date');
 
-
   // Set initial state for content elements (hidden and shifted left)
   gsap.set([h3, date, role, contribution, button], {
     opacity: 0,
@@ -97,7 +96,7 @@ function animateCardContent(card) {
       x: 0,
       duration: 0.5,
       ease: "power2.out"
-  }, "-=0.3") // slightly overlap for smooth feeling
+  }, "-=0.3")
   .to(role, {
       opacity: 1,
       x: 0,
@@ -173,7 +172,7 @@ window.addEventListener('resize', function() {
   ScrollTrigger.refresh();
 });
 
-// Your existing card expansion code (unchanged)
+// Card expansion functionality
 let activeClone = null;
 let activeOriginal = null;
 let fullscreenLenis = null;
@@ -541,9 +540,7 @@ if (e.key === "Escape") closeCard();
 // Close button support
 document.querySelector(".close-wrapper").addEventListener("click", closeCard);
 
-
-// Add this to your existing JavaScript file (e.g., cards.js)
-
+// Section switching functionality
 document.addEventListener('DOMContentLoaded', function() {
   const btnSchool = document.getElementById('btn-school');
   const btnFotografie = document.getElementById('btn-fotografie');
@@ -580,6 +577,13 @@ document.addEventListener('DOMContentLoaded', function() {
             onComplete: () => {
                 projectGrid.style.display = 'none';
                 photographySection.style.display = 'block';
+                
+                // Refresh ScrollTrigger after section becomes visible
+                setTimeout(() => {
+                  ScrollTrigger.refresh();
+                  // Re-initialize photography animations
+                  initPhotographyGalleryAnimations();
+                }, 100);
             }
         })
         // Slide photography IN from RIGHT
@@ -598,6 +602,11 @@ document.addEventListener('DOMContentLoaded', function() {
             onComplete: () => {
                 photographySection.style.display = 'none';
                 projectGrid.style.display = 'grid';
+                
+                // Refresh ScrollTrigger after section change
+                setTimeout(() => {
+                  ScrollTrigger.refresh();
+                }, 100);
             }
         })
         // Slide projects IN from LEFT
@@ -607,8 +616,7 @@ document.addEventListener('DOMContentLoaded', function() {
             "-=0.3"
         );
     }
-}
-
+  }
   
   function updateActiveButton(activeButton) {
       // Remove active class from all buttons
@@ -621,30 +629,75 @@ document.addEventListener('DOMContentLoaded', function() {
   }
 });
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//photography gallery generation
-
+// Photography gallery generation and animations - FIXED VERSION
 const totalImages = 71;
 const folderPath = "img/Photography/";
 const gallery = document.getElementById("image-gallery");
 
+// Clear existing gallery to avoid duplicates
+gallery.innerHTML = '';
+
 for (let i = 1; i <= totalImages; i++) {
-    const img = document.createElement("img");
-    img.src = `${folderPath}foto (${i}).jpg`;
-    img.alt = `Photo ${i}`;
-    img.loading = "lazy";
-    gallery.appendChild(img);
+  const img = document.createElement("img");
+  img.src = `${folderPath}foto (${i}).jpg`;
+  img.alt = `Photo ${i}`;
+  img.loading = "lazy";
+  gallery.appendChild(img);
 }
+
+// Initialize photography animations
+initPhotographyGalleryAnimations();
+
+// Photography gallery scroll-reveal animation - UPDATED VERSION
+function initPhotographyGalleryAnimations() {
+  const galleryImages = document.querySelectorAll("#image-gallery img");
+  
+  // Kill any existing ScrollTriggers for these elements to avoid duplicates
+  galleryImages.forEach(img => {
+    const triggerId = `photo-${img.src}`;
+    ScrollTrigger.getById(triggerId)?.kill();
+  });
+
+  galleryImages.forEach((img) => {
+    // Initial hidden position
+    gsap.set(img, { y: 80, opacity: 0 });
+
+    // Create ScrollTrigger for each image
+    gsap.to(img, {
+      y: 0,
+      opacity: 1,
+      duration: 0.9,
+      ease: "power3.out",
+      scrollTrigger: {
+        id: `photo-${img.src}`, // Unique ID to avoid conflicts
+        trigger: img,
+        start: "top 85%",
+        end: "bottom 20%",
+        toggleActions: "play none none none",
+        // Important: specify the container for proper scoping
+        scroller: window,
+        // Refresh when the section becomes visible
+        onRefresh: self => {
+          // Recalculate when the section becomes visible
+          if (document.getElementById('photography-section').style.display !== 'none') {
+            self.refresh();
+          }
+        }
+      }
+    });
+  });
+}
+
+// Add this function to refresh animations when window resizes
+window.addEventListener('resize', function() {
+  // Only refresh photography animations if photography section is visible
+  if (document.getElementById('photography-section').style.display !== 'none') {
+    setTimeout(() => {
+      ScrollTrigger.refresh();
+      initPhotographyGalleryAnimations();
+    }, 250);
+  }
+});
+
+// Register GSAP plugins
+gsap.registerPlugin(ScrollTrigger, Flip, Observer, ScrollToPlugin, Draggable, MotionPathPlugin, TextPlugin, CustomEase);

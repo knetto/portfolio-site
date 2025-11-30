@@ -430,114 +430,142 @@ document.addEventListener("DOMContentLoaded", function() {
 
 
 
-document.querySelectorAll("img.image").forEach(img => {
-  // img.style.cursor = "zoom-in";
+function openFullscreenImage(img) {
+  const rect = img.getBoundingClientRect();
 
-  img.addEventListener("click", () => {
-    const rect = img.getBoundingClientRect();
+  const natW = img.naturalWidth;
+  const natH = img.naturalHeight;
 
-    const natW = img.naturalWidth;
-    const natH = img.naturalHeight;
-    const ratio = natW / natH;
+  // Fallback: if natural size is 0, use the current rect
+  const w = natW || rect.width;
+  const h = natH || rect.height;
 
-    // Lock scroll
-    document.body.style.overflow = "hidden";
+  if (!w || !h || !rect.width || !rect.height) {
+    // Nothing to animate from/to, bail out gracefully
+    return;
+  }
 
-    // Backdrop
-    const backdrop = document.createElement("div");
-    backdrop.className = "fullscreen-backdrop";
-    document.body.appendChild(backdrop);
+  const ratio = w / h;
 
-    // Clone to animate
-    const clone = img.cloneNode(true);
-    clone.className = "fullscreen-img";
-    clone.style.transform = "none";
-    document.body.appendChild(clone);
+  // Lock scroll
+  document.body.style.overflow = "hidden";
 
-    // Initial visible state (square-ish)
-    Object.assign(clone.style, {
-      left: rect.left + "px",
-      top: rect.top + "px",
-      width: rect.width + "px",
-      height: rect.height + "px",
-      clipPath: "inset(0%)"
+  // Backdrop
+  const backdrop = document.createElement("div");
+  backdrop.className = "fullscreen-backdrop";
+  document.body.appendChild(backdrop);
+
+  // Clone to animate
+  const clone = img.cloneNode(true);
+  clone.className = "fullscreen-img";
+  clone.style.transform = "none";
+  document.body.appendChild(clone);
+
+  // Initial state
+  Object.assign(clone.style, {
+    left: rect.left + "px",
+    top: rect.top + "px",
+    width: rect.width + "px",
+    height: rect.height + "px",
+    clipPath: "inset(0%)"
+  });
+
+  clone.getBoundingClientRect(); // force layout
+
+  // Target fullscreen size based on aspect ratio
+  const maxW = window.innerWidth * 0.95;
+  const maxH = window.innerHeight * 0.95;
+  let targetW, targetH;
+
+  if (ratio > maxW / maxH) {
+    targetW = maxW;
+    targetH = targetW / ratio;
+  } else {
+    targetH = maxH;
+    targetW = targetH * ratio;
+  }
+
+  const tl = gsap.timeline();
+
+  tl.set(backdrop, { pointerEvents: "auto" })
+    .to(backdrop, {
+      background: "rgba(0,0,0,0.92)",
+      duration: 0.6,
+      ease: "power2.out"
+    }, 0)
+    .to(clone, {
+      left: "50%",
+      top: "50%",
+      xPercent: -50,
+      yPercent: -50,
+      width: targetW,
+      height: targetH,
+      clipPath: "inset(0% 0% 0% 0%)",
+      duration: 0.9,
+      ease: "power3.out"
+    }, 0);
+
+  function close() {
+    const tl2 = gsap.timeline({
+      onComplete: () => {
+        clone.remove();
+        backdrop.remove();
+        document.removeEventListener("keydown", escHandler);
+        document.body.style.overflow = ""; // Restore scroll
+      }
     });
 
-    clone.getBoundingClientRect(); // force layout
+    // Recalculate rect in case of scroll changes (optional but nice)
+    const rectBack = img.getBoundingClientRect();
 
-    // Target fullscreen size based on original aspect ratio
-    const maxW = window.innerWidth * 0.95;
-    const maxH = window.innerHeight * 0.95;
-    let targetW, targetH;
+    tl2.to(backdrop, {
+      background: "rgba(0,0,0,0)",
+      duration: 0.4,
+      ease: "power2.in"
+    }, 0)
+    .to(clone, {
+      left: rectBack.left + "px",
+      top: rectBack.top + "px",
+      width: rectBack.width + "px",
+      height: rectBack.height + "px",
+      xPercent: 0,
+      yPercent: 0,
+      clipPath: "inset(0%)",
+      duration: 0.55,
+      ease: "power3.inOut"
+    }, 0);
+  }
 
-    if (ratio > maxW / maxH) {
-      targetW = maxW;
-      targetH = targetW / ratio;
-    } else {
-      targetH = maxH;
-      targetW = targetH * ratio;
-    }
+  const escHandler = e => (e.key === "Escape") && close();
+  document.addEventListener("keydown", escHandler);
 
-    const tl = gsap.timeline();
+  clone.addEventListener("click", close);
+  backdrop.addEventListener("click", close);
+}
 
-    tl.set(backdrop, { pointerEvents: "auto" })
 
-      .to(backdrop, {
-        background: "rgba(0,0,0,0.92)",
-        duration: 0.6,
-        ease: "power2.out"
-      }, 0)
+document.addEventListener("click", e => {
+  const img = e.target.closest("img");
+  if (!img) return;
 
-      .to(clone, {
-        left: "50%",
-        top: "50%",
-        xPercent: -50,
-        yPercent: -50,
-        width: targetW,
-        height: targetH,
-        clipPath: "inset(0% 0% 0% 0%)",
-        duration: 0.9,
-        ease: "power3.out"
-      }, 0);
+  // Only run for images you want zoomable (optional)
+  // if (!img.matches(".zoomable")) return;
 
-    function close() {
-      const tl2 = gsap.timeline({
-        onComplete: () => {
-          clone.remove();
-          backdrop.remove();
-          document.removeEventListener("keydown", escHandler);
-          document.body.style.overflow = ""; // Restore scroll
-        }
-      });
+  // If the image isn't loaded yet, wait for load, then open
+  if (!img.complete || img.naturalWidth === 0) {
+    img.addEventListener("load", () => openFullscreenImage(img), { once: true });
+    return;
+  }
 
-      tl2.to(backdrop, {
-        background: "rgba(0,0,0,0)",
-        duration: 0.4,
-        ease: "power2.in"
-      }, 0)
+  // If it's technically still 0x0 (e.g. was hidden), wait a frame
+  const rect = img.getBoundingClientRect();
+  if (rect.width === 0 || rect.height === 0) {
+    requestAnimationFrame(() => openFullscreenImage(img));
+    return;
+  }
 
-      .to(clone, {
-        left: rect.left + "px",
-        top: rect.top + "px",
-        width: rect.width + "px",
-        height: rect.height + "px",
-        xPercent: 0,
-        yPercent: 0,
-        clipPath: "inset(0%)",
-        duration: 0.55,
-        ease: "power3.inOut"
-      }, 0);
-    }
-
-    const escHandler = e => (e.key === "Escape") && close();
-    document.addEventListener("keydown", escHandler);
-
-    // Close triggers
-    clone.addEventListener("click", close);
-    backdrop.addEventListener("click", close);
-  });
+  openFullscreenImage(img);
 });
-
 
 
 
