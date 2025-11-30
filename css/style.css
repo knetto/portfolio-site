@@ -2221,7 +2221,127 @@ textarea.error + .error-message {
 }
 
 
+/* Mobile styles - stack images vertically with square aspect ratio */
+@media screen and (max-width: 768px) {
+  #new-section-3,
+  #new-section-4,
+  #new-section-5 {
+    height: auto !important;
+    min-height: 100vh;
+    padding: 80px 0;
+    overflow: visible !important;
+  }
 
+  .new-section-3-content,
+  .new-section-4-content,
+  .new-section-5-content {
+    position: relative !important;
+    top: auto !important;
+    left: auto !important;
+    transform: none !important;
+    flex-direction: column;
+    width: 100%;
+    padding: 0 5%;
+    margin-top: 60px; /* Add top margin to lower entire content */
+  }
+
+  .text-container {
+    margin: 0 0 40px 0 !important;
+    width: 100% !important;
+    text-align: center;
+  }
+
+  .image-track {
+    position: relative !important;
+    top: auto !important;
+    left: auto !important;
+    transform: none !important;
+    margin: 0;
+    flex-direction: column; /* Stack vertically */
+    gap: 25px; /* Space between stacked images */
+    overflow: visible;
+    padding-bottom: 0;
+    width: 100%;
+    display: flex;
+    align-items: center; /* Center all items horizontally */
+  }
+
+  .image-track > .image {
+    width: 100% !important; /* Full width */
+    height: 75vw !important; /* Square-ish aspect ratio (4:3) */
+    max-width: 500px; /* Limit max width */
+    max-height: 375px; /* Limit max height to maintain ratio */
+    margin: 0 auto; /* Center images */
+    flex-shrink: 1; /* Allow shrinking */
+    object-fit: cover; /* Fill the square area */
+    object-position: center center; /* Center the image within the frame */
+    border-radius: 12px; /* Optional: add some rounding */
+    display: block; /* Ensure proper block-level behavior */
+  }
+
+  /* Special handling for iframes (YouTube videos) */
+  .image-track > .image.last-item {
+    aspect-ratio: 16 / 9; /* Maintain video aspect ratio */
+    height: 56.25vw !important; /* 16:9 ratio based on width */
+    max-height: 280px; /* Limit video height */
+    object-fit: contain; /* Show full video without cropping */
+    background: #000; /* Black background for video */
+  }
+}
+
+/* For very small mobile devices */
+@media screen and (max-width: 480px) {
+  .new-section-3-content,
+  .new-section-4-content,
+  .new-section-5-content {
+    margin-top: 40px; /* Slightly less margin on very small screens */
+  }
+
+  .text-container {
+    margin-bottom: 30px;
+  }
+  
+  .text-container h2 {
+    font-size: 1.6rem;
+  }
+  
+  .text-container .subtext {
+    font-size: 1rem;
+  }
+  
+  .image-track {
+    gap: 20px;
+  }
+
+  .image-track > .image {
+    height: 80vw !important; /* Slightly taller on very small screens */
+    max-height: 320px;
+  }
+
+  .image-track > .image.last-item {
+    height: 60vw !important;
+    max-height: 240px;
+  }
+}
+
+/* For medium mobile devices */
+@media screen and (min-width: 481px) and (max-width: 768px) {
+  .new-section-3-content,
+  .new-section-4-content,
+  .new-section-5-content {
+    margin-top: 80px; /* More margin on tablets */
+  }
+
+  .image-track > .image {
+    height: 70vw !important; /* Slightly different ratio for tablets */
+    max-height: 400px;
+  }
+
+  .image-track > .image.last-item {
+    height: 52.5vw !important; /* 16:9 ratio */
+    max-height: 315px;
+  }
+}
 
 
 
