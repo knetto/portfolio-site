@@ -672,7 +672,35 @@ if (ageEl) {
   ageEl.textContent = calculateAge("2003-12-14");
 }
 
+document.querySelector('a[href="#"]').addEventListener('click', function (e) {
+  e.preventDefault();
+  window.scrollTo({
+    top: 0,
+  });
+});
 
+// Function to handle the ScrollTrigger refresh
+function refreshScrollPosition() {
+  // Only call refresh if ScrollTrigger has been loaded and registered
+  if (typeof ScrollTrigger !== 'undefined') {
+      ScrollTrigger.refresh(true); // Pass true to also refresh ScrollSmoother if it's present
+      console.log("ScrollTrigger/ScrollSmoother refreshed due to layout change.");
+  }
+}
+
+// 1. Refresh on load (you already have this)
+window.addEventListener('load', () => {
+  // Ensure the initial layout is calculated correctly
+  refreshScrollPosition();
+});
+
+// 2. Refresh on window resize/orientation change
+// Use a debounce function to prevent excessive calls during rapid resizing
+let resizeTimeout;
+window.addEventListener('resize', () => {
+  clearTimeout(resizeTimeout);
+  resizeTimeout = setTimeout(refreshScrollPosition, 200); // Wait 200ms after resizing stops
+});
 
 //project page logic
 
