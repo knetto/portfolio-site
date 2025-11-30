@@ -10,14 +10,14 @@ const section7 = document.getElementById('contact-section');
 
 // Mapping of sections to their style configurations
 const sectionStyles = [
-    { section: sectionMain, background: 'var(--white)', text: 'var(--black)', barText: 'var(--white)', log: 'Main active' },
-    { section: section1, background: 'var(--black)', text: 'var(--white)', barText: 'var(--black)', log: 'About active' },
-    { section: section2, background: 'var(--white)', text: 'var(--black)', barText: 'var(--white)', log: 'Projects heading active' },
-    { section: section3, background: 'var(--black)', text: 'var(--white)', barText: 'var(--black)', log: 'Project 1 active' },
-    { section: section4, background: 'var(--white)', text: 'var(--black)', barText: 'var(--white)', log: 'Project 2 active' },
-    { section: section5, background: 'var(--black)', text: 'var(--white)', barText: 'var(--black)', log: 'Project 3 active' },
-    { section: section6, background: 'var(--white)', text: 'var(--black)', barText: 'var(--white)', log: 'Other projects active' },
-    { section: section7, background: 'var(--black)', text: 'var(--white)', barText: 'var(--black)', log: 'Contact active' }
+    { section: sectionMain, background: 'var(--white)', text: 'var(--black)', barText: 'var(--white)' },
+    { section: section1, background: 'var(--black)', text: 'var(--white)', barText: 'var(--black)' },
+    { section: section2, background: 'var(--white)', text: 'var(--black)', barText: 'var(--white)' },
+    { section: section3, background: 'var(--black)', text: 'var(--white)', barText: 'var(--black)' },
+    { section: section4, background: 'var(--white)', text: 'var(--black)', barText: 'var(--white)' },
+    { section: section5, background: 'var(--black)', text: 'var(--white)', barText: 'var(--black)' },
+    { section: section6, background: 'var(--white)', text: 'var(--black)', barText: 'var(--white)' },
+    { section: section7, background: 'var(--black)', text: 'var(--white)', barText: 'var(--black)' }
 ];
 
 const visibleNonMain = new Set();
@@ -68,8 +68,6 @@ function updateNavStyle(section) {
     const data = sectionStyles.find(s => s.section === section);
     if (!data) return;
 
-    console.log(data.log);
-
     document.documentElement.style.setProperty('--navBackground', data.background);
     document.documentElement.style.setProperty('--navText', data.text);
     document.documentElement.style.setProperty('--navBarText', data.barText);
@@ -77,6 +75,4 @@ function updateNavStyle(section) {
 
 // Ensure styling updates smoothly while scrolling
 window.addEventListener('scroll', applyStyle);
-
-// Ensure styling updates smoothly while scrolling
 window.addEventListener('click', applyStyle);

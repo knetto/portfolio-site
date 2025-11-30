@@ -423,52 +423,6 @@ nav .close:hover div::after {
 }
 
 
-/* #theme-bubble {
-  opacity: 0;
-  pointer-events: none;
-
-  position: fixed;
-  top: calc(5% + 35px);
-  left: 49.5%;
-  transform: translateX(-50%);
-
-  background: var(--navText);
-  color: var(--navBackground);
-  font-size: 12px;
-  font-weight: bold;
-  padding: 6px 10px;
-  border-radius: 6px;
-  white-space: nowrap;
-  transition: opacity .4s ease, transform .4s ease;
-  z-index: 999;
-}
-
-#theme-bubble {
-  transform: translateX(-50%) scale(0);
-  transform-origin: center;
-}
-
-
-
-#theme-bubble::after {
-  content: "";
-  position: absolute;
-  top: -5px;
-  left: 50%;
-  transform: translateX(-50%);
-  border-width: 6px;
-  border-style: solid;
-  border-color: transparent transparent var(--navText) transparent;
-}
-
-
-@keyframes bob {
-  0% { transform: translateX(-50%) translateY(0); }
-  50% { transform: translateX(-50%) translateY(-4px); }
-  100% { transform: translateX(-50%) translateY(0); }
-} */
-
-
 .MainTitle {
   display: flex;
   justify-content: center;
