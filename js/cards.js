@@ -2,14 +2,90 @@
 document.addEventListener('DOMContentLoaded', function() {
   // Initialize GSAP animations
   initProjectAnimations();
-  initMobileOptimizations(); // Add mobile optimizations
+  initMobileOptimizations();
   
-  // Initial check for visible cards (helps with above-the-fold content)
+  // Force refresh ScrollTrigger after page load
+  setTimeout(() => {
+    ScrollTrigger.refresh();
+    
+    // Double refresh for mobile (sometimes needed)
+    if (window.innerWidth <= 768) {
+      setTimeout(() => {
+        ScrollTrigger.refresh();
+        checkVisibleCards();
+      }, 500);
+    }
+  }, 100);
+  
+  // Initial check for visible cards
   setTimeout(() => {
     if (window.innerWidth <= 768) {
       checkVisibleCards();
     }
   }, 1000);
+});
+
+// Handle page show event (when navigating back to page)
+document.addEventListener('pageshow', function(event) {
+  if (event.persisted) {
+    // Page was loaded from cache
+    setTimeout(() => {
+      ScrollTrigger.refresh();
+      if (window.innerWidth <= 768) {
+        checkVisibleCards();
+      }
+    }, 100);
+  }
+});
+
+// Handle visibility change
+document.addEventListener('visibilitychange', function() {
+  if (!document.hidden) {
+    // Page became visible again
+    setTimeout(() => {
+      ScrollTrigger.refresh();
+    }, 300);
+  }
+});
+
+// Add to your navigation menu if you have control
+document.querySelectorAll('nav a').forEach(link => {
+  link.addEventListener('click', function(e) {
+    // Only handle internal HTML navigation
+    if (this.href && this.href.includes('.html')) {
+      // Prepare for page transition
+      ScrollTrigger.getAll().forEach(trigger => {
+        if (trigger.trigger && trigger.trigger.classList.contains('project-card')) {
+          trigger.kill();
+        }
+      });
+    }
+  });
+});
+
+// Force refresh on full page load as well
+window.addEventListener('load', function() {
+  setTimeout(() => {
+    ScrollTrigger.refresh();
+    
+    if (window.innerWidth <= 768) {
+      // Force animation of visible elements on mobile
+      gsap.utils.toArray('.project-card').forEach(card => {
+        const rect = card.getBoundingClientRect();
+        if (rect.top < window.innerHeight && rect.bottom > 0) {
+          gsap.to(card, {
+            opacity: 1,
+            y: 0,
+            duration: 0.6,
+            ease: "power2.out"
+          });
+        }
+      });
+      
+      // Double refresh for good measure
+      setTimeout(() => ScrollTrigger.refresh(), 200);
+    }
+  }, 100);
 });
 
 function initProjectAnimations() {
@@ -102,6 +178,17 @@ function animateProjectCards() {
               ease: "power2.out"
             });
           }
+        },
+        // Add refresh callback for navigation issues
+        onRefresh: self => {
+          if (self.isActive && getComputedStyle(card).opacity === '0') {
+            gsap.to(card, {
+              opacity: 1,
+              y: 0,
+              duration: 0.5,
+              ease: "power2.out"
+            });
+          }
         }
       }
     });
@@ -191,12 +278,7 @@ function initMobileOptimizations() {
   window.addEventListener('orientationchange', function() {
     setTimeout(() => {
       ScrollTrigger.refresh();
-      // Force re-check of all ScrollTriggers
-      ScrollTrigger.getAll().forEach(trigger => {
-        if (trigger.trigger && trigger.trigger.classList.contains('project-card')) {
-          trigger.refresh();
-        }
-      });
+      checkVisibleCards();
     }, 500);
   });
 
@@ -213,10 +295,22 @@ function initMobileOptimizations() {
       }
     }, 250);
   });
+
+  // Add page transition support
+  window.addEventListener('beforeunload', function() {
+    // Clean up ScrollTriggers before leaving page
+    ScrollTrigger.getAll().forEach(trigger => {
+      if (trigger.trigger && trigger.trigger.classList.contains('project-card')) {
+        trigger.kill();
+      }
+    });
+  });
 }
 
-// Function to check and animate visible cards on mobile
+// Enhanced check visible cards function
 function checkVisibleCards() {
+  let animatedCount = 0;
+  
   gsap.utils.toArray('.project-card').forEach(card => {
     const rect = card.getBoundingClientRect();
     const isVisible = (
@@ -224,16 +318,30 @@ function checkVisibleCards() {
       rect.bottom >= window.innerHeight * 0.1
     );
     
-    if (isVisible && card.style.opacity === '0') {
+    if (isVisible && (card.style.opacity === '0' || getComputedStyle(card).opacity === '0')) {
       gsap.to(card, {
         opacity: 1,
         y: 0,
         duration: 0.8,
-        ease: "power2.out"
+        ease: "power2.out",
+        onComplete: () => {
+          animatedCount++;
+          // If we animated cards but ScrollTrigger might still be broken, force refresh
+          if (animatedCount > 0) {
+            setTimeout(() => ScrollTrigger.refresh(), 100);
+          }
+        }
       });
       animateCardContent(card);
     }
   });
+  
+  // If no cards were animated but we're on mobile, force one more check
+  if (animatedCount === 0 && window.innerWidth <= 768) {
+    setTimeout(() => {
+      ScrollTrigger.refresh();
+    }, 500);
+  }
 }
 
 // Add touch event support to help ScrollTrigger on mobile
@@ -704,6 +812,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 // Refresh ScrollTrigger after section change
                 setTimeout(() => {
                   ScrollTrigger.refresh();
+                  // Re-initialize project animations
+                  reinitAnimations();
                 }, 100);
             }
         })
@@ -804,3 +914,50 @@ window.addEventListener('resize', function() {
 
 // Register GSAP plugins
 gsap.registerPlugin(ScrollTrigger, Flip, Observer, ScrollToPlugin, Draggable, MotionPathPlugin, TextPlugin, CustomEase);
+
+// Enhanced navigation handler for mobile page transitions
+function handlePageNavigation() {
+  // This function can be called from your navigation menu
+  return {
+    prepareForNavigation: function() {
+      // Kill all project card ScrollTriggers
+      ScrollTrigger.getAll().forEach(trigger => {
+        if (trigger.trigger && trigger.trigger.classList.contains('project-card')) {
+          trigger.kill();
+        }
+      });
+      
+      // Force a style recalc
+      document.body.clientHeight;
+    },
+    
+    afterNavigation: function() {
+      // Reinitialize after navigation
+      setTimeout(() => {
+        if (typeof initProjectAnimations === 'function') {
+          initProjectAnimations();
+        }
+        ScrollTrigger.refresh();
+        
+        // Extra mobile handling
+        if (window.innerWidth <= 768) {
+          setTimeout(() => {
+            checkVisibleCards();
+            ScrollTrigger.refresh();
+          }, 400);
+        }
+      }, 100);
+    }
+  };
+}
+
+// Initialize navigation handler
+const navigationHandler = handlePageNavigation();
+
+// Auto-handle navigation if possible (add this to your nav links)
+document.addEventListener('click', function(e) {
+  const link = e.target.closest('a');
+  if (link && link.href && link.href.includes('.html') && !link.href.includes('#')) {
+    navigationHandler.prepareForNavigation();
+  }
+});
