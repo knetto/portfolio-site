@@ -568,46 +568,47 @@ document.addEventListener('DOMContentLoaded', function() {
   });
   
   function switchToSection(section) {
-      const tl = gsap.timeline();
-      
-      if (section === 'photography') {
-          // Slide out projects to left
-          tl.to(projectGrid, {
-              x: '-100%',
-              opacity: 0,
-              duration: 0.6,
-              ease: "power2.inOut",
-              onComplete: () => {
-                  projectGrid.style.display = 'none';
-                  photographySection.style.display = 'block';
-              }
-          })
-          // Slide in photography from right
-          .fromTo(photographySection, 
-              { x: '100%', opacity: 0 },
-              { x: '0%', opacity: 1, duration: 0.6, ease: "power2.inOut" },
-              "-=0.3"
-          );
-      } else {
-          // Slide out photography to left
-          tl.to(photographySection, {
-              x: '-100%',
-              opacity: 0,
-              duration: 0.6,
-              ease: "power2.inOut",
-              onComplete: () => {
-                  photographySection.style.display = 'none';
-                  projectGrid.style.display = 'grid';
-              }
-          })
-          // Slide in projects from right
-          .fromTo(projectGrid, 
-              { x: '100%', opacity: 0 },
-              { x: '0%', opacity: 1, duration: 0.6, ease: "power2.inOut" },
-              "-=0.3"
-          );
-      }
-  }
+    const tl = gsap.timeline();
+
+    if (section === 'photography') {
+        // Slide projects LEFT → hide
+        tl.to(projectGrid, {
+            x: '-100%',
+            opacity: 0,
+            duration: 0.6,
+            ease: "power2.inOut",
+            onComplete: () => {
+                projectGrid.style.display = 'none';
+                photographySection.style.display = 'block';
+            }
+        })
+        // Slide photography IN from RIGHT
+        .fromTo(photographySection, 
+            { x: '100%', opacity: 0 },
+            { x: '0%', opacity: 1, duration: 0.6, ease: "power2.inOut" },
+            "-=0.3"
+        );
+    } else {
+        // Slide photography RIGHT → hide
+        tl.to(photographySection, {
+            x: '100%',
+            opacity: 0,
+            duration: 0.6,
+            ease: "power2.inOut",
+            onComplete: () => {
+                photographySection.style.display = 'none';
+                projectGrid.style.display = 'grid';
+            }
+        })
+        // Slide projects IN from LEFT
+        .fromTo(projectGrid, 
+            { x: '-100%', opacity: 0 },
+            { x: '0%', opacity: 1, duration: 0.6, ease: "power2.inOut" },
+            "-=0.3"
+        );
+    }
+}
+
   
   function updateActiveButton(activeButton) {
       // Remove active class from all buttons
