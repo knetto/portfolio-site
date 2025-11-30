@@ -423,10 +423,6 @@ nav .close:hover div::after {
 }
 
 
-:root {
-  /* Assuming you have a CSS variable defined for white color */
-  --white: #ffffff; 
-}
 
 .MainTitle {
   display: flex;
@@ -439,80 +435,72 @@ nav .close:hover div::after {
 .MainTitleBack {
   position: absolute;
   z-index: 1; /* Place it behind the front title */
-  font-size: 10rem;
-  color: var(--white);
-  /* The issue is likely here: this centers horizontally but the 
-     large margin-bottom pushes it up vertically on desktop. */
-  transform: translateX(-50%); 
+  font-size: 10rem; /* 175px / 16px */
+  color: var(--white); /* Adjust text color */
+  transform: translateX(-50%); /* Offset by half the element's width to center it */
   font-weight: 900;
   width: 100%;
-  margin-bottom: 28.125rem;
+  margin-bottom: 28.125rem; /* 450px / 16px */
 }
 
 .MainTitleFront {
-  font-size: 4.6rem;
-  color: var(--white);
+  font-size: 4.6rem; /* 80px / 16px */
+  color: var(--white); /* Adjust text color */
   z-index: 2; /* Ensure it's on top of the back title */
   font-weight: 900;
   line-height: 1.4;
   width: 100%;
 }
 
-/* --- Media Queries for Responsiveness --- */
-
 @media (max-width: 1700px) {
   .MainTitleBack {
-    font-size: 9.375rem;
+    font-size: 9.375rem; /* 150px / 16px */
   }
   .MainTitleFront {
-    font-size: 4.375rem;
+    font-size: 4.375rem; /* 70px / 16px */
   }
 }
 
 @media (max-width: 1500px) {
   .MainTitleBack {
-    font-size: 8.125rem;
+    font-size: 8.125rem; /* 130px / 16px */
   }
   .MainTitleFront {
-    font-size: 3.75rem;
+    font-size: 3.75rem; /* 60px / 16px */
   }
 }
 
 @media (max-width: 1300px) {
   .MainTitleBack {
-    font-size: 6.875rem;
+    font-size: 6.875rem; /* 110px / 16px */
   }
   .MainTitleFront {
-    font-size: 3.125rem;
+    font-size: 3.125rem; /* 50px / 16px */
   }
 }
 
 @media (max-width: 1000px) {
   .MainTitleBack {
-    /* Critical change: switching to vertical centering */
-    top: 50%; 
-    transform: translateX(0); /* Reset transform, although it needs to be fixed */
-    margin-top: -10.3125rem; 
-    margin-bottom: 0; /* Clear desktop margin */
-    font-size: 4.375rem;
+    top: 50%; /* Position the element vertically at the center */
+    margin-top: -10.3125rem; /* -165px / 16px */
+    font-size: 4.375rem; /* 70px / 16px */
   }
   .MainTitleFront {
-    font-size: 1.875rem;
+    font-size: 1.875rem; /* 30px / 16px */
   }
 }
 
 @media (max-width: 700px) {
   .MainTitleBack {
-    top: 50%;
-    margin-top: -9.375rem;
-    font-size: 3.5rem;
+    top: 50%; /* Position the element vertically at the center */
+    margin-top: -9.375rem; /* -150px / 16px */
+    font-size: 3.5rem; /* 50px / 16px */
   }
   .MainTitleFront {
-    font-size: 1.6rem;
+    font-size: 1.6rem; /* 23px / 16px */
   }
-  /* Assuming #container3D, #cursor, .cursor-circle are elsewhere in your HTML */
   #container3D {
-    top: -8.4375rem !important;
+    top: -8.4375rem !important; /* -135px / 16px */
   }
   #cursor {
     display: none !important;
@@ -524,12 +512,12 @@ nav .close:hover div::after {
 
 @media (max-width: 500px) {
   .MainTitleBack {
-    top: 50%;
-    margin-top: -8.75rem;
-    font-size: 11vw; /* Using viewport units */
+    top: 50%; /* Position the element vertically at the center */
+    margin-top: -8.75rem; /* -140px / 16px */
+    font-size: 11vw; /* Based on viewport width, no rem conversion needed */
   }
   .MainTitleFront {
-    font-size: 5vw; /* Using viewport units */
+    font-size: 5vw; /* Based on viewport width, no rem conversion needed */
   }
 }
 
