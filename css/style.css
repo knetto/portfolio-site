@@ -2174,30 +2174,22 @@ textarea.error + .error-message {
 
 .instagram-link a {
   text-decoration: none;
-  font-size: 18px;
+  font-size: 1.125rem; /* 18px responsive */
   font-weight: 600;
   color: #E1306C;
   display: inline-flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
+  position: relative;
+  transition: color 0.3s ease;
+  flex-wrap: wrap; /* Keeps layout clean on small screens */
 }
 
 .insta-icon {
-  width: 24px;
-  height: 24px;
+  width: 28px;
+  height: 28px;
   border-radius: 6px;
-}
-
-.instagram-link a {
-  position: relative;
-  text-decoration: none;
-  font-size: 18px;
-  font-weight: 600;
-  color: #E1306C;
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  transition: color 0.3s ease;
+  flex-shrink: 0;
 }
 
 /* Underline animation */
@@ -2206,7 +2198,7 @@ textarea.error + .error-message {
   position: absolute;
   left: 0;
   bottom: -5px;
-  width: 0%;
+  width: 0;
   height: 2px;
   background-color: #E1306C;
   transition: width 0.3s ease;
@@ -2218,6 +2210,28 @@ textarea.error + .error-message {
 
 .instagram-link a:hover::after {
   width: 100%;
+}
+
+/* 🔹 Mobile responsiveness */
+@media (max-width: 480px) {
+  .instagram-link a {
+    font-size: 1rem; /* Slightly smaller text on mobile */
+  }
+
+  .insta-icon {
+    width: 22px;
+    height: 22px;
+  }
+}
+@media (max-width: 415px) {
+  .instagram-link a {
+    font-size: 0.8rem; /* Slightly smaller text on mobile */
+  }
+
+  .insta-icon {
+    width: 22px;
+    height: 22px;
+  }
 }
 
 
