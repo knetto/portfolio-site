@@ -2,6 +2,14 @@
 document.addEventListener('DOMContentLoaded', function() {
   // Initialize GSAP animations
   initProjectAnimations();
+  initMobileOptimizations(); // Add mobile optimizations
+  
+  // Initial check for visible cards (helps with above-the-fold content)
+  setTimeout(() => {
+    if (window.innerWidth <= 768) {
+      checkVisibleCards();
+    }
+  }, 1000);
 });
 
 function initProjectAnimations() {
@@ -39,7 +47,7 @@ function initProjectAnimations() {
         ease: "power2.out",
         delay: 0.5
     }
-);
+  );
 
   // Animate project cards when they come into view
   animateProjectCards();
@@ -49,22 +57,54 @@ function initProjectAnimations() {
 }
 
 function animateProjectCards() {
+  // Check if mobile device
+  const isMobile = window.innerWidth <= 768;
+  
+  // Mobile-optimized ScrollTrigger settings
+  const mobileSettings = {
+    start: "top 90%",    // Trigger earlier on mobile
+    end: "bottom 50%",
+    toggleActions: "play none none reverse"
+  };
+  
+  const desktopSettings = {
+    start: "top 85%",
+    end: "bottom 60%", 
+    toggleActions: "play none none reverse"
+  };
+
   // Create ScrollTriggers for each project card
   gsap.utils.toArray('.project-card').forEach((card, index) => {
-      // Animate card when it comes into view - fade in and slide up from bottom
-      gsap.to(card, {
-          opacity: 1,
-          y: 0,
-          duration: 1,
-          ease: "power2.out",
-          scrollTrigger: {
-              trigger: card,
-              start: "top 95%",
-              end: "bottom 60%",
-              toggleActions: "play none none reverse",
-              onEnter: () => animateCardContent(card)
+    const settings = isMobile ? mobileSettings : desktopSettings;
+    
+    // Animate card when it comes into view
+    gsap.to(card, {
+      opacity: 1,
+      y: 0,
+      duration: 1,
+      ease: "power2.out",
+      scrollTrigger: {
+        trigger: card,
+        start: settings.start,
+        end: settings.end,
+        toggleActions: settings.toggleActions,
+        onEnter: () => animateCardContent(card),
+        // Add these mobile-specific optimizations:
+        anticipatePin: 1,
+        fastScrollEnd: true,
+        onToggle: self => {
+          // Force animation if it didn't trigger naturally
+          if (self.isActive && card.style.opacity === '0') {
+            gsap.to(card, {
+              opacity: 1,
+              y: 0,
+              duration: 0.8,
+              ease: "power2.out"
+            });
           }
-      });
+        }
+      }
+    });
   });
 }
 
@@ -80,7 +120,7 @@ function animateCardContent(card) {
   gsap.set([h3, date, role, contribution, button], {
     opacity: 0,
     x: -50
-});
+  });
 
   // Create timeline for sequential animations
   const tl = gsap.timeline({ delay: 0.3 });
@@ -118,11 +158,13 @@ function animateCardContent(card) {
 }
 
 function setupContentAnimations() {
+  const isMobile = window.innerWidth <= 768;
+  
   // Additional animations for when cards are fully visible
   gsap.utils.toArray('.project-card').forEach((card) => {
       ScrollTrigger.create({
           trigger: card,
-          start: "top 70%",
+          start: isMobile ? "top 80%" : "top 70%",
           onEnter: () => {
               // Add subtle scale effect when card is in center of view
               gsap.to(card, {
@@ -143,6 +185,67 @@ function setupContentAnimations() {
   });
 }
 
+// Mobile optimization functions
+function initMobileOptimizations() {
+  // Refresh ScrollTrigger on mobile orientation change
+  window.addEventListener('orientationchange', function() {
+    setTimeout(() => {
+      ScrollTrigger.refresh();
+      // Force re-check of all ScrollTriggers
+      ScrollTrigger.getAll().forEach(trigger => {
+        if (trigger.trigger && trigger.trigger.classList.contains('project-card')) {
+          trigger.refresh();
+        }
+      });
+    }, 500);
+  });
+
+  // More aggressive refresh on mobile resize
+  let resizeTimer;
+  window.addEventListener('resize', function() {
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(() => {
+      ScrollTrigger.refresh();
+      
+      // On mobile, also check if any cards in view need animating
+      if (window.innerWidth <= 768) {
+        checkVisibleCards();
+      }
+    }, 250);
+  });
+}
+
+// Function to check and animate visible cards on mobile
+function checkVisibleCards() {
+  gsap.utils.toArray('.project-card').forEach(card => {
+    const rect = card.getBoundingClientRect();
+    const isVisible = (
+      rect.top <= window.innerHeight * 0.9 && 
+      rect.bottom >= window.innerHeight * 0.1
+    );
+    
+    if (isVisible && card.style.opacity === '0') {
+      gsap.to(card, {
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
+        ease: "power2.out"
+      });
+      animateCardContent(card);
+    }
+  });
+}
+
+// Add touch event support to help ScrollTrigger on mobile
+let touchScrollTimer;
+document.addEventListener('touchmove', function() {
+  clearTimeout(touchScrollTimer);
+  touchScrollTimer = setTimeout(() => {
+    // Refresh ScrollTrigger during touch scroll
+    ScrollTrigger.refresh();
+  }, 150);
+}, { passive: true });
+
 // Re-initialize animations when filtering categories
 function reinitAnimations() {
   // Kill existing ScrollTriggers
@@ -161,11 +264,6 @@ function reinitAnimations() {
   // Re-animate visible cards
   animateProjectCards();
 }
-
-// Initialize everything when DOM is loaded
-document.addEventListener('DOMContentLoaded', function() {
-  initProjectAnimations();
-});
 
 // Optional: Add resize handler to recalculate ScrollTriggers
 window.addEventListener('resize', function() {
@@ -635,22 +733,26 @@ const folderPath = "img/Photography/";
 const gallery = document.getElementById("image-gallery");
 
 // Clear existing gallery to avoid duplicates
-gallery.innerHTML = '';
+if (gallery) {
+  gallery.innerHTML = '';
 
-for (let i = 1; i <= totalImages; i++) {
-  const img = document.createElement("img");
-  img.src = `${folderPath}foto (${i}).jpg`;
-  img.alt = `Photo ${i}`;
-  img.loading = "lazy";
-  gallery.appendChild(img);
+  for (let i = 1; i <= totalImages; i++) {
+    const img = document.createElement("img");
+    img.src = `${folderPath}foto (${i}).jpg`;
+    img.alt = `Photo ${i}`;
+    img.loading = "lazy";
+    gallery.appendChild(img);
+  }
+
+  // Initialize photography animations
+  initPhotographyGalleryAnimations();
 }
-
-// Initialize photography animations
-initPhotographyGalleryAnimations();
 
 // Photography gallery scroll-reveal animation - UPDATED VERSION
 function initPhotographyGalleryAnimations() {
   const galleryImages = document.querySelectorAll("#image-gallery img");
+  
+  if (!galleryImages.length) return;
   
   // Kill any existing ScrollTriggers for these elements to avoid duplicates
   galleryImages.forEach(img => {
@@ -679,7 +781,7 @@ function initPhotographyGalleryAnimations() {
         // Refresh when the section becomes visible
         onRefresh: self => {
           // Recalculate when the section becomes visible
-          if (document.getElementById('photography-section').style.display !== 'none') {
+          if (document.getElementById('photography-section') && document.getElementById('photography-section').style.display !== 'none') {
             self.refresh();
           }
         }
@@ -691,7 +793,8 @@ function initPhotographyGalleryAnimations() {
 // Add this function to refresh animations when window resizes
 window.addEventListener('resize', function() {
   // Only refresh photography animations if photography section is visible
-  if (document.getElementById('photography-section').style.display !== 'none') {
+  const photographySection = document.getElementById('photography-section');
+  if (photographySection && photographySection.style.display !== 'none') {
     setTimeout(() => {
       ScrollTrigger.refresh();
       initPhotographyGalleryAnimations();

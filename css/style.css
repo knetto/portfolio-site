@@ -2343,7 +2343,18 @@ textarea.error + .error-message {
   }
 }
 
+.project-card {
+  /* Ensure hardware acceleration */
+  transform: translateZ(0);
+  backface-visibility: hidden;
+  perspective: 1000;
+  will-change: transform, opacity;
+}
 
+/* Improve scrolling performance on mobile */
+.image-gallery, .project-content {
+  transform: translateZ(0);
+}
 
 
 /* button close big card */
