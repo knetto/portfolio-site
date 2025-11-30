@@ -540,3 +540,110 @@ if (e.key === "Escape") closeCard();
 
 // Close button support
 document.querySelector(".close-wrapper").addEventListener("click", closeCard);
+
+
+// Add this to your existing JavaScript file (e.g., cards.js)
+
+document.addEventListener('DOMContentLoaded', function() {
+  const btnSchool = document.getElementById('btn-school');
+  const btnFotografie = document.getElementById('btn-fotografie');
+  const btnPersonal = document.getElementById('btn-personal');
+  const projectGrid = document.getElementById('project-grid');
+  const photographySection = document.getElementById('photography-section');
+  
+  // Button event listeners
+  btnFotografie.addEventListener('click', function() {
+      switchToSection('photography');
+      updateActiveButton(this);
+  });
+  
+  btnSchool.addEventListener('click', function() {
+      switchToSection('school');
+      updateActiveButton(this);
+  });
+  
+  btnPersonal.addEventListener('click', function() {
+      switchToSection('personal');
+      updateActiveButton(this);
+  });
+  
+  function switchToSection(section) {
+      const tl = gsap.timeline();
+      
+      if (section === 'photography') {
+          // Slide out projects to left
+          tl.to(projectGrid, {
+              x: '-100%',
+              opacity: 0,
+              duration: 0.6,
+              ease: "power2.inOut",
+              onComplete: () => {
+                  projectGrid.style.display = 'none';
+                  photographySection.style.display = 'block';
+              }
+          })
+          // Slide in photography from right
+          .fromTo(photographySection, 
+              { x: '100%', opacity: 0 },
+              { x: '0%', opacity: 1, duration: 0.6, ease: "power2.inOut" },
+              "-=0.3"
+          );
+      } else {
+          // Slide out photography to left
+          tl.to(photographySection, {
+              x: '-100%',
+              opacity: 0,
+              duration: 0.6,
+              ease: "power2.inOut",
+              onComplete: () => {
+                  photographySection.style.display = 'none';
+                  projectGrid.style.display = 'grid';
+              }
+          })
+          // Slide in projects from right
+          .fromTo(projectGrid, 
+              { x: '100%', opacity: 0 },
+              { x: '0%', opacity: 1, duration: 0.6, ease: "power2.inOut" },
+              "-=0.3"
+          );
+      }
+  }
+  
+  function updateActiveButton(activeButton) {
+      // Remove active class from all buttons
+      [btnSchool, btnFotografie, btnPersonal].forEach(btn => {
+          btn.classList.remove('active');
+      });
+      
+      // Add active class to clicked button
+      activeButton.classList.add('active');
+  }
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+//photography gallery generation
+
+const totalImages = 71;
+const folderPath = "img/Photography/";
+const gallery = document.getElementById("image-gallery");
+
+for (let i = 1; i <= totalImages; i++) {
+    const img = document.createElement("img");
+    img.src = `${folderPath}foto (${i}).jpg`;
+    img.alt = `Photo ${i}`;
+    img.loading = "lazy";
+    gallery.appendChild(img);
+}

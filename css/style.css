@@ -1733,7 +1733,7 @@ textarea.error + .error-message {
   display: grid;
   grid-template-columns: repeat(2, minmax(250px, 1fr));
   gap: 45px;
-  /* Remove any left/right padding if present */
+  display: grid;
 }
 
 /* Make project cards stack on mobile */
@@ -2145,11 +2145,79 @@ textarea.error + .error-message {
 
 
 
+/* Photography Section Styles */
+.photography-section {
+  width: 100%;
+  min-height: 60vh;
+}
+
+.photography-content {
+  max-width: 1200px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.photography-section,
+.photography-content {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+  padding: 0; /* remove if you don't want offset */
+}
 
 
+.instagram-link {
+  text-align: center;
+  margin-bottom: 15px;
+}
 
+.instagram-link a {
+  text-decoration: none;
+  font-size: 18px;
+  font-weight: 600;
+  color: #E1306C;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
 
+.insta-icon {
+  width: 24px;
+  height: 24px;
+  border-radius: 6px;
+}
 
+.instagram-link a {
+  position: relative;
+  text-decoration: none;
+  font-size: 18px;
+  font-weight: 600;
+  color: #E1306C;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: color 0.3s ease;
+}
+
+/* Underline animation */
+.instagram-link a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -5px;
+  width: 0%;
+  height: 2px;
+  background-color: #E1306C;
+  transition: width 0.3s ease;
+}
+
+.instagram-link a:hover {
+  color: #B22B5A;
+}
+
+.instagram-link a:hover::after {
+  width: 100%;
+}
 
 
 
