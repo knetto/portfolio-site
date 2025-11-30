@@ -1,382 +1,409 @@
 // projects-animations.js
+
+// Register GSAP plugins (kept at the top for clarity)
+gsap.registerPlugin(ScrollTrigger, Flip, Observer, ScrollToPlugin, Draggable, MotionPathPlugin, TextPlugin, CustomEase);
+
+
+// --- INITIALIZATION & SETUP ---
+
 document.addEventListener('DOMContentLoaded', function() {
-  // Initialize GSAP animations
-  initProjectAnimations();
-  initMobileOptimizations();
-  
-  // Force refresh ScrollTrigger after page load
-  setTimeout(() => {
-    ScrollTrigger.refresh();
-    
-    // Double refresh for mobile (sometimes needed)
-    if (window.innerWidth <= 768) {
-      setTimeout(() => {
+    // Initialize GSAP animations
+    initProjectAnimations();
+    initMobileOptimizations(); // Contains the main resize listener now
+
+    // Force refresh ScrollTrigger after page load
+    setTimeout(() => {
         ScrollTrigger.refresh();
-        checkVisibleCards();
-      }, 500);
-    }
-  }, 100);
-  
-  // Initial check for visible cards
-  setTimeout(() => {
-    if (window.innerWidth <= 768) {
-      checkVisibleCards();
-    }
-  }, 1000);
+
+        // Double refresh for mobile (sometimes needed)
+        if (window.innerWidth <= 768) {
+            setTimeout(() => {
+                ScrollTrigger.refresh();
+                checkVisibleCards();
+            }, 500);
+        }
+    }, 100);
+
+    // Initial check for visible cards
+    setTimeout(() => {
+        if (window.innerWidth <= 768) {
+            checkVisibleCards();
+        }
+    }, 1000);
 });
 
 // Handle page show event (when navigating back to page)
 document.addEventListener('pageshow', function(event) {
-  if (event.persisted) {
-    // Page was loaded from cache
-    setTimeout(() => {
-      ScrollTrigger.refresh();
-      if (window.innerWidth <= 768) {
-        checkVisibleCards();
-      }
-    }, 100);
-  }
+    if (event.persisted) {
+        // Page was loaded from cache
+        setTimeout(() => {
+            ScrollTrigger.refresh();
+            if (window.innerWidth <= 768) {
+                checkVisibleCards();
+            }
+        }, 100);
+    }
 });
 
 // Handle visibility change
 document.addEventListener('visibilitychange', function() {
-  if (!document.hidden) {
-    // Page became visible again
-    setTimeout(() => {
-      ScrollTrigger.refresh();
-    }, 300);
-  }
+    if (!document.hidden) {
+        // Page became visible again
+        setTimeout(() => {
+            ScrollTrigger.refresh();
+        }, 300);
+    }
 });
 
 // Add to your navigation menu if you have control
 document.querySelectorAll('nav a').forEach(link => {
-  link.addEventListener('click', function(e) {
-    // Only handle internal HTML navigation
-    if (this.href && this.href.includes('.html')) {
-      // Prepare for page transition
-      ScrollTrigger.getAll().forEach(trigger => {
-        if (trigger.trigger && trigger.trigger.classList.contains('project-card')) {
-          trigger.kill();
+    link.addEventListener('click', function(e) {
+        // Only handle internal HTML navigation
+        if (this.href && this.href.includes('.html')) {
+            // Prepare for page transition
+            ScrollTrigger.getAll().forEach(trigger => {
+                if (trigger.trigger && trigger.trigger.classList.contains('project-card')) {
+                    trigger.kill();
+                }
+            });
         }
-      });
-    }
-  });
+    });
 });
 
 // Force refresh on full page load as well
 window.addEventListener('load', function() {
-  setTimeout(() => {
-    ScrollTrigger.refresh();
-    
-    if (window.innerWidth <= 768) {
-      // Force animation of visible elements on mobile
-      gsap.utils.toArray('.project-card').forEach(card => {
-        const rect = card.getBoundingClientRect();
-        if (rect.top < window.innerHeight && rect.bottom > 0) {
-          gsap.to(card, {
-            opacity: 1,
-            y: 0,
-            duration: 0.6,
-            ease: "power2.out"
-          });
+    setTimeout(() => {
+        ScrollTrigger.refresh();
+
+        if (window.innerWidth <= 768) {
+            // Force animation of visible elements on mobile
+            gsap.utils.toArray('.project-card').forEach(card => {
+                const rect = card.getBoundingClientRect();
+                if (rect.top < window.innerHeight && rect.bottom > 0) {
+                    gsap.to(card, {
+                        opacity: 1,
+                        y: 0,
+                        duration: 0.6,
+                        ease: "power2.out"
+                    });
+                }
+            });
+
+            // Double refresh for good measure
+            setTimeout(() => ScrollTrigger.refresh(), 200);
         }
-      });
-      
-      // Double refresh for good measure
-      setTimeout(() => ScrollTrigger.refresh(), 200);
-    }
-  }, 100);
+    }, 100);
 });
 
+
+// --- CORE ANIMATION FUNCTIONS ---
+
 function initProjectAnimations() {
-  // First, set all project cards to be hidden initially
-  gsap.set('.project-card', {
-      opacity: 0,
-      y: 100
-  });
-
-  // Fade in the work title
-  gsap.fromTo('.work-title', 
-      { 
-          opacity: 0, 
-          y: 50 
-      },
-      { 
-          opacity: 1, 
-          y: 0, 
-          duration: 1, 
-          ease: "power2.out" 
-      }
-  );
-
-  gsap.fromTo('.category-buttons',
-    {
+    // First, set all project cards to be hidden initially
+    gsap.set('.project-card', {
         opacity: 0,
-        x: -100,
-        immediateRender: false
-    },
-    {
-        opacity: 1,
-        x: 0,
-        duration: 0.8,
-        stagger: 0.2,
-        ease: "power2.out",
-        delay: 0.5
-    }
-  );
+        y: 100
+    });
 
-  // Animate project cards when they come into view
-  animateProjectCards();
-  
-  // Animate project content after cards are visible
-  setupContentAnimations();
+    // Fade in the work title
+    gsap.fromTo('.work-title',
+        {
+            opacity: 0,
+            y: 50
+        },
+        {
+            opacity: 1,
+            y: 0,
+            duration: 1,
+            ease: "power2.out"
+        }
+    );
+
+    gsap.fromTo('.category-buttons',
+        {
+            opacity: 0,
+            x: -100,
+            immediateRender: false
+        },
+        {
+            opacity: 1,
+            x: 0,
+            duration: 0.8,
+            stagger: 0.2,
+            ease: "power2.out",
+            delay: 0.5
+        }
+    );
+
+    // Animate project cards when they come into view
+    animateProjectCards();
+
+    // Animate project content after cards are visible
+    setupContentAnimations();
 }
 
 function animateProjectCards() {
-  // Check if mobile device
-  const isMobile = window.innerWidth <= 768;
-  
-  // Mobile-optimized ScrollTrigger settings
-  const mobileSettings = {
-    start: "top 90%",    // Trigger earlier on mobile
-    end: "bottom 50%",
-    toggleActions: "play none none reverse"
-  };
-  
-  const desktopSettings = {
-    start: "top 85%",
-    end: "bottom 60%", 
-    toggleActions: "play none none reverse"
-  };
-
-  // Create ScrollTriggers for each project card
-  gsap.utils.toArray('.project-card').forEach((card, index) => {
-    const settings = isMobile ? mobileSettings : desktopSettings;
-    
-    // Animate card when it comes into view
-    gsap.to(card, {
-      opacity: 1,
-      y: 0,
-      duration: 1,
-      ease: "power2.out",
-      scrollTrigger: {
-        trigger: card,
-        start: settings.start,
-        end: settings.end,
-        toggleActions: settings.toggleActions,
-        onEnter: () => animateCardContent(card),
-        // Add these mobile-specific optimizations:
-        anticipatePin: 1,
-        fastScrollEnd: true,
-        onToggle: self => {
-          // Force animation if it didn't trigger naturally
-          if (self.isActive && card.style.opacity === '0') {
-            gsap.to(card, {
-              opacity: 1,
-              y: 0,
-              duration: 0.8,
-              ease: "power2.out"
-            });
-          }
-        },
-        // Add refresh callback for navigation issues
-        onRefresh: self => {
-          if (self.isActive && getComputedStyle(card).opacity === '0') {
-            gsap.to(card, {
-              opacity: 1,
-              y: 0,
-              duration: 0.5,
-              ease: "power2.out"
-            });
-          }
+    // Kill existing triggers for project cards before creating new ones
+    ScrollTrigger.getAll().forEach(trigger => {
+        if (trigger.trigger && trigger.trigger.classList.contains('project-card')) {
+            trigger.kill();
         }
-      }
     });
-  });
+
+    const isMobile = window.innerWidth <= 768;
+
+    // Mobile-optimized ScrollTrigger settings
+    const mobileSettings = {
+        start: "top 90%",
+        end: "bottom 50%",
+        toggleActions: "play none none reverse"
+    };
+
+    const desktopSettings = {
+        start: "top 85%",
+        end: "bottom 60%",
+        toggleActions: "play none none reverse"
+    };
+
+    // Create ScrollTriggers for each project card
+    gsap.utils.toArray('.project-card').forEach((card, index) => {
+        const settings = isMobile ? mobileSettings : desktopSettings;
+
+        // Animate card when it comes into view
+        gsap.to(card, {
+            opacity: 1,
+            y: 0,
+            duration: 1,
+            ease: "power2.out",
+            scrollTrigger: {
+                trigger: card,
+                start: settings.start,
+                end: settings.end,
+                toggleActions: settings.toggleActions,
+                onEnter: () => animateCardContent(card),
+                // Add these mobile-specific optimizations:
+                anticipatePin: 1,
+                fastScrollEnd: true,
+                onToggle: self => {
+                    // Force animation if it didn't trigger naturally
+                    if (self.isActive && card.style.opacity === '0') {
+                        gsap.to(card, {
+                            opacity: 1,
+                            y: 0,
+                            duration: 0.8,
+                            ease: "power2.out"
+                        });
+                    }
+                },
+                // Add refresh callback for navigation issues
+                onRefresh: self => {
+                    if (self.isActive && getComputedStyle(card).opacity === '0') {
+                        gsap.to(card, {
+                            opacity: 1,
+                            y: 0,
+                            duration: 0.5,
+                            ease: "power2.out"
+                        });
+                    }
+                }
+            }
+        });
+    });
 }
 
 function animateCardContent(card) {
-  const content = card.querySelector('.project-content');
-  const h3 = content.querySelector('h3');
-  const role = content.querySelector('.role');
-  const contribution = content.querySelector('.contribution');
-  const button = content.querySelector('.view-btn');
-  const date = content.querySelector('.project-date');
+    const content = card.querySelector('.project-content');
+    const h3 = content.querySelector('h3');
+    const role = content.querySelector('.role');
+    const contribution = content.querySelector('.contribution');
+    const button = content.querySelector('.view-btn');
+    const date = content.querySelector('.project-date');
 
-  // Set initial state for content elements (hidden and shifted left)
-  gsap.set([h3, date, role, contribution, button], {
-    opacity: 0,
-    x: -50
-  });
+    // Set initial state for content elements (hidden and shifted left)
+    gsap.set([h3, date, role, contribution, button], {
+        opacity: 0,
+        x: -50
+    });
 
-  // Create timeline for sequential animations
-  const tl = gsap.timeline({ delay: 0.3 });
+    // Create timeline for sequential animations
+    const tl = gsap.timeline({ delay: 0.3 });
 
-  tl.to(h3, {
-      opacity: 1,
-      x: 0,
-      duration: 0.6,
-      ease: "power2.out"
-  })
-  .to(date, {
-      opacity: 0.7,
-      x: 0,
-      duration: 0.5,
-      ease: "power2.out"
-  }, "-=0.3")
-  .to(role, {
-      opacity: 1,
-      x: 0,
-      duration: 0.6,
-      ease: "power2.out"
-  }, "-=0.3")
-  .to(contribution, {
-      opacity: 1,
-      x: 0,
-      duration: 0.6,
-      ease: "power2.out"
-  }, "-=0.3")
-  .to(button, {
-      opacity: 1,
-      x: 0,
-      duration: 0.6,
-      ease: "power2.out"
-  }, "-=0.3");
+    tl.to(h3, {
+        opacity: 1,
+        x: 0,
+        duration: 0.6,
+        ease: "power2.out"
+    })
+    .to(date, {
+        opacity: 0.7,
+        x: 0,
+        duration: 0.5,
+        ease: "power2.out"
+    }, "-=0.3")
+    .to(role, {
+        opacity: 1,
+        x: 0,
+        duration: 0.6,
+        ease: "power2.out"
+    }, "-=0.3")
+    .to(contribution, {
+        opacity: 1,
+        x: 0,
+        duration: 0.6,
+        ease: "power2.out"
+    }, "-=0.3")
+    .to(button, {
+        opacity: 1,
+        x: 0,
+        duration: 0.6,
+        ease: "power2.out"
+    }, "-=0.3");
 }
 
 function setupContentAnimations() {
-  const isMobile = window.innerWidth <= 768;
-  
-  // Additional animations for when cards are fully visible
-  gsap.utils.toArray('.project-card').forEach((card) => {
-      ScrollTrigger.create({
-          trigger: card,
-          start: isMobile ? "top 80%" : "top 70%",
-          onEnter: () => {
-              // Add subtle scale effect when card is in center of view
-              gsap.to(card, {
-                  scale: 1.02,
-                  duration: 0.3,
-                  ease: "power1.out"
-              });
-          },
-          onLeaveBack: () => {
-              // Reset scale when leaving view
-              gsap.to(card, {
-                  scale: 1,
-                  duration: 0.3,
-                  ease: "power1.out"
-              });
-          }
-      });
-  });
+    const isMobile = window.innerWidth <= 768;
+
+    // Additional animations for when cards are fully visible
+    gsap.utils.toArray('.project-card').forEach((card) => {
+        ScrollTrigger.create({
+            trigger: card,
+            start: isMobile ? "top 80%" : "top 70%",
+            onEnter: () => {
+                // Add subtle scale effect when card is in center of view
+                gsap.to(card, {
+                    scale: 1.02,
+                    duration: 0.3,
+                    ease: "power1.out"
+                });
+            },
+            onLeaveBack: () => {
+                // Reset scale when leaving view
+                gsap.to(card, {
+                    scale: 1,
+                    duration: 0.3,
+                    ease: "power1.out"
+                });
+            }
+        });
+    });
 }
+
+
+// --- REFRESH/UTILITY FUNCTIONS ---
 
 // Mobile optimization functions
 function initMobileOptimizations() {
-  // Refresh ScrollTrigger on mobile orientation change
-  window.addEventListener('orientationchange', function() {
-    setTimeout(() => {
-      ScrollTrigger.refresh();
-      checkVisibleCards();
-    }, 500);
-  });
-
-  // More aggressive refresh on mobile resize
-  let resizeTimer;
-  window.addEventListener('resize', function() {
-    clearTimeout(resizeTimer);
-    resizeTimer = setTimeout(() => {
-      ScrollTrigger.refresh();
-      
-      // On mobile, also check if any cards in view need animating
-      if (window.innerWidth <= 768) {
-        checkVisibleCards();
-      }
-    }, 250);
-  });
-
-  // Add page transition support
-  window.addEventListener('beforeunload', function() {
-    // Clean up ScrollTriggers before leaving page
-    ScrollTrigger.getAll().forEach(trigger => {
-      if (trigger.trigger && trigger.trigger.classList.contains('project-card')) {
-        trigger.kill();
-      }
+    // Refresh ScrollTrigger on mobile orientation change
+    window.addEventListener('orientationchange', function() {
+        setTimeout(() => {
+            ScrollTrigger.refresh(true);
+            checkVisibleCards();
+        }, 500);
     });
-  });
+
+    // *** FIXED/IMPROVED: Single, robust, debounced resize handler ***
+    let resizeTimer;
+    window.addEventListener('resize', function() {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(() => {
+            // Always refresh ScrollTrigger globally
+            ScrollTrigger.refresh(true); // 'true' forces a full recalculation
+
+            const photographySection = document.getElementById('photography-section');
+            const isPhotographyVisible = photographySection && photographySection.style.display !== 'none';
+
+            if (isPhotographyVisible) {
+                initPhotographyGalleryAnimations();
+            } else {
+                reinitAnimations(); // Kills and recreates project card triggers
+            }
+
+            // On mobile, also check if any cards in view need animating
+            if (window.innerWidth <= 768) {
+                checkVisibleCards();
+            }
+        }, 250);
+    });
+
+    // Add page transition support
+    window.addEventListener('beforeunload', function() {
+        // Clean up ScrollTriggers before leaving page
+        ScrollTrigger.getAll().forEach(trigger => {
+            if (trigger.trigger && trigger.trigger.classList.contains('project-card')) {
+                trigger.kill();
+            }
+        });
+    });
 }
 
 // Enhanced check visible cards function
 function checkVisibleCards() {
-  let animatedCount = 0;
-  
-  gsap.utils.toArray('.project-card').forEach(card => {
-    const rect = card.getBoundingClientRect();
-    const isVisible = (
-      rect.top <= window.innerHeight * 0.9 && 
-      rect.bottom >= window.innerHeight * 0.1
-    );
-    
-    if (isVisible && (card.style.opacity === '0' || getComputedStyle(card).opacity === '0')) {
-      gsap.to(card, {
-        opacity: 1,
-        y: 0,
-        duration: 0.8,
-        ease: "power2.out",
-        onComplete: () => {
-          animatedCount++;
-          // If we animated cards but ScrollTrigger might still be broken, force refresh
-          if (animatedCount > 0) {
-            setTimeout(() => ScrollTrigger.refresh(), 100);
-          }
+    let animatedCount = 0;
+
+    gsap.utils.toArray('.project-card').forEach(card => {
+        const rect = card.getBoundingClientRect();
+        const isVisible = (
+            rect.top <= window.innerHeight * 0.9 &&
+            rect.bottom >= window.innerHeight * 0.1
+        );
+
+        if (isVisible && (card.style.opacity === '0' || getComputedStyle(card).opacity === '0')) {
+            gsap.to(card, {
+                opacity: 1,
+                y: 0,
+                duration: 0.8,
+                ease: "power2.out",
+                onComplete: () => {
+                    animatedCount++;
+                    // If we animated cards but ScrollTrigger might still be broken, force refresh
+                    if (animatedCount > 0) {
+                        setTimeout(() => ScrollTrigger.refresh(), 100);
+                    }
+                }
+            });
+            animateCardContent(card);
         }
-      });
-      animateCardContent(card);
+    });
+
+    // If no cards were animated but we're on mobile, force one more check
+    if (animatedCount === 0 && window.innerWidth <= 768) {
+        setTimeout(() => {
+            ScrollTrigger.refresh();
+        }, 500);
     }
-  });
-  
-  // If no cards were animated but we're on mobile, force one more check
-  if (animatedCount === 0 && window.innerWidth <= 768) {
-    setTimeout(() => {
-      ScrollTrigger.refresh();
-    }, 500);
-  }
 }
 
 // Add touch event support to help ScrollTrigger on mobile
 let touchScrollTimer;
 document.addEventListener('touchmove', function() {
-  clearTimeout(touchScrollTimer);
-  touchScrollTimer = setTimeout(() => {
-    // Refresh ScrollTrigger during touch scroll
-    ScrollTrigger.refresh();
-  }, 150);
+    clearTimeout(touchScrollTimer);
+    touchScrollTimer = setTimeout(() => {
+        // Refresh ScrollTrigger during touch scroll
+        ScrollTrigger.refresh();
+    }, 150);
 }, { passive: true });
 
 // Re-initialize animations when filtering categories
 function reinitAnimations() {
-  // Kill existing ScrollTriggers
-  ScrollTrigger.getAll().forEach(trigger => {
-      if (trigger.trigger && trigger.trigger.classList.contains('project-card')) {
-          trigger.kill();
-      }
-  });
+    // Kill existing ScrollTriggers
+    ScrollTrigger.getAll().forEach(trigger => {
+        if (trigger.trigger && trigger.trigger.classList.contains('project-card')) {
+            trigger.kill();
+        }
+    });
 
-  // Reset cards to hidden state
-  gsap.set('.project-card', {
-      opacity: 0,
-      y: 100
-  });
+    // Reset cards to hidden state
+    gsap.set('.project-card', {
+        opacity: 0,
+        y: 100
+    });
 
-  // Re-animate visible cards
-  animateProjectCards();
+    // Re-animate visible cards
+    animateProjectCards();
 }
 
-// Optional: Add resize handler to recalculate ScrollTriggers
-window.addEventListener('resize', function() {
-  ScrollTrigger.refresh();
-});
+
+// --- CARD EXPANSION LOGIC ---
 
 // Card expansion functionality
 let activeClone = null;
@@ -385,579 +412,525 @@ let fullscreenLenis = null;
 let scrollTriggerInstances = [];
 
 document.querySelectorAll('.view-btn').forEach(btn => {
-btn.addEventListener('click', () => {
-  const card = btn.closest('.project-card');
-  const img = card.querySelector('.image-wrapper img');
-  const content = card.querySelector('.project-content');
-  const wrapper = card.querySelector('.image-wrapper');
+    btn.addEventListener('click', () => {
+        const card = btn.closest('.project-card');
+        const img = card.querySelector('.image-wrapper img');
+        const content = card.querySelector('.project-content');
+        const wrapper = card.querySelector('.image-wrapper');
 
-  // Remove gradient overlay
-  wrapper.classList.add("remove-gradient");
+        // Remove gradient overlay
+        wrapper.classList.add("remove-gradient");
 
-  // Phase 1 — wipe + fill
-  const tl = gsap.timeline({
-    defaults: { duration: 0.6, ease: "power3.inOut" }
-  });
+        // Phase 1 — wipe + fill
+        const tl = gsap.timeline({
+            defaults: { duration: 0.6, ease: "power3.inOut" }
+        });
 
-  tl.to(content, { opacity: 0 }, 0);
-  tl.to(img, { clipPath: "polygon(0 0, 100% 0, 100% 0, 0 0)" }, 0);
-  tl.to(card, { backgroundColor: "var(--white)" }, 0.15);
+        tl.to(content, { opacity: 0 }, 0);
+        tl.to(img, { clipPath: "polygon(0 0, 100% 0, 100% 0, 0 0)" }, 0);
+        tl.to(card, { backgroundColor: "var(--white)" }, 0.15);
 
-  tl.add(() => openCard(card), "+=0.1");
-});
+        tl.add(() => openCard(card), "+=0.1");
+    });
 });
 
 function openCard(card) {
-const rect = card.getBoundingClientRect();
-activeOriginal = card;
+    const rect = card.getBoundingClientRect();
+    activeOriginal = card;
 
-const clone = card.cloneNode(true);
-clone.classList.add("big-card");
-document.body.appendChild(clone);
-activeClone = clone;
+    const clone = card.cloneNode(true);
+    clone.classList.add("big-card");
+    document.body.appendChild(clone);
+    activeClone = clone;
 
-const startW = rect.width;
-const startH = rect.height;
-const startTop = rect.top;
-const startLeft = rect.left;
+    const startW = rect.width;
+    const startH = rect.height;
+    const startTop = rect.top;
+    const startLeft = rect.left;
 
-const endW = window.innerWidth;
-const endH = window.innerHeight;
+    const endW = window.innerWidth;
+    const endH = window.innerHeight;
 
-const finalTop = (window.innerHeight - endH) / 2;
-const finalLeft = (window.innerWidth - endW) / 2;
+    const finalTop = (window.innerHeight - endH) / 2;
+    const finalLeft = (window.innerWidth - endW) / 2;
 
-gsap.set(clone, {
-  position: "fixed",
-  top: startTop,
-  left: startLeft,
-  width: startW,
-  height: startH,
-  xPercent: 0,
-  yPercent: 0,
-  transform: "none",
-  zIndex: 99,
-});
-
-gsap.to(clone, {
-  duration: 1.2,
-  ease: "power4.inOut",
-  width: endW,
-  height: endH,
-  top: finalTop,
-  left: finalLeft,
-  borderRadius: "0px",
-  onComplete: () => {
-    // Stop page scrolling (Lenis)
-    window.lenis.stop();
-
-    activeClone.style.overflow = "hidden";
-    setTimeout(() => {
-      activeClone.style.overflowY = "auto";
-    }, 50);
-
-    // Start Lenis scroll inside fullscreen card
-    fullscreenLenis = new Lenis({
-      wrapper: activeClone,
-      content: activeClone,
-      duration: 0.7,
-      smoothWheel: true,
-      smoothTouch: true,
-      gestureDirection: "vertical"
+    gsap.set(clone, {
+        position: "fixed",
+        top: startTop,
+        left: startLeft,
+        width: startW,
+        height: startH,
+        xPercent: 0,
+        yPercent: 0,
+        transform: "none",
+        zIndex: 99,
     });
 
-    function rafFullscreen(time) {
-      if (fullscreenLenis) fullscreenLenis.raf(time);
-      requestAnimationFrame(rafFullscreen);
-    }
-    requestAnimationFrame(rafFullscreen);
+    gsap.to(clone, {
+        duration: 1.2,
+        ease: "power4.inOut",
+        width: endW,
+        height: endH,
+        top: finalTop,
+        left: finalLeft,
+        borderRadius: "0px",
+        onComplete: () => {
+            // Stop page scrolling (Lenis)
+            window.lenis.stop();
 
-    document.body.classList.add("dimmed", "fullscreen-active");
-    document.body.style.overflow = "hidden";
-    activeClone.style.overflowY = "auto";
-    activeClone.style.overflowX = "hidden";
-    activeClone.style.pointerEvents = "auto";
+            activeClone.style.overflow = "hidden";
+            setTimeout(() => {
+                activeClone.style.overflowY = "auto";
+            }, 50);
 
-    // Show close button
-    const closeBtn = document.getElementById("close-fullscreen");
-    closeBtn.style.display = "block";
+            // Start Lenis scroll inside fullscreen card
+            fullscreenLenis = new Lenis({
+                wrapper: activeClone,
+                content: activeClone,
+                duration: 0.7,
+                smoothWheel: true,
+                smoothTouch: true,
+                gestureDirection: "vertical"
+            });
 
-    // Insert card-specific revealed content
-    const extra = card.querySelector(".project-extra");
-    if (extra) {
-      const cloneExtra = extra.cloneNode(true);
-      cloneExtra.classList.add("fullscreen-extra");
-      cloneExtra.style.display = "block";
-      activeClone.appendChild(cloneExtra);
-      
-      // Activate scrolling animations for image gallery and videos
-      requestAnimationFrame(() => initFullscreenScrollAnimations(activeClone));
+            function rafFullscreen(time) {
+                if (fullscreenLenis) fullscreenLenis.raf(time);
+                requestAnimationFrame(rafFullscreen);
+            }
+            requestAnimationFrame(rafFullscreen);
 
-      // Animate the project-extra content with modern effects
-      animateProjectExtra(cloneExtra);
+            document.body.classList.add("dimmed", "fullscreen-active");
+            document.body.style.overflow = "hidden";
+            activeClone.style.overflowY = "auto";
+            activeClone.style.overflowX = "hidden";
+            activeClone.style.pointerEvents = "auto";
 
-      requestAnimationFrame(() => {
-        cloneExtra.classList.add("visible");
-      });
-    }
-  }
-});
+            // Show close button
+            const closeBtn = document.getElementById("close-fullscreen");
+            closeBtn.style.display = "block";
+
+            // Insert card-specific revealed content
+            const extra = card.querySelector(".project-extra");
+            if (extra) {
+                const cloneExtra = extra.cloneNode(true);
+                cloneExtra.classList.add("fullscreen-extra");
+                cloneExtra.style.display = "block";
+                activeClone.appendChild(cloneExtra);
+
+                // Activate scrolling animations for image gallery and videos
+                requestAnimationFrame(() => initFullscreenScrollAnimations(activeClone));
+
+                // Animate the project-extra content with modern effects
+                animateProjectExtra(cloneExtra);
+
+                requestAnimationFrame(() => {
+                    cloneExtra.classList.add("visible");
+                });
+            }
+        }
+    });
 }
 
 // Modern animation for project-extra content with scroll-triggered effects
 function animateProjectExtra(container) {
-// Animate the layout elements
-const layout = container.querySelector('.extra-layout');
-if (layout) {
-  const media = layout.querySelector('.extra-media');
-  const content = layout.querySelector('.extra-content');
-  
-  const layoutTl = gsap.timeline({ defaults: { ease: "power3.out" } });
-  
-  layoutTl.from(media, {
-    duration: 0.8,
-    x: -50,
-    opacity: 0,
-    scale: 0.95
-  }, 0);
-  
-  layoutTl.from(content, {
-    duration: 0.8,
-    x: 50,
-    opacity: 0,
-    scale: 0.95
-  }, 0.1);
-  
-  layoutTl.from(content.querySelectorAll('*'), {
-    duration: 0.6,
-    y: 20,
-    opacity: 0,
-    stagger: 0.05
-  }, 0.3);
-}
+    // Animate the layout elements
+    const layout = container.querySelector('.extra-layout');
+    if (layout) {
+        const media = layout.querySelector('.extra-media');
+        const content = layout.querySelector('.extra-content');
 
-const description = container.querySelector('.project-description');
-if (description) {
-  gsap.from(description, {
-    duration: 0.7,
-    y: 30,
-    opacity: 0,
-    delay: 0.5,
-    ease: "power2.out"
-  });
-}
+        const layoutTl = gsap.timeline({ defaults: { ease: "power3.out" } });
 
-const divider = container.querySelector('.divider-line');
-if (divider) {
-  gsap.from(divider, {
-    duration: 0.6,
-    scaleX: 0,
-    delay: 0.7,
-    ease: "power2.out"
-  });
-}
+        layoutTl.from(media, {
+            duration: 0.8,
+            x: -50,
+            opacity: 0,
+            scale: 0.95
+        }, 0);
 
-const videos = container.querySelectorAll('.video-wrapper');
-if (videos.length) {
-  videos.forEach((video, index) => {
-    const tl = gsap.timeline({
-      scrollTrigger: {
-        trigger: video,
-        start: "top 90%",
-        end: "bottom 20%",
-        toggleActions: "play none none none",
-        container: activeClone
-      }
-    });
-    
-    tl.from(video, { y: 60, opacity: 0 })
-      .to(video, {
-        y: 0,
-        opacity: 1,
-        duration: 0.8,
-        ease: "power2.out"
-      });
-    
-    scrollTriggerInstances.push(tl.scrollTrigger);
-  });
-}
+        layoutTl.from(content, {
+            duration: 0.8,
+            x: 50,
+            opacity: 0,
+            scale: 0.95
+        }, 0.1);
 
-const galleryImages = container.querySelectorAll('.image-gallery img');
-if (galleryImages.length) {
-  galleryImages.forEach((img, index) => {
-    const tl = gsap.timeline({
-      scrollTrigger: {
-        trigger: img,
-        start: "top 90%",
-        end: "bottom 20%",
-        toggleActions: "play none none none",
-        container: activeClone
-      }
-    });
-    
-    tl.from(img, { y: 60, opacity: 0 })
-      .to(img, {
-        y: 0,
-        opacity: 1,
-        duration: 0.8,
-        ease: "power2.out"
-      });
-    
-    scrollTriggerInstances.push(tl.scrollTrigger);
-  });
-}
+        layoutTl.from(content.querySelectorAll('*'), {
+            duration: 0.6,
+            y: 20,
+            opacity: 0,
+            stagger: 0.05
+        }, 0.3);
+    }
+
+    const description = container.querySelector('.project-description');
+    if (description) {
+        gsap.from(description, {
+            duration: 0.7,
+            y: 30,
+            opacity: 0,
+            delay: 0.5,
+            ease: "power2.out"
+        });
+    }
+
+    const divider = container.querySelector('.divider-line');
+    if (divider) {
+        gsap.from(divider, {
+            duration: 0.6,
+            scaleX: 0,
+            delay: 0.7,
+            ease: "power2.out"
+        });
+    }
+
+    const videos = container.querySelectorAll('.video-wrapper');
+    if (videos.length) {
+        videos.forEach((video, index) => {
+            const tl = gsap.timeline({
+                scrollTrigger: {
+                    trigger: video,
+                    start: "top 90%",
+                    end: "bottom 20%",
+                    toggleActions: "play none none none",
+                    container: activeClone
+                }
+            });
+
+            tl.from(video, { y: 60, opacity: 0 })
+                .to(video, {
+                    y: 0,
+                    opacity: 1,
+                    duration: 0.8,
+                    ease: "power2.out"
+                });
+
+            scrollTriggerInstances.push(tl.scrollTrigger);
+        });
+    }
+
+    const galleryImages = container.querySelectorAll('.image-gallery img');
+    if (galleryImages.length) {
+        galleryImages.forEach((img, index) => {
+            const tl = gsap.timeline({
+                scrollTrigger: {
+                    trigger: img,
+                    start: "top 90%",
+                    end: "bottom 20%",
+                    toggleActions: "play none none none",
+                    container: activeClone
+                }
+            });
+
+            tl.from(img, { y: 60, opacity: 0 })
+                .to(img, {
+                    y: 0,
+                    opacity: 1,
+                    duration: 0.8,
+                    ease: "power2.out"
+                });
+
+            scrollTriggerInstances.push(tl.scrollTrigger);
+        });
+    }
 }
 
 function initFullscreenScrollAnimations(wrapper) {
-const revealImgs = wrapper.querySelectorAll(".image-gallery img");
-const revealVideos = wrapper.querySelectorAll(".video-wrapper");
+    const revealImgs = wrapper.querySelectorAll(".image-gallery img");
+    const revealVideos = wrapper.querySelectorAll(".video-wrapper");
 
-revealImgs.forEach((img, index) => {
-  gsap.set(img, { y: 80, opacity: 0 });
+    revealImgs.forEach((img, index) => {
+        gsap.set(img, { y: 80, opacity: 0 });
 
-  gsap.to(img, {
-    y: 0,
-    opacity: 1,
-    duration: 0.9,
-    ease: "power3.out",
-    scrollTrigger: {
-      trigger: img,
-      start: "top 90%",
-      toggleActions: "play none none none",
-      scroller: wrapper
-    }
-  });
-});
+        gsap.to(img, {
+            y: 0,
+            opacity: 1,
+            duration: 0.9,
+            ease: "power3.out",
+            scrollTrigger: {
+                trigger: img,
+                start: "top 90%",
+                toggleActions: "play none none none",
+                scroller: wrapper
+            }
+        });
+    });
 
-revealVideos.forEach((video, index) => {
-  gsap.set(video, { y: 80, opacity: 0 });
+    revealVideos.forEach((video, index) => {
+        gsap.set(video, { y: 80, opacity: 0 });
 
-  gsap.to(video, {
-    y: 0,
-    opacity: 1,
-    duration: 0.9,
-    ease: "power3.out",
-    scrollTrigger: {
-      trigger: video,
-      start: "top 90%",
-      toggleActions: "play none none none",
-      scroller: wrapper
-    }
-  });
-});
+        gsap.to(video, {
+            y: 0,
+            opacity: 1,
+            duration: 0.9,
+            ease: "power3.out",
+            scrollTrigger: {
+                trigger: video,
+                start: "top 90%",
+                toggleActions: "play none none none",
+                scroller: wrapper
+            }
+        });
+    });
 }
 
 function closeCard() {
-if (!activeClone || !activeOriginal) return;
+    if (!activeClone || !activeOriginal) return;
 
-document.body.classList.remove("dimmed", "fullscreen-active");
-document.body.style.overflow = "";
+    document.body.classList.remove("dimmed", "fullscreen-active");
+    document.body.style.overflow = "";
 
-const rect = activeOriginal.getBoundingClientRect();
-activeClone.style.overflow = "hidden";
+    const rect = activeOriginal.getBoundingClientRect();
+    activeClone.style.overflow = "hidden";
 
-const img = activeOriginal.querySelector('.image-wrapper img');
-const content = activeOriginal.querySelector('.project-content');
-const wrapper = activeOriginal.querySelector('.image-wrapper');
+    const img = activeOriginal.querySelector('.image-wrapper img');
+    const content = activeOriginal.querySelector('.project-content');
+    const wrapper = activeOriginal.querySelector('.image-wrapper');
 
-document.getElementById("close-fullscreen").style.display = "none";
+    document.getElementById("close-fullscreen").style.display = "none";
 
-scrollTriggerInstances.forEach(instance => instance.kill());
-scrollTriggerInstances = [];
+    // Kill all ScrollTriggers created inside the fullscreen card
+    scrollTriggerInstances.forEach(instance => instance.kill());
+    scrollTriggerInstances = [];
 
-const closeTl = gsap.timeline({
-  onComplete: () => {
-    if (fullscreenLenis) {
-      fullscreenLenis.destroy();
-      fullscreenLenis = null;
-    }
-    
-    window.lenis.start();
-    wrapper.classList.remove("remove-gradient");
-    
-    gsap.to(img, {
-      duration: 0.4,
-      clipPath: "polygon(0 0, 100% 0, 100% 88%, 0 95%)",
-      ease: "power2.out",
-      onComplete: () => {
-        gsap.to(content, {
-          opacity: 1,
-          duration: 0.4,
-          delay: 0.2,
-          ease: "power2.out"
-        });
-      }
+    const closeTl = gsap.timeline({
+        onComplete: () => {
+            if (fullscreenLenis) {
+                fullscreenLenis.destroy();
+                fullscreenLenis = null;
+            }
+
+            window.lenis.start();
+            wrapper.classList.remove("remove-gradient");
+
+            gsap.to(img, {
+                duration: 0.4,
+                clipPath: "polygon(0 0, 100% 0, 100% 88%, 0 95%)",
+                ease: "power2.out",
+                onComplete: () => {
+                    gsap.to(content, {
+                        opacity: 1,
+                        duration: 0.4,
+                        delay: 0.2,
+                        ease: "power2.out"
+                    });
+                }
+            });
+
+            if (activeClone) {
+                activeClone.remove();
+                activeClone = null;
+            }
+            activeOriginal = null;
+
+            // *** FIXED/IMPROVED: Force refresh of all main page ScrollTriggers ***
+            ScrollTrigger.refresh(true);
+        }
     });
 
-    if (activeClone) {
-      activeClone.remove();
-      activeClone = null;
+    const fullscreenExtra = activeClone.querySelector(".fullscreen-extra");
+
+    if (fullscreenExtra) {
+        closeTl.to(fullscreenExtra, {
+            duration: 0.3,
+            opacity: 0,
+            ease: "none"
+        });
     }
-    activeOriginal = null;
-  }
-});
 
-const fullscreenExtra = activeClone.querySelector(".fullscreen-extra");
+    const visibleContent = activeClone.querySelectorAll('.project-content, .image-wrapper, .big-card > *:not(.fullscreen-extra)');
+    if (visibleContent.length) {
+        closeTl.to(visibleContent, {
+            duration: 0.25,
+            opacity: 0,
+            ease: "none"
+        }, 0);
+    }
 
-if (fullscreenExtra) {
-  closeTl.to(fullscreenExtra, {
-    duration: 0.3,
-    opacity: 0,
-    ease: "none"
-  });
-}
+    closeTl.to({}, {
+        duration: 0.5,
+        ease: "none"
+    });
 
-const visibleContent = activeClone.querySelectorAll('.project-content, .image-wrapper, .big-card > *:not(.fullscreen-extra)');
-if (visibleContent.length) {
-  closeTl.to(visibleContent, {
-    duration: 0.25,
-    opacity: 0,
-    ease: "none"
-  }, 0);
-}
+    closeTl.to(activeClone, {
+        duration: 0.7,
+        ease: "power3.in",
+        width: rect.width,
+        height: rect.height,
+        top: rect.top,
+        left: rect.left,
+        borderRadius: window.getComputedStyle(activeOriginal).borderRadius
+    });
 
-closeTl.to({}, {
-  duration: 0.5,
-  ease: "none"
-});
-
-closeTl.to(activeClone, {
-  duration: 0.7,
-  ease: "power3.in",
-  width: rect.width,
-  height: rect.height,
-  top: rect.top,
-  left: rect.left,
-  borderRadius: window.getComputedStyle(activeOriginal).borderRadius
-});
-
-if (fullscreenExtra) {
-  closeTl.add(() => {
-    fullscreenExtra.remove();
-  });
-}
+    if (fullscreenExtra) {
+        closeTl.add(() => {
+            fullscreenExtra.remove();
+        });
+    }
 }
 
 // ESC support
 document.addEventListener("keydown", e => {
-if (e.key === "Escape") closeCard();
+    if (e.key === "Escape") closeCard();
 });
 
 // Close button support
 document.querySelector(".close-wrapper").addEventListener("click", closeCard);
 
-// Section switching functionality
-document.addEventListener('DOMContentLoaded', function() {
-  const btnSchool = document.getElementById('btn-school');
-  const btnFotografie = document.getElementById('btn-fotografie');
-  const btnPersonal = document.getElementById('btn-personal');
-  const projectGrid = document.getElementById('project-grid');
-  const photographySection = document.getElementById('photography-section');
-  
-  // Button event listeners
-  btnFotografie.addEventListener('click', function() {
-      switchToSection('photography');
-      updateActiveButton(this);
-  });
-  
-  btnSchool.addEventListener('click', function() {
-      switchToSection('school');
-      updateActiveButton(this);
-  });
-  
-  btnPersonal.addEventListener('click', function() {
-      switchToSection('personal');
-      updateActiveButton(this);
-  });
-  
-  function switchToSection(section) {
-    const tl = gsap.timeline();
 
-    if (section === 'photography') {
-        // Slide projects LEFT → hide
-        tl.to(projectGrid, {
-            x: '-100%',
-            opacity: 0,
-            duration: 0.6,
-            ease: "power2.inOut",
-            onComplete: () => {
-                projectGrid.style.display = 'none';
-                photographySection.style.display = 'block';
-                
-                // Refresh ScrollTrigger after section becomes visible
-                setTimeout(() => {
-                  ScrollTrigger.refresh();
-                  // Re-initialize photography animations
-                  initPhotographyGalleryAnimations();
-                }, 100);
-            }
-        })
-        // Slide photography IN from RIGHT
-        .fromTo(photographySection, 
-            { x: '100%', opacity: 0 },
-            { x: '0%', opacity: 1, duration: 0.6, ease: "power2.inOut" },
-            "-=0.3"
-        );
-    } else {
-        // Slide photography RIGHT → hide
-        tl.to(photographySection, {
-            x: '100%',
-            opacity: 0,
-            duration: 0.6,
-            ease: "power2.inOut",
-            onComplete: () => {
-                photographySection.style.display = 'none';
-                projectGrid.style.display = 'grid';
-                
-                // Refresh ScrollTrigger after section change
-                setTimeout(() => {
-                  ScrollTrigger.refresh();
-                  // Re-initialize project animations
-                  reinitAnimations();
-                }, 100);
-            }
-        })
-        // Slide projects IN from LEFT
-        .fromTo(projectGrid, 
-            { x: '-100%', opacity: 0 },
-            { x: '0%', opacity: 1, duration: 0.6, ease: "power2.inOut" },
-            "-=0.3"
-        );
+// --- SECTION SWITCHING LOGIC ---
+
+document.addEventListener('DOMContentLoaded', function() {
+    const btnSchool = document.getElementById('btn-school');
+    const btnFotografie = document.getElementById('btn-fotografie');
+    const btnPersonal = document.getElementById('btn-personal');
+    const projectGrid = document.getElementById('project-grid');
+    const photographySection = document.getElementById('photography-section');
+
+    // Button event listeners
+    btnFotografie.addEventListener('click', function() {
+        switchToSection('photography');
+        updateActiveButton(this);
+    });
+
+    btnSchool.addEventListener('click', function() {
+        switchToSection('school');
+        updateActiveButton(this);
+    });
+
+    btnPersonal.addEventListener('click', function() {
+        switchToSection('personal');
+        updateActiveButton(this);
+    });
+
+    function switchToSection(section) {
+        const tl = gsap.timeline();
+
+        if (section === 'photography') {
+            // Slide projects LEFT → hide
+            tl.to(projectGrid, {
+                x: '-100%',
+                opacity: 0,
+                duration: 0.6,
+                ease: "power2.inOut",
+                onComplete: () => {
+                    projectGrid.style.display = 'none';
+                    photographySection.style.display = 'block';
+
+                    // Refresh ScrollTrigger after section becomes visible
+                    setTimeout(() => {
+                        ScrollTrigger.refresh();
+                        // Re-initialize photography animations (kills old ones)
+                        initPhotographyGalleryAnimations();
+                    }, 100);
+                }
+            })
+            // Slide photography IN from RIGHT
+            .fromTo(photographySection,
+                { x: '100%', opacity: 0 },
+                { x: '0%', opacity: 1, duration: 0.6, ease: "power2.inOut" },
+                "-=0.3"
+            );
+        } else {
+            // Slide photography RIGHT → hide
+            tl.to(photographySection, {
+                x: '100%',
+                opacity: 0,
+                duration: 0.6,
+                ease: "power2.inOut",
+                onComplete: () => {
+                    photographySection.style.display = 'none';
+                    projectGrid.style.display = 'grid';
+
+                    // Refresh ScrollTrigger after section change
+                    setTimeout(() => {
+                        ScrollTrigger.refresh();
+                        // Re-initialize project animations (kills old ones)
+                        reinitAnimations();
+                    }, 100);
+                }
+            })
+            // Slide projects IN from LEFT
+            .fromTo(projectGrid,
+                { x: '-100%', opacity: 0 },
+                { x: '0%', opacity: 1, duration: 0.6, ease: "power2.inOut" },
+                "-=0.3"
+            );
+        }
     }
-  }
-  
-  function updateActiveButton(activeButton) {
-      // Remove active class from all buttons
-      [btnSchool, btnFotografie, btnPersonal].forEach(btn => {
-          btn.classList.remove('active');
-      });
-      
-      // Add active class to clicked button
-      activeButton.classList.add('active');
-  }
+
+    function updateActiveButton(activeButton) {
+        // Remove active class from all buttons
+        [btnSchool, btnFotografie, btnPersonal].forEach(btn => {
+            btn.classList.remove('active');
+        });
+
+        // Add active class to clicked button
+        activeButton.classList.add('active');
+    }
 });
 
-// Photography gallery generation and animations - FIXED VERSION
+
+// --- PHOTOGRAPHY GALLERY LOGIC ---
+
+// Photography gallery generation and animations
 const totalImages = 71;
 const folderPath = "img/Photography/";
 const gallery = document.getElementById("image-gallery");
 
 // Clear existing gallery to avoid duplicates
 if (gallery) {
-  gallery.innerHTML = '';
+    gallery.innerHTML = '';
 
-  for (let i = 1; i <= totalImages; i++) {
-    const img = document.createElement("img");
-    img.src = `${folderPath}foto (${i}).jpg`;
-    img.alt = `Photo ${i}`;
-    img.loading = "lazy";
-    gallery.appendChild(img);
-  }
-
-  // Initialize photography animations
-  initPhotographyGalleryAnimations();
-}
-
-// Photography gallery scroll-reveal animation - UPDATED VERSION
-function initPhotographyGalleryAnimations() {
-  const galleryImages = document.querySelectorAll("#image-gallery img");
-  
-  if (!galleryImages.length) return;
-  
-  // Kill any existing ScrollTriggers for these elements to avoid duplicates
-  galleryImages.forEach(img => {
-    const triggerId = `photo-${img.src}`;
-    ScrollTrigger.getById(triggerId)?.kill();
-  });
-
-  galleryImages.forEach((img) => {
-    // Initial hidden position
-    gsap.set(img, { y: 80, opacity: 0 });
-
-    // Create ScrollTrigger for each image
-    gsap.to(img, {
-      y: 0,
-      opacity: 1,
-      duration: 0.9,
-      ease: "power3.out",
-      scrollTrigger: {
-        id: `photo-${img.src}`, // Unique ID to avoid conflicts
-        trigger: img,
-        start: "top 85%",
-        end: "bottom 20%",
-        toggleActions: "play none none none",
-        // Important: specify the container for proper scoping
-        scroller: window,
-        // Refresh when the section becomes visible
-        onRefresh: self => {
-          // Recalculate when the section becomes visible
-          if (document.getElementById('photography-section') && document.getElementById('photography-section').style.display !== 'none') {
-            self.refresh();
-          }
-        }
-      }
-    });
-  });
-}
-
-// Add this function to refresh animations when window resizes
-window.addEventListener('resize', function() {
-  // Only refresh photography animations if photography section is visible
-  const photographySection = document.getElementById('photography-section');
-  if (photographySection && photographySection.style.display !== 'none') {
-    setTimeout(() => {
-      ScrollTrigger.refresh();
-      initPhotographyGalleryAnimations();
-    }, 250);
-  }
-});
-
-// Register GSAP plugins
-gsap.registerPlugin(ScrollTrigger, Flip, Observer, ScrollToPlugin, Draggable, MotionPathPlugin, TextPlugin, CustomEase);
-
-// Enhanced navigation handler for mobile page transitions
-function handlePageNavigation() {
-  // This function can be called from your navigation menu
-  return {
-    prepareForNavigation: function() {
-      // Kill all project card ScrollTriggers
-      ScrollTrigger.getAll().forEach(trigger => {
-        if (trigger.trigger && trigger.trigger.classList.contains('project-card')) {
-          trigger.kill();
-        }
-      });
-      
-      // Force a style recalc
-      document.body.clientHeight;
-    },
-    
-    afterNavigation: function() {
-      // Reinitialize after navigation
-      setTimeout(() => {
-        if (typeof initProjectAnimations === 'function') {
-          initProjectAnimations();
-        }
-        ScrollTrigger.refresh();
-        
-        // Extra mobile handling
-        if (window.innerWidth <= 768) {
-          setTimeout(() => {
-            checkVisibleCards();
-            ScrollTrigger.refresh();
-          }, 400);
-        }
-      }, 100);
+    for (let i = 1; i <= totalImages; i++) {
+        const img = document.createElement("img");
+        img.src = `${folderPath}foto (${i}).jpg`;
+        img.alt = `Photo ${i}`;
+        img.loading = "lazy";
+        gallery.appendChild(img);
     }
-  };
+
+    // Initialize photography animations
+    initPhotographyGalleryAnimations();
 }
 
-// Initialize navigation handler
-const navigationHandler = handlePageNavigation();
+// Photography gallery scroll-reveal animation
+function initPhotographyGalleryAnimations() {
+    const galleryImages = document.querySelectorAll("#image-gallery img");
 
-// Auto-handle navigation if possible (add this to your nav links)
-document.addEventListener('click', function(e) {
-  const link = e.target.closest('a');
-  if (link && link.href && link.href.includes('.html') && !link.href.includes('#')) {
-    navigationHandler.prepareForNavigation();
-  }
-});
+    if (!galleryImages.length) return;
+
+    // Kill any existing ScrollTriggers for these elements to avoid duplicates
+    galleryImages.forEach(img => {
+        const triggerId = `photo-${img.src}`;
+        ScrollTrigger.getById(triggerId)?.kill();
+    });
+
+    galleryImages.forEach((img) => {
+        // Initial hidden position
+        gsap.set(img, { y: 80, opacity: 0 });
+
+        // Create ScrollTrigger for each image
+        gsap.to(img, {
+            y: 0,
+            opacity: 1,
+            duration: 0.9,
+            ease: "power3.out",
+            scrollTrigger: {
+                id: `photo-${img.src}`, // Unique ID to avoid conflicts
+                trigger: img,
+                start: "top 85%",
+                end: "bottom 20%",
+                toggleActions: "play none none none",
+                scroller: window,
+                // Refresh when the section becomes visible
+                onRefresh: self => {
+                    // Recalculate when the section becomes visible
+                    if (document.getElementById('photography-section') && document.getElementById('photography-section').style.display !== 'none') {
+                        self.refresh();
+                    }
+                }
+            }
+        });
+    });
+}
