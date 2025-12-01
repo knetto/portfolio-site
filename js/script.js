@@ -702,6 +702,7 @@ window.addEventListener('resize', () => {
   resizeTimeout = setTimeout(refreshScrollPosition, 200); // Wait 200ms after resizing stops
 });
 
+
 //project page logic
 
 document.getElementById("btn-school").classList.add("active");
