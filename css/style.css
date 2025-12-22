@@ -1395,6 +1395,12 @@ textarea.error + .error-message {
   z-index: 20;
 }
 
+@media (max-width: 765px) {
+  .footer {
+    margin-top: 40px;
+  }
+}
+
 .footer-columns {
   width: 100%;
   max-width: 1400px;
