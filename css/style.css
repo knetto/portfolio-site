@@ -1040,56 +1040,35 @@ nav .close:hover div::after {
         /* width: 100%; */
     }
 
-    #preloader {
-      position: fixed;
-      top: 0; left: 0;
-      width: 100vw;  height: 100vh;
-      background: var(--black);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      z-index: 99999;
-      opacity: 1;
-      visibility: visible;
-      transition: opacity 0.5s ease, visibility 0.5s ease;
-    }
-    
-    .spinner {
-      width: 48px;
-      height: 48px;
-      border: 5px solid var(--white);
-      border-top-color: transparent;
-      border-radius: 50%;
-      animation: spin 1s linear infinite;
-    }
-    
-    @keyframes spin {
-      to { transform: rotate(360deg); }
-    }
-    
-    /* once JS adds .loaded to <body>, fade out the #preloader */
-    body.loaded #preloader {
-      opacity: 0;
-      visibility: hidden;
-    }
+#preloader {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: var(--black);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 99999;
+  clip-path: circle(150% at 50% 50%);  /* ← Full screen circle mask */
+  will-change: clip-path;               /* Performance optimization */
+}
 
-    .fullscreen-backdrop {
-      position: fixed;
-      inset: 0;
-      background: rgba(0,0,0,0);
-      pointer-events: none;
-      z-index: 997;
-    }
-    
-    .fullscreen-img {
-      position: fixed;
-      object-fit: cover;
-      will-change: width, height, left, top, clip-path;
-      cursor: none;
-      user-select: none;
-      z-index: 998;
-      pointer-events: none;
-    }
+.spinner {
+  width: 48px;
+  height: 48px;
+  border: 5px solid var(--white);
+  border-top-color: transparent;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Remove the old body.loaded transition styles - GSAP handles everything now */
     
     
 
