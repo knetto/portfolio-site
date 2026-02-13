@@ -55,18 +55,18 @@ toggleBtn.addEventListener("click", () => {
 });
 
 
-window.addEventListener('load', function() {
-
+// Wait for 3D model animation to start (dispatched from main.js)
+window.addEventListener('modelAnimationStarted', function() {
+  
   const themeToggle = document.getElementById("theme-toggle");
-
+  
   let tl = gsap.timeline({
-    delay: 1.1,
+    delay: 0.2, // small delay after model starts
     onComplete: () => {
       // Tooltip logic happens 2s AFTER title animation ends
       gsap.delayedCall(2, () => {
-
         themeToggle.classList.add("show-tooltip");
-
+        
         gsap.fromTo(themeToggle,
           { '--tooltip-scale': 0 },
           {
@@ -77,7 +77,7 @@ window.addEventListener('load', function() {
               gsap.to(themeToggle, {
                 '--tooltip-scale': 0,
                 duration: 0.3,
-                delay: 2, // stays visible for 2s
+                delay: 2,
                 ease: 'back.in(1.8)',
                 onComplete: () => {
                   themeToggle.classList.remove("show-tooltip");
@@ -86,9 +86,7 @@ window.addEventListener('load', function() {
             }
           }
         );
-
       });
-
     }
   });
 
@@ -99,43 +97,33 @@ window.addEventListener('load', function() {
     stagger: 0.3,
     ease: "power3.out",
   });
-
 });
 
-// Wait for the page to load and then trigger the animation
-window.addEventListener('load', function() {
-let tl = gsap.timeline({ delay: 1.1 }); // Delay before starting animation
+// Second animation block - combine into one event listener
+window.addEventListener('modelAnimationStarted', function() {
+  const container = document.querySelector(".container");
+  
+  // Add the class to disable transitions
+  container.classList.add("no-transition");
 
-tl.to('.MainTitle div', {
-  duration: 0.5, 
-  y: 0, 
-  opacity: 1, // Fade in as they slide up
-  stagger: 0.3, // Stagger the animation
-  ease: "power3.out", // Ease for a smoother animation
+  // GSAP Animation
+  gsap.timeline({
+    delay: 0.3, // slightly after first animation
+    onComplete: () => {
+      // Remove the class after the animation is complete
+      container.classList.remove("no-transition");
+    }
+  })
+  .fromTo(".main-h2", 
+    { y: -50, opacity: 0 }, 
+    { y: 0, opacity: 1, duration: 1, ease: "power2.out" }
+  )
+  .fromTo(".container", 
+    { y: -50, opacity: 0 }, 
+    { y: 0, opacity: 1, duration: 1, ease: "power2.out" },
+    "-=1"
+  );
 });
-});
-
-const container = document.querySelector(".container");
-
-// Add the class to disable transitions
-container.classList.add("no-transition");
-
-// GSAP Animation
-gsap.timeline({
-onComplete: () => {
-  // Remove the class after the animation is complete
-  container.classList.remove("no-transition");
-}
-})
-.fromTo(".main-h2", 
-  { y: -50, opacity: 0 }, 
-  { y: 0, opacity: 1, duration: 1, ease: "power2.out" }
-)
-.fromTo(".container", 
-  { y: -50, opacity: 0 }, 
-  { y: 0, opacity: 1, duration: 1, ease: "power2.out" },
-  "-=1"
-);
 
 // JavaScript for the magnetic effect
 // Disable magnetic effect on coarse (touch) devices

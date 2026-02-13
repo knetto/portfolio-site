@@ -44,6 +44,10 @@ function playPreloaderExit() {
 // —— 3) Model Animation Trigger ——
 function startModelAnimations() {
   if (!roomObject) return;
+  
+  // Dispatch event to tell script.js to start UI animations
+  window.dispatchEvent(new CustomEvent('modelAnimationStarted'));
+  
   animateRotation();
   smoothScaleModel();
 }

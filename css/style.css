@@ -1061,14 +1061,17 @@ nav .close:hover div::after {
   border: 5px solid var(--white);
   border-top-color: transparent;
   border-radius: 50%;
-  animation: spin 1s linear infinite;
+  
+  /* Use rotate instead of transform for better performance */
+  animation: spin-rotate 1s linear infinite;
+  
+  transform: translateZ(0); /* Still promote to GPU layer */
 }
 
-@keyframes spin {
-  to { transform: rotate(360deg); }
+@keyframes spin-rotate {
+  to { rotate: 360deg; }
 }
 
-/* Remove the old body.loaded transition styles - GSAP handles everything now */
     
     
 
