@@ -1837,7 +1837,23 @@ textarea.error + .error-message {
 }
 
 
-
+    .fullscreen-backdrop {
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0);
+      pointer-events: none;
+      z-index: 997;
+    }
+    
+    .fullscreen-img {
+      position: fixed;
+      object-fit: cover;
+      will-change: width, height, left, top, clip-path;
+      cursor: none;
+      user-select: none;
+      z-index: 998;
+      pointer-events: none;
+    }
 
 
 
