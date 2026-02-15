@@ -873,25 +873,107 @@ document.addEventListener('DOMContentLoaded', function() {
 
 // --- PHOTOGRAPHY GALLERY LOGIC ---
 
-// Photography gallery generation and animations
 const totalImages = 71;
 const folderPath = "img/Photography/";
 const gallery = document.getElementById("image-gallery");
 
-// Clear existing gallery to avoid duplicates
+// Create and show loading spinner
+function createLoadingSpinner() {
+    const spinnerContainer = document.createElement("div");
+    spinnerContainer.id = "gallery-loader";
+    spinnerContainer.innerHTML = `
+        <div class="spinner"></div>
+        <p>Loading gallery...</p>
+    `;
+    spinnerContainer.style.cssText = `
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        text-align: center;
+        z-index: 10;
+    `;
+    
+    // Add spinner styles if not already in CSS
+    const style = document.createElement("style");
+    style.textContent = `
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 3px solid rgba(255,255,255,0.3);
+            border-top-color: #fff;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 15px;
+        }
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        #image-gallery {
+            position: relative;
+            min-height: 200px;
+        }
+        #image-gallery.loading {
+            opacity: 0;
+            pointer-events: none;
+        }
+        #image-gallery.loaded {
+            opacity: 1;
+            transition: opacity 0.5s ease;
+        }
+    `;
+    document.head.appendChild(style);
+    
+    return spinnerContainer;
+}
+
+// Initialize gallery with loader
 if (gallery) {
     gallery.innerHTML = '';
+    gallery.classList.add('loading');
+    
+    const loader = createLoadingSpinner();
+    gallery.parentNode.insertBefore(loader, gallery);
 
+    const imagePromises = [];
+    const loadedImages = [];
+
+    // Create image elements and load them
     for (let i = 1; i <= totalImages; i++) {
         const img = document.createElement("img");
         img.src = `${folderPath}foto (${i}).jpg`;
         img.alt = `Photo ${i}`;
-        img.loading = "lazy";
+        img.loading = "eager"; // Changed to eager since we're preloading anyway
+        
+        // Create promise for each image load
+        const loadPromise = new Promise((resolve, reject) => {
+            img.onload = () => resolve(img);
+            img.onerror = () => {
+                console.warn(`Failed to load image: ${img.src}`);
+                resolve(img); // Resolve anyway to not block other images
+            };
+            
+            // Timeout fallback (5 seconds)
+            setTimeout(() => resolve(img), 5000);
+        });
+        
+        imagePromises.push(loadPromise);
+        loadedImages.push(img);
         gallery.appendChild(img);
     }
 
-    // Initialize photography animations
-    initPhotographyGalleryAnimations();
+    // Wait for all images to load
+    Promise.all(imagePromises).then(() => {
+        // Remove loader
+        loader.remove();
+        
+        // Reveal gallery with fade
+        gallery.classList.remove('loading');
+        gallery.classList.add('loaded');
+        
+        // Initialize animations after images are ready
+        initPhotographyGalleryAnimations();
+    });
 }
 
 // Photography gallery scroll-reveal animation
@@ -900,33 +982,31 @@ function initPhotographyGalleryAnimations() {
 
     if (!galleryImages.length) return;
 
-    // Kill any existing ScrollTriggers for these elements to avoid duplicates
+    // Kill any existing ScrollTriggers
     galleryImages.forEach(img => {
         const triggerId = `photo-${img.src}`;
         ScrollTrigger.getById(triggerId)?.kill();
     });
 
-    galleryImages.forEach((img) => {
-        // Initial hidden position
+    galleryImages.forEach((img, index) => {
+        // Stagger the initial reveal slightly
         gsap.set(img, { y: 80, opacity: 0 });
 
-        // Create ScrollTrigger for each image
         gsap.to(img, {
             y: 0,
             opacity: 1,
             duration: 0.9,
             ease: "power3.out",
+            delay: index * 0.02, // Slight stagger for initial load
             scrollTrigger: {
-                id: `photo-${img.src}`, // Unique ID to avoid conflicts
+                id: `photo-${img.src}`,
                 trigger: img,
                 start: "top 85%",
                 end: "bottom 20%",
                 toggleActions: "play none none none",
                 scroller: window,
-                // Refresh when the section becomes visible
                 onRefresh: self => {
-                    // Recalculate when the section becomes visible
-                    if (document.getElementById('photography-section') && document.getElementById('photography-section').style.display !== 'none') {
+                    if (document.getElementById('photography-section')?.style.display !== 'none') {
                         self.refresh();
                     }
                 }
