@@ -272,24 +272,39 @@
 
 <section id="contact-section">
   <div class="contact-content" id="contact">
-    <h2>Let’s Connect</h2>
+    <h2>Let's Connect</h2>
     <p class="contact-subtext">
       Have a question, want to collaborate, or just say hi? Drop a message below!
     </p>
 
     <form id="contactForm" class="contact-form" action="https://formspree.io/f/xeondogw" method="POST" novalidate>
       <div class="form-group">
-        <input type="text" id="name" name="name" placeholder="Your Name" required>
+        <div class="input-wrapper">
+          <input type="text" id="name" name="name" placeholder="Your Name" required class="contact-input">
+          <svg class="border-svg">
+            <rect x="0" y="0" width="100%" height="100%" rx="8" ry="8" fill="none" stroke="var(--black)" stroke-width="2" vector-effect="non-scaling-stroke"/>
+          </svg>
+        </div>
         <small class="error-message"></small>
       </div>
       
       <div class="form-group">
-        <input type="email" id="email" name="email" placeholder="Email Address" required>
+        <div class="input-wrapper">
+          <input type="email" id="email" name="email" placeholder="Email Address" required class="contact-input">
+          <svg class="border-svg">
+            <rect x="0" y="0" width="100%" height="100%" rx="8" ry="8" fill="none" stroke="var(--black)" stroke-width="2" vector-effect="non-scaling-stroke"/>
+          </svg>
+        </div>
         <small class="error-message"></small>
       </div>
 
       <div class="form-group">
-        <textarea id="message" name="message" placeholder="Your Message" required></textarea>
+        <div class="input-wrapper textarea-wrapper">
+          <textarea id="message" name="message" placeholder="Your Message" required class="contact-input"></textarea>
+          <svg class="border-svg">
+            <rect x="0" y="0" width="100%" height="100%" rx="8" ry="8" fill="none" stroke="var(--black)" stroke-width="2" vector-effect="non-scaling-stroke"/>
+          </svg>
+        </div>
         <small class="error-message"></small>
       </div>
 
@@ -298,7 +313,6 @@
       </button>
     </form>
 
-    <!-- Success message should be OUTSIDE the form -->
     <div id="loadingMessage" class="success-center-message">
       📤 Sending your message...
     </div>
@@ -306,8 +320,6 @@
     <div id="successMessage" class="success-center-message">
       ✨ Message sent! Thanks for reaching out - I'll reply soon.
     </div>
-    
-
   </div>
 </section>
 

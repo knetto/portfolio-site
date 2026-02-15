@@ -1,35 +1,69 @@
 // Contact Section GSAP Animations - Adjusted Trigger Timing
 document.addEventListener("DOMContentLoaded", () => {
 
-    gsap.registerPlugin(ScrollTrigger);
-  
-    gsap.from("#contact-section h2", {
-      scrollTrigger: {
-        trigger: "#contact-section",
-        start: "top 40%",
-      },
-      y: 60,
-      opacity: 0,
-      duration: 1,
-      ease: "power3.out"
-    });
-  
-    gsap.from(".contact-subtext", {
-      scrollTrigger: {
-        trigger: "#contact-section",
-        start: "top 35%", // Viewer gets closer
-      },
-      y: 50,
-      opacity: 0,
-      duration: 1,
-      delay: 0.1,
-      ease: "power3.out"
-    });
-  
-  // Make sure button starts visible
-gsap.set(".contact-btn", { opacity: 1 });
+  gsap.registerPlugin(ScrollTrigger);
 
-gsap.from(".contact-btn", {
+  // Heading animation
+  gsap.from("#contact-section h2", {
+    scrollTrigger: {
+      trigger: "#contact-section",
+      start: "top 40%",
+    },
+    y: 60,
+    opacity: 0,
+    duration: 1,
+    ease: "power3.out"
+  });
+
+  // Subtext animation
+  gsap.from(".contact-subtext", {
+    scrollTrigger: {
+      trigger: "#contact-section",
+      start: "top 35%",
+    },
+    y: 50,
+    opacity: 0,
+    duration: 1,
+    delay: 0.1,
+    ease: "power3.out"
+  });
+
+  // Border drawing animation for inputs
+const inputs = document.querySelectorAll('.input-wrapper');
+
+inputs.forEach((input, index) => {
+  const svg = input.querySelector('.border-svg');
+  const rect = svg.querySelector('rect');
+  const field = input.querySelector('.contact-input');
+  
+  // Get the actual total length of the path
+  const totalLength = rect.getTotalLength();
+  
+  // Set initial state
+  rect.style.strokeDasharray = totalLength;
+  rect.style.strokeDashoffset = totalLength;
+  
+  // Animate border
+  gsap.to(rect, {
+    scrollTrigger: {
+      trigger: "#contact-section",
+      start: "top 35%",
+    },
+    strokeDashoffset: 0,
+    duration: 1.5,
+    delay: 0.3 + (index * 0.15),
+    ease: "power2.inOut",
+    onComplete: () => {
+      // Fade in placeholder after border completes
+      field.classList.add('placeholder-visible');
+    }
+  });
+});
+
+  // Button animation
+  gsap.set(".contact-btn", { opacity: 1 });
+
+  gsap.from(".contact-btn", {
     scrollTrigger: {
       trigger: "#contact-section",
       start: "top 32%",
@@ -39,12 +73,11 @@ gsap.from(".contact-btn", {
     duration: 0.5,
     ease: "back.out(1.4)"
   });
-  
 
-  
-    window.addEventListener("load", () => ScrollTrigger.refresh());
-  });
-  
+  window.addEventListener("load", () => ScrollTrigger.refresh());
+});
+
+// Form handling
 const contactForm = document.getElementById("contactForm");
 const successMessage = document.getElementById("successMessage");
 const loadingMessage = document.getElementById("loadingMessage");
@@ -65,7 +98,7 @@ contactForm.addEventListener("submit", async function (e) {
   // Validation check
   fields.forEach(field => {
     const input = document.getElementById(field.id);
-    const errorMessage = input.nextElementSibling;
+    const errorMessage = input.parentElement.nextElementSibling;
   
     if (!input.value.trim() ||
         (field.id === "email" && !emailRegex.test(input.value))) {
@@ -79,7 +112,6 @@ contactForm.addEventListener("submit", async function (e) {
   });
   
   if (!isValid) return;
-  
 
   // If valid → proceed with animation + sending
   const formData = new FormData(contactForm);
@@ -128,9 +160,3 @@ contactForm.addEventListener("submit", async function (e) {
 
   }, remainingTime);
 });
-
-  
-
-  
-  
-  
