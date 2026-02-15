@@ -1,22 +1,18 @@
 gsap.registerPlugin(ScrollTrigger);
 
-const speed = 1; // 1× normal speed
+const speed = 1;
 
-// Use matchMedia to run this logic only on screens wider than a mobile breakpoint (e.g., 768px)
 let mm = gsap.matchMedia();
 
+// ============================================
+// DESKTOP: Horizontal scroll (unchanged)
+// ============================================
 mm.add("(min-width: 768px)", () => {
-  // --- All your horizontal ScrollTrigger logic goes inside this function ---
-  
   ['3', '4', '5'].forEach(sectionNum => {
     const content = document.querySelector(`.new-section-${sectionNum}-content`);
     const trigger = `#new-section-${sectionNum}`;
-
-    // extra padding so it doesn’t end flush
     const extra = window.innerWidth * 0.05;
-    // total horizontal distance to move
-    // Use .scrollWidth and .offsetWidth for a more robust calculation
-    const totalLen = content.scrollWidth + extra - window.innerWidth; 
+    const totalLen = content.scrollWidth + extra - window.innerWidth;
 
     ScrollTrigger.create({
       animation: gsap.to(content, {
@@ -25,8 +21,7 @@ mm.add("(min-width: 768px)", () => {
       }),
       trigger,
       start: 'top top',
-      // End value calculation is the key to scroll length
-      end: () => '+=' + (totalLen / speed), 
+      end: () => '+=' + (totalLen / speed),
       scrub: true,
       pin: true,
       anticipatePin: 1,
@@ -39,19 +34,45 @@ mm.add("(min-width: 768px)", () => {
       }
     });
   });
-
-  // Optional: Update ScrollTriggers on resize so lengths recalc
-  // Note: ScrollTrigger.refresh() is automatically called by matchMedia on media query changes, 
-  // but a general resize listener is still fine.
-  // window.addEventListener('resize', () => {
-  //   ScrollTrigger.refresh();
-  // });
   
-  // Return an empty function to destroy all triggers in this matchMedia context when the media query changes.
-  return () => {
-    // optional cleanup
-  }
+  return () => {};
 });
 
-// For mobile (max-width: 767px), ScrollTriggers are *not* created, 
-// and you would rely on standard vertical CSS layout for your sections.
+// ============================================
+// MOBILE: Vertical scroll with image entrance animations
+// ============================================
+mm.add("(max-width: 767px)", () => {
+  // Animate images in sections 3, 4, and 5
+  ['3', '4', '5'].forEach(sectionNum => {
+    const images = document.querySelectorAll(`#new-section-${sectionNum} .image-track .image`);
+    
+    images.forEach((img, index) => {
+      gsap.fromTo(img, 
+        {
+          opacity: 0,
+          y: 60,
+          scale: 0.95
+        },
+        {
+          opacity: 1,
+          y: 0,
+          scale: 1,
+          duration: 0.8,
+          ease: "power2.out",
+          scrollTrigger: {
+            trigger: img,
+            start: "top 85%", // Start animation when image is 85% down the viewport
+            end: "top 50%",
+            toggleActions: "play none none reverse"
+          },
+          delay: index * 0.1 // Stagger effect based on index
+        }
+      );
+    });
+  });
+
+  // Cleanup function
+  return () => {
+    ScrollTrigger.getAll().forEach(st => st.kill());
+  };
+});
