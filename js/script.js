@@ -126,37 +126,56 @@ window.addEventListener('modelAnimationStarted', function() {
 });
 
 // JavaScript for the magnetic effect
-// Disable magnetic effect on coarse (touch) devices
-if (window.matchMedia("(pointer: fine)").matches) {
-  const magneticElements = document.querySelectorAll('.hover-this');
+// Only disable if device has NO fine pointer (mouse/trackpad)
+// Your laptop has both, so we need event-based detection instead
 
-  magneticElements.forEach(element => {
+const magneticElements = document.querySelectorAll('.hover-this');
+let isTouch = false;
+let touchTimeout;
 
-    const magneticEffect = (e) => {
-      const rect = element.getBoundingClientRect();
-      const offsetX = e.clientX - rect.left - rect.width / 2;
-      const offsetY = e.clientY - rect.top - rect.height / 2;
-      const maxDistance = 100;
-      const distance = Math.min(
-        Math.sqrt(offsetX * offsetX + offsetY * offsetY),
-        maxDistance
-      );
-      const strength = (1 - distance / maxDistance) * 70;
-      const dx = (offsetX / rect.width) * strength;
-      const dy = (offsetY / rect.height) * strength;
+magneticElements.forEach(element => {
+  const magneticEffect = (e) => {
+    // Skip if last interaction was touch
+    if (isTouch) return;
+    
+    const rect = element.getBoundingClientRect();
+    const offsetX = e.clientX - rect.left - rect.width / 2;
+    const offsetY = e.clientY - rect.top - rect.height / 2;
+    const maxDistance = 100;
+    const distance = Math.min(
+      Math.sqrt(offsetX * offsetX + offsetY * offsetY),
+      maxDistance
+    );
+    const strength = (1 - distance / maxDistance) * 70;
+    const dx = (offsetX / rect.width) * strength;
+    const dy = (offsetY / rect.height) * strength;
 
-      element.style.transform = `translate(${dx}px, ${dy}px)`;
-    };
+    element.style.transform = `translate(${dx}px, ${dy}px)`;
+  };
 
-    const resetEffect = () => {
-      element.style.transform = `translate(0, 0)`;
-    };
+  const resetEffect = () => {
+    element.style.transform = `translate(0, 0)`;
+  };
 
-    element.addEventListener('mousemove', magneticEffect);
-    element.addEventListener('mouseleave', resetEffect);
-  });
-}
-
+  // Mouse events - enable magnetic effect
+  element.addEventListener('mousemove', magneticEffect);
+  element.addEventListener('mouseleave', resetEffect);
+  
+  // Touch events - disable magnetic effect and reset
+  element.addEventListener('touchstart', () => {
+    isTouch = true;
+    resetEffect();
+    // Clear any pending reset
+    clearTimeout(touchTimeout);
+  }, { passive: true });
+  
+  element.addEventListener('touchend', () => {
+    // Reset the touch flag after a delay to allow mouse events again
+    touchTimeout = setTimeout(() => {
+      isTouch = false;
+    }, 500);
+  }, { passive: true });
+});
 
 
 
