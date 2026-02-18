@@ -99,16 +99,19 @@ window.addEventListener('modelAnimationStarted', function() {
   });
 });
 
-// Second animation block - combine into one event listener
-window.addEventListener('modelAnimationStarted', function() {
+// 1. Define the animation as a reusable function
+function playEntranceAnimation() {
   const container = document.querySelector(".container");
   
+  // Safety check: stop if .container doesn't exist on the page
+  if (!container) return; 
+
   // Add the class to disable transitions
   container.classList.add("no-transition");
 
   // GSAP Animation
   gsap.timeline({
-    delay: 0.3, // slightly after first animation
+    delay: 0.3,
     onComplete: () => {
       // Remove the class after the animation is complete
       container.classList.remove("no-transition");
@@ -123,7 +126,18 @@ window.addEventListener('modelAnimationStarted', function() {
     { y: 0, opacity: 1, duration: 1, ease: "power2.out" },
     "-=1"
   );
-});
+}
+
+// 2. Decide when to run it based on the page URL
+if (window.location.pathname.includes("projects.html")) {
+  // Case A: We are on projects.html
+  // Run immediately once the HTML is ready
+  document.addEventListener("DOMContentLoaded", playEntranceAnimation);
+} else {
+  // Case B: We are on the Home/Model page
+  // Wait for the custom 3D model event
+  window.addEventListener('modelAnimationStarted', playEntranceAnimation);
+}
 
 // JavaScript for the magnetic effect
 // Only disable if device has NO fine pointer (mouse/trackpad)
