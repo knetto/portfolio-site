@@ -99,7 +99,7 @@ h1 {
 
 .container {
   position: fixed;
-  top: 5%;
+  top: 2.5vh;
   right: 5%;
   width: 50px;
   height: 50px;
@@ -305,7 +305,7 @@ nav h2 {
 
 .main-h2 {
   position: absolute;
-  margin-top: 5vh !important;
+  margin-top: -2vh !important;
   left: 5%;
   color: var(--navBarText);
   font-size: 2em;
@@ -353,7 +353,7 @@ nav .close:hover div::after {
 
 #theme-toggle {
   position: fixed;
-  top: 5%;
+  top: 3.2vh;
   left: 50%;
   transform: translateX(-50%);
   width: 22px;
@@ -534,14 +534,47 @@ nav .close:hover div::after {
 }
 
 .nav-bar {
-  position: fixed; /* Fix the landing page in place */
+  position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 13vh;
-  z-index: 998; /* Ensure it's on top of other content */
-  pointer-events: auto;
+  z-index: 998;
+  pointer-events: none; /* Let clicks pass through to nav-bg */
   background-color: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 2rem;
+  box-sizing: border-box;
+}
+
+.nav-bg {
+  position: absolute;
+  top: 2vh;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 97%;
+  height: 4.5vh;
+  min-height: 52px;
+  z-index: -5;
+  pointer-events: auto; /* Re-enable clicks on the pill */
+  
+  /* Frosted glass effect */
+  /* background-color: #B22B5A; */
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  
+  /* Pill shape */
+  border-radius: 9999px;
+
+}
+/* Ensure content sits above nav-bg */
+.main-h2,
+#theme-toggle,
+.container {
+  z-index: 1;
+  pointer-events: auto;
 }
 
 #scroll-bar {
@@ -1186,7 +1219,7 @@ nav .close:hover div::after {
   align-items: center;
   color: var(--black);
   padding-top: 6rem;
-  padding-bottom:  2rem;
+  padding-bottom: 2rem;
   z-index: 12;
 }
 
@@ -1195,7 +1228,6 @@ nav .close:hover div::after {
 .contact-btn {
   box-sizing: border-box;
 }
-
 
 .contact-content {
   width: 100%;
@@ -1226,28 +1258,68 @@ nav .close:hover div::after {
   gap: 1.2rem;
 }
 
-.form-group input,
-.form-group textarea {
+/* Input wrapper for SVG border animation */
+.input-wrapper {
+  position: relative;
+  width: 100%;
+  /* Add padding to prevent stroke cutoff */
+  padding: 1px;
+  margin: -1px;
+}
+
+.input-wrapper input,
+.input-wrapper textarea {
   width: 100%;
   padding: 1.1rem 1.4rem;
   background: transparent;
-  border: 2px solid var(--black);
+  border: none;
   border-radius: 8px;
   color: var(--black);
   font-size: 1.1rem;
-  transition: border-color .3s, background .3s;
+  position: relative;
+  z-index: 2;
+  outline: none;
+  transition: background .3s;
 }
 
-.form-group input:focus,
-.form-group textarea:focus {
-  outline: none;
-  border-color: #00000099;
+/* SVG border overlay */
+.border-svg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  pointer-events: none;
+  overflow: visible; /* Allow stroke to be fully visible */
+}
+
+.border-svg rect {
+  stroke-dasharray: 2000; /* Large enough for any size */
+  stroke-dashoffset: 2000;
+  transition: stroke 0.3s ease;
+}
+
+.input-wrapper textarea {
+  height: 160px;
+  resize: none;
+}
+
+/* Focus state */
+.input-wrapper input:focus,
+.input-wrapper textarea:focus {
   background: #00000010;
 }
 
-.form-group textarea {
-  height: 160px;
-  resize: none;
+.input-wrapper input:focus ~ .border-svg rect,
+.input-wrapper textarea:focus ~ .border-svg rect {
+  stroke: #00000099;
+}
+
+/* Error state */
+input.error ~ .border-svg rect,
+textarea.error ~ .border-svg rect {
+  stroke: var(--black);
 }
 
 .contact-btn {
@@ -1284,8 +1356,7 @@ nav .close:hover div::after {
   text-align: left;
 }
 
-
-/* 🔹 ERROR MESSAGES — Responsive */
+/* ERROR MESSAGES — Responsive */
 .error-message {
   display: block;
   text-align: left;
@@ -1295,14 +1366,6 @@ nav .close:hover div::after {
   padding-left: 4px;
   color: var(--black);
   opacity: 0.75;
-}
-
-input.error, textarea.error {
-  border-color: var(--black) !important;
-  background: #00000010;
-}
-
-.error-message {
   transform: translateY(-3px);
   opacity: 0;
   transition: 0.25s ease;
@@ -1314,7 +1377,7 @@ textarea.error + .error-message {
   opacity: 0.9;
 }
 
-/* 🔹 SUCCESS POPUP — Fully responsive */
+/* SUCCESS POPUP — Fully responsive */
 .success-center-message {
   opacity: 0;
   position: absolute;
@@ -1331,7 +1394,7 @@ textarea.error + .error-message {
   text-align: center;
   pointer-events: none;
   width: max-content;
-  max-width: 90%; /* Prevents overflow on small screens */
+  max-width: 90%;
   z-index: 9999;
   word-wrap: break-word;
 }
@@ -1341,7 +1404,7 @@ textarea.error + .error-message {
   transform: translate(-50%, -50%) scale(1);
 }
 
-/* Extra tiny screens (like iPhone SE) */
+/* Extra tiny screens */
 @media (max-width: 400px) {
   .success-center-message {
     font-size: 1rem;
@@ -1356,7 +1419,7 @@ textarea.error + .error-message {
 }
 
 .contact-content {
-  position: relative; /* Needed so success message can center over it */
+  position: relative;
 }
 
 .success-center-message {
@@ -1364,6 +1427,14 @@ textarea.error + .error-message {
   z-index: 9999;
 }
 
+.contact-input::placeholder {
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+
+.contact-input.placeholder-visible::placeholder {
+  opacity: 1;
+}
 
 .footer {
   width: 100%;
@@ -2443,5 +2514,4 @@ textarea.error + .error-message {
 .close-button:hover .out .close-button-block:after {
   transform: translateX(20px) translateY(20px) rotate(-45deg);
 }
-
 
