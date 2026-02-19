@@ -129,7 +129,7 @@ function playEntranceAnimation() {
 }
 
 // 2. Decide when to run it based on the page URL
-if (window.location.pathname.includes("projects.html")) {
+if (window.location.pathname.includes("projects/")) {
   // Case A: We are on projects.html
   // Run immediately once the HTML is ready
   document.addEventListener("DOMContentLoaded", playEntranceAnimation);
