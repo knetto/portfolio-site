@@ -874,7 +874,7 @@ document.addEventListener('DOMContentLoaded', function() {
 // --- PHOTOGRAPHY GALLERY LOGIC ---
 
 const totalImages = 71;
-const folderPath = "img/Photography/";
+const folderPath = "/img/Photography/";
 const gallery = document.getElementById("image-gallery");
 
 // Create and show loading spinner
