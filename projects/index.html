@@ -116,13 +116,44 @@
       <button class="hover-this active" id="btn-school">School</button>
       <button class="hover-this" id="btn-fotografie">Photography</button>
       <button class="hover-this" id="btn-personal">Personal</button>
-  </div>
+    </div>
   </div>
 
-  <div id="project-grid" class="projects-container">
+  <div class="project-controls">
+    <div class="control-group">
+      <select id="sort-projects">
+        <option value="default">Default</option>
+        <option value="date-desc">Newest First</option>
+        <option value="date-asc">Oldest First</option>
+        <option value="title-asc">A - Z</option>
+        <option value="title-desc">Z - A</option>
+      </select>
+    </div>
+  
+    <div class="control-group">
+      <select id="filter-year">
+        <option value="all">All Years</option>
+        <option value="2024">2024</option>
+        <option value="2023">2023</option>
+      </select>
+    </div>
+  
+    <div class="control-group">
+      <select id="filter-tag">
+        <option value="all">All Tags</option>
+        <option value="robotics">Robotics</option>
+        <option value="ai">AI</option>
+        <option value="ar">AR</option>
+        <option value="graphic-design">Graphic Design</option>
+      </select>
+    </div>
+  </div>
 
-    <!-- CARD 1 -->
-    <div class="project-card">
+<div id="project-grid" class="projects-container">
+
+
+  <!-- CARD 1 -->
+  <div class="project-card" data-tags="robotics ai" data-title="Park-In Spot" data-year="2024" data-date="2024-04">
       <div class="image-wrapper">
         <img class="image" src="/img/Parking/IMG-20240419-WA0010.jpg" alt="Project Image" loading="lazy">
       </div>
@@ -239,12 +270,10 @@
           <div class="white-space"></div>
 
       </div>     
-    </div>
+  </div>
 
-
-
-<!-- CARD 2 -->
-<div class="project-card">
+  <!-- CARD 2 -->
+  <div class="project-card" data-tags="ar" data-title="Bukkit Vision Pro" data-year="2024" data-date="2024-03">
   <div class="image-wrapper">
     <img class="image" src="/img/BukkitVisionPro/20240320_203746.jpg" alt="Bukkit Vision Pro" loading="lazy">
   </div>
@@ -367,7 +396,7 @@
   </div>
 
   <!-- CARD 3 -->
-  <div class="project-card">
+  <div class="project-card" data-tags="robotics" data-title="Robobot" data-year="2023" data-date="2023-10">
     <div class="image-wrapper">
       <img class="image" src="/img/Robot/20231004_211303.jpg" alt="Project Image" loading="lazy">
     </div>
@@ -479,7 +508,7 @@
   </div>
 
   <!-- CARD 4 -->
-  <div class="project-card">
+  <div class="project-card" data-tags="graphic-design" data-title="AI AI AI" data-year="2023" data-date="2023-11">
     <div class="image-wrapper">
       <img class="image" src="/img/Poster/20231218_113202.jpg" alt="Project Image" loading="lazy">
     </div>
@@ -580,243 +609,10 @@
   </div>
 
 
-  <!-- CARD 1 -->
-  <div class="project-card">
-    <div class="image-wrapper">
-      <img class="image" src="/img/Parking/IMG-20240419-WA0010.jpg" alt="Project Image" loading="lazy">
-    </div>
-
-    <div class="project-content">
-      <h3>Park-In Spot</h3>
-
-      <div class="role">
-        <strong>ROLE</strong>
-        <p>Robot Builder & Logic Developer</p>
-      </div>
-
-      <div class="contribution">
-        <strong>CONTRIBUTION</strong>
-        <p>I built and programmed the self-driving robot car and created the logic to find and drive to the nearest free parking spot.</p>
-      </div>
-
-      <button class="hover-this view-btn">View Project →</button>
-    </div>
-    <div class="card-fill"></div>
-
-    <div class="project-extra" style="display:none;">
-      <div class="extra-layout">
-        
-        <!-- LEFT IMAGE -->
-        <div class="extra-media">
-          <img src="/img/Parking/IMG-20240419-WA0010.jpg" alt="" loading="lazy">
-        </div>
-    
-        <!-- RIGHT CONTENT -->
-        <div class="extra-content">
-          <span class="small-label">PARK-IN SPOT</span>
-    
-          <div class="divider-card"></div>
-
-          <h1 class="headline">
-            Autonomous parking that picks the closest open spot
-          </h1>
-    
-          <p class="subtext-card">
-            Our system connects your agenda to a smart parking
-            network. When you head to the supermarket, for example,
-            the robot selects the closest available parking spot near
-            that building and drives there autonomously.
-          </p>
-        </div>
-      </div>
-
-      <div class="project-description">
-        <h3>How It Works</h3>
-        <p>
-          The system uses a Python script with OpenCV and a webcam to 
-          monitor the parking area. It identifies which parking spots are 
-          currently free and calculates the closest available one based 
-          on the user’s agenda or planned destination.
-        </p>
-  
-        <p>
-          Once a parking spot number is selected, the robot car 
-          automatically follows a black line on the floor using 
-          infrared (IR) sensors to navigate through the parking layout. 
-          When it reaches the assigned spot, it performs the final parking 
-          maneuver autonomously.
-        </p>
-  
-        <p>
-          I handled the robot hardware, embedded programming, motor control, 
-          and navigation logic. My teammates built the vision system and 
-          the environment setup.
-        </p>
-      </div>
-
-    <div class="divider-line"></div>
-
-      <!-- VIDEO SECTION -->
-      <div class="video-gallery">
-        <div class="video-wrapper">
-          <iframe loading="lazy"
-            src="https://www.youtube-nocookie.com/embed/mltczj9MeHI" 
-            title="YouTube video"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowfullscreen>
-          </iframe>
-        </div>
-      
-        <div class="video-wrapper">
-          <iframe loading="lazy"
-            src="https://www.youtube-nocookie.com/embed/r5hOvmnlhXY" 
-            title="YouTube video"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowfullscreen>
-          </iframe>
-        </div>
-      </div>
-      
-      <div class="image-gallery">
-        <img class="imageHidden" src="/img/Parking/20240416_181420.jpg" alt="Project Image" loading="lazy">
-        <img class="imageHidden" src="/img/Parking/20240416_181423.jpg" alt="Project Image" loading="lazy">
-        <img class="imageHidden" src="/img/Parking/20240416_181427.jpg" alt="Project Image" loading="lazy">
-        <img class="imageHidden" src="/img/Parking/20240416_181705.jpg" alt="Project Image" loading="lazy">
-        <img class="imageHidden" src="/img/Parking/20240416_181721.jpg" alt="Project Image" loading="lazy">
-        <img class="imageHidden" src="/img/Parking/20240418_172644.jpg" alt="Project Image" loading="lazy">
-        <img class="imageHidden" src="/img/Parking/20240419_133405.jpg" alt="Project Image" loading="lazy">
-        <img class="imageHidden" src="/img/Parking/IMG-20240419-WA0009.jpg" alt="Project Image" loading="lazy">
-        <img class="imageHidden" src="/img/Parking/IMG-20240419-WA0012.jpg" alt="Project Image" loading="lazy">
-        <img class="imageHidden" src="/img/Parking/IMG-20240419-WA0008.jpg" alt="Project Image" loading="lazy">
-      </div>   
-
-        <div class="white-space"></div>
-
-    </div>     
-  </div>
-
-
-  <!-- CARD 1 -->
-  <div class="project-card">
-    <div class="image-wrapper">
-      <img class="image" src="/img/Parking/IMG-20240419-WA0010.jpg" alt="Project Image" loading="lazy">
-    </div>
-
-    <div class="project-content">
-      <h3>Park-In Spot</h3>
-
-      <div class="role">
-        <strong>ROLE</strong>
-        <p>Robot Builder & Logic Developer</p>
-      </div>
-
-      <div class="contribution">
-        <strong>CONTRIBUTION</strong>
-        <p>I built and programmed the self-driving robot car and created the logic to find and drive to the nearest free parking spot.</p>
-      </div>
-
-      <button class="hover-this view-btn">View Project →</button>
-    </div>
-    <div class="card-fill"></div>
-
-    <div class="project-extra" style="display:none;">
-      <div class="extra-layout">
-        
-        <!-- LEFT IMAGE -->
-        <div class="extra-media">
-          <img src="/img/Parking/IMG-20240419-WA0010.jpg" alt="" loading="lazy">
-        </div>
-    
-        <!-- RIGHT CONTENT -->
-        <div class="extra-content">
-          <span class="small-label">PARK-IN SPOT</span>
-    
-          <div class="divider-card"></div>
-
-          <h1 class="headline">
-            Autonomous parking that picks the closest open spot
-          </h1>
-    
-          <p class="subtext-card">
-            Our system connects your agenda to a smart parking
-            network. When you head to the supermarket, for example,
-            the robot selects the closest available parking spot near
-            that building and drives there autonomously.
-          </p>
-        </div>
-      </div>
-
-      <div class="project-description">
-        <h3>How It Works</h3>
-        <p>
-          The system uses a Python script with OpenCV and a webcam to 
-          monitor the parking area. It identifies which parking spots are 
-          currently free and calculates the closest available one based 
-          on the user’s agenda or planned destination.
-        </p>
-  
-        <p>
-          Once a parking spot number is selected, the robot car 
-          automatically follows a black line on the floor using 
-          infrared (IR) sensors to navigate through the parking layout. 
-          When it reaches the assigned spot, it performs the final parking 
-          maneuver autonomously.
-        </p>
-  
-        <p>
-          I handled the robot hardware, embedded programming, motor control, 
-          and navigation logic. My teammates built the vision system and 
-          the environment setup.
-        </p>
-      </div>
-
-    <div class="divider-line"></div>
-
-      <!-- VIDEO SECTION -->
-      <div class="video-gallery">
-        <div class="video-wrapper">
-          <iframe loading="lazy"
-            src="https://www.youtube-nocookie.com/embed/mltczj9MeHI" 
-            title="YouTube video"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowfullscreen>
-          </iframe>
-        </div>
-      
-        <div class="video-wrapper">
-          <iframe loading="lazy"
-            src="https://www.youtube-nocookie.com/embed/r5hOvmnlhXY" 
-            title="YouTube video"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowfullscreen>
-          </iframe>
-        </div>
-      </div>
-      
-      <div class="image-gallery">
-        <img class="imageHidden" src="/img/Parking/20240416_181420.jpg" alt="Project Image" loading="lazy">
-        <img class="imageHidden" src="/img/Parking/20240416_181423.jpg" alt="Project Image" loading="lazy">
-        <img class="imageHidden" src="/img/Parking/20240416_181427.jpg" alt="Project Image" loading="lazy">
-        <img class="imageHidden" src="/img/Parking/20240416_181705.jpg" alt="Project Image" loading="lazy">
-        <img class="imageHidden" src="/img/Parking/20240416_181721.jpg" alt="Project Image" loading="lazy">
-        <img class="imageHidden" src="/img/Parking/20240418_172644.jpg" alt="Project Image" loading="lazy">
-        <img class="imageHidden" src="/img/Parking/20240419_133405.jpg" alt="Project Image" loading="lazy">
-        <img class="imageHidden" src="/img/Parking/IMG-20240419-WA0009.jpg" alt="Project Image" loading="lazy">
-        <img class="imageHidden" src="/img/Parking/IMG-20240419-WA0012.jpg" alt="Project Image" loading="lazy">
-        <img class="imageHidden" src="/img/Parking/IMG-20240419-WA0008.jpg" alt="Project Image" loading="lazy">
-      </div>   
-
-        <div class="white-space"></div>
-
-    </div>     
-  </div>
-
-
-  
-  </div> 
+</div> 
   
   <!-- Photography Section -->
-<section id="photography-section" class="photography-section" style="display: none;">
+  <section id="photography-section" class="photography-section" style="display: none;">
   
   <!-- Instagram Link -->
   <div class="instagram-link hover-this">
@@ -830,49 +626,9 @@
   <div class="photography-content">
       <div class="image-gallery" id="image-gallery"></div>
   </div>
-</section>
+  </section>
 
 </section>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 <div id="close-fullscreen" class="close-wrapper hover-this">
@@ -887,11 +643,6 @@
     </div>
   </a>
 </div>
-
-
-
-
-
 
 
 

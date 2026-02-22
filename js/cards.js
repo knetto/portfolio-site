@@ -135,6 +135,21 @@ function initProjectAnimations() {
         }
     );
 
+    // Fade in the project controls on page load
+    gsap.fromTo('.project-controls',
+        {
+            opacity: 0,
+            y: 20
+        },
+        {
+            opacity: 1,
+            y: 0,
+            duration: 0.8,
+            ease: "power2.out",
+            delay: 0.7 // Triggers right after the category buttons finish
+        }
+    );
+
     // Animate project cards when they come into view
     animateProjectCards();
 
@@ -155,14 +170,12 @@ function animateProjectCards() {
     // Mobile-optimized ScrollTrigger settings
     const mobileSettings = {
         start: "top 90%",
-        end: "bottom 50%",
-        toggleActions: "play none none reverse"
+        toggleActions: "play none none none" // Changed from reverse
     };
 
     const desktopSettings = {
         start: "top 85%",
-        end: "bottom 60%",
-        toggleActions: "play none none reverse"
+        toggleActions: "play none none none" // Changed from reverse
     };
 
     // Create ScrollTriggers for each project card
@@ -178,7 +191,7 @@ function animateProjectCards() {
             scrollTrigger: {
                 trigger: card,
                 start: settings.start,
-                end: settings.end,
+                once: true, // <--- ADD THIS LINE
                 toggleActions: settings.toggleActions,
                 onEnter: () => animateCardContent(card),
                 // Add these mobile-specific optimizations:
@@ -401,6 +414,9 @@ function reinitAnimations() {
     // Re-animate visible cards
     animateProjectCards();
 }
+
+
+
 
 
 // --- CARD EXPANSION LOGIC ---
@@ -805,22 +821,29 @@ document.addEventListener('DOMContentLoaded', function() {
 
     function switchToSection(section) {
         const tl = gsap.timeline();
+        // Grab the controls container
+        const projectControls = document.querySelector('.project-controls'); 
 
         if (section === 'photography') {
-            // Slide projects LEFT → hide
-            tl.to(projectGrid, {
+            // Slide projects AND controls LEFT → hide
+            tl.to([projectGrid, projectControls], {
                 x: '-100%',
                 opacity: 0,
                 duration: 0.6,
                 ease: "power2.inOut",
                 onComplete: () => {
                     projectGrid.style.display = 'none';
+                    // Hide controls from the DOM so they don't take up space
+                    if (projectControls) projectControls.style.display = 'none'; 
+                    
+                    // Reset photography images to invisible BEFORE showing the section
+                    gsap.set("#image-gallery img", { y: 80, opacity: 0 });
+                    
                     photographySection.style.display = 'block';
 
                     // Refresh ScrollTrigger after section becomes visible
                     setTimeout(() => {
                         ScrollTrigger.refresh();
-                        // Re-initialize photography animations (kills old ones)
                         initPhotographyGalleryAnimations();
                     }, 100);
                 }
@@ -840,18 +863,23 @@ document.addEventListener('DOMContentLoaded', function() {
                 ease: "power2.inOut",
                 onComplete: () => {
                     photographySection.style.display = 'none';
+                    
+                    // Reset project cards to invisible BEFORE showing the grid
+                    gsap.set('.project-card', { opacity: 0, y: 100 });
+                    
                     projectGrid.style.display = 'grid';
+                    // Bring the controls back into the DOM layout
+                    if (projectControls) projectControls.style.display = 'flex'; 
 
                     // Refresh ScrollTrigger after section change
                     setTimeout(() => {
                         ScrollTrigger.refresh();
-                        // Re-initialize project animations (kills old ones)
                         reinitAnimations();
                     }, 100);
                 }
             })
-            // Slide projects IN from LEFT
-            .fromTo(projectGrid,
+            // Slide projects AND controls IN from LEFT
+            .fromTo([projectGrid, projectControls],
                 { x: '-100%', opacity: 0 },
                 { x: '0%', opacity: 1, duration: 0.6, ease: "power2.inOut" },
                 "-=0.3"
@@ -1014,3 +1042,71 @@ function initPhotographyGalleryAnimations() {
         });
     });
 }
+
+
+
+
+
+
+document.addEventListener("DOMContentLoaded", () => {
+    const grid = document.getElementById("project-grid");
+    const sortSelect = document.getElementById("sort-projects");
+    const yearSelect = document.getElementById("filter-year");
+    const tagSelect = document.getElementById("filter-tag");
+  
+    // Safety check: Only run if the controls actually exist on this page
+    if (!grid || !sortSelect || !yearSelect || !tagSelect) return;
+  
+    const cards = Array.from(grid.querySelectorAll(".project-card"));
+  
+    function updateProjects() {
+      const sortVal = sortSelect.value;
+      const yearVal = yearSelect.value;
+      const tagVal = tagSelect.value;
+  
+      // 1. Sort the cards array safely
+      cards.sort((a, b) => {
+        // Fallbacks prevent errors if an attribute is missing
+        const titleA = (a.dataset.title || "").toLowerCase();
+        const titleB = (b.dataset.title || "").toLowerCase();
+        const dateA = a.dataset.date || "";
+        const dateB = b.dataset.date || "";
+  
+        if (sortVal === "title-asc") return titleA.localeCompare(titleB);
+        if (sortVal === "title-desc") return titleB.localeCompare(titleA);
+        if (sortVal === "date-desc") return dateB.localeCompare(dateA);
+        if (sortVal === "date-asc") return dateA.localeCompare(dateB);
+        
+        return 0; // Default
+      });
+  
+      // 2. Filter and apply new order
+      cards.forEach((card, index) => {
+        const cardYear = card.dataset.year || "";
+        const cardTags = card.dataset.tags || "";
+  
+        const matchYear = yearVal === "all" || cardYear === yearVal;
+        const matchTag = tagVal === "all" || cardTags.includes(tagVal);
+  
+        if (matchYear && matchTag) {
+          card.style.display = "block";  // Show card
+          card.style.order = index;      // Apply CSS Grid order
+        } else {
+          card.style.display = "none";   // Hide card
+        }
+      });
+  
+      // Refresh GSAP ScrollTrigger if it exists so animations don't break
+      if (typeof ScrollTrigger !== 'undefined') {
+          ScrollTrigger.refresh();
+      }
+    }
+  
+    // Listen for changes on the dropdowns
+    sortSelect.addEventListener("change", updateProjects);
+    yearSelect.addEventListener("change", updateProjects);
+    tagSelect.addEventListener("change", updateProjects);
+  });
+
+
+  
