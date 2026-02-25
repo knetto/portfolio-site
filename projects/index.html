@@ -103,7 +103,7 @@
 </div>
 
 
-
+<div class="menu-overlay"></div>
 
 
 
@@ -119,9 +119,18 @@
     </div>
   </div>
 
-  <div class="project-controls">
-    <div class="control-group">
-      <select id="sort-projects">
+<div class="project-controls">
+  <div class="control-group">
+    <div class="custom-dropdown">
+      <div class="dropdown-selected">Default <span class="arrow"></span></div>
+      <ul class="dropdown-options">
+        <li data-value="default">Default</li>
+        <li data-value="date-desc">Newest First</li>
+        <li data-value="date-asc">Oldest First</li>
+        <li data-value="title-asc">A - Z</li>
+        <li data-value="title-desc">Z - A</li>
+      </ul>
+      <select id="sort-projects" style="display: none;">
         <option value="default">Default</option>
         <option value="date-desc">Newest First</option>
         <option value="date-asc">Oldest First</option>
@@ -129,17 +138,35 @@
         <option value="title-desc">Z - A</option>
       </select>
     </div>
-  
-    <div class="control-group">
-      <select id="filter-year">
+  </div>
+
+  <div class="control-group">
+    <div class="custom-dropdown">
+      <div class="dropdown-selected">All Years <span class="arrow"></span></div>
+      <ul class="dropdown-options">
+        <li data-value="all">All Years</li>
+        <li data-value="2024">2024</li>
+        <li data-value="2023">2023</li>
+      </ul>
+      <select id="filter-year" style="display: none;">
         <option value="all">All Years</option>
         <option value="2024">2024</option>
         <option value="2023">2023</option>
       </select>
     </div>
-  
-    <div class="control-group">
-      <select id="filter-tag">
+  </div>
+
+  <div class="control-group">
+    <div class="custom-dropdown">
+      <div class="dropdown-selected">All Tags <span class="arrow"></span></div>
+      <ul class="dropdown-options">
+        <li data-value="all">All Tags</li>
+        <li data-value="robotics">Robotics</li>
+        <li data-value="ai">AI</li>
+        <li data-value="ar">AR</li>
+        <li data-value="graphic-design">Graphic Design</li>
+      </ul>
+      <select id="filter-tag" style="display: none;">
         <option value="all">All Tags</option>
         <option value="robotics">Robotics</option>
         <option value="ai">AI</option>
@@ -148,6 +175,7 @@
       </select>
     </div>
   </div>
+</div>
 
 <div id="project-grid" class="projects-container">
 

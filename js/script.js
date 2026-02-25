@@ -398,18 +398,29 @@ window.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  gsap.to('.subheading', {
-    opacity: 1,
-    y: -50, 
-    duration: 1.5, // Duration of the animation
-    ease: 'power2.out', // Ease-out effect for smooth animation
-    scrollTrigger: {
-      trigger: '.subheading',
-      start: 'top 80%',
-      end: 'top 20%',
-      once: true,
-    }
-  });
+  const subheading = document.querySelector('.subheading');
+const text = subheading.innerText;
+subheading.innerHTML = ''; // Clear the original text
+
+// Wrap each letter in a span, preserving spaces
+text.split('').forEach(char => {
+  const span = document.createElement('span');
+  span.className = 'char';
+  span.innerHTML = char === ' ' ? '&nbsp;' : char;
+  subheading.appendChild(span);
+});
+
+gsap.to('.char', {
+  backgroundPosition: 'bottom', 
+  ease: 'none', 
+  stagger: 0.1, 
+  scrollTrigger: {
+    trigger: '.subheading', // <-- CHANGED: Now watches the text, not the section
+    start: 'top 90%',       // Starts when the top of the TEXT is 85% down the screen
+    end: 'bottom 60%',      // Finishes when the bottom of the TEXT hits 45% (near center)
+    scrub: true,            
+  }
+});
 
   // Add animation for the circle with ScrollTrigger
   gsap.to('.circle', {
@@ -642,12 +653,50 @@ window.addEventListener('load', () => {
 
 // Explore button animation (only on index.html)
 const exploreBtn = document.getElementById("explore-btn");
+
 if (exploreBtn) {
+  // Grab the fill element inside the button for the hover effect
+  const fill = exploreBtn.querySelector(".btn-fill");
+
+  // 1. Mouse Enter: Start fill from exact entry point
+  exploreBtn.addEventListener("mouseenter", (e) => {
+    const rect = exploreBtn.getBoundingClientRect();
+    const relX = e.clientX - rect.left;
+    const relY = e.clientY - rect.top;
+
+    // Immediately snap the hidden fill to the cursor's location
+    gsap.set(fill, { x: relX, y: relY });
+
+    // Animate the scale to fill the button
+    gsap.to(fill, {
+      scale: 50, // Scales up the 10px dot to cover the button
+      duration: 0.5,
+      ease: "power3.out"
+    });
+  });
+
+  // 2. Mouse Leave: Shrink fill to the exact exit point
+  exploreBtn.addEventListener("mouseleave", (e) => {
+    const rect = exploreBtn.getBoundingClientRect();
+    const relX = e.clientX - rect.left;
+    const relY = e.clientY - rect.top;
+
+    // Shrink the circle back down while following the cursor out
+    gsap.to(fill, {
+      x: relX, 
+      y: relY,
+      scale: 0,
+      duration: 0.5,
+      ease: "power3.out"
+    });
+  });
+
+  // 3. Click: Page transition to /projects/
   exploreBtn.addEventListener("click", (e) => {
     e.preventDefault();
 
     const tl = gsap.timeline({
-      onComplete: () => (window.location.href = "projects.html")
+      onComplete: () => (window.location.href = "/projects/")
     });
 
     tl.to("body", {
@@ -725,3 +774,105 @@ window.addEventListener('resize', () => {
 //project page logic
 
 document.getElementById("btn-school").classList.add("active");
+
+document.addEventListener("DOMContentLoaded", () => {
+  const dropdowns = document.querySelectorAll(".custom-dropdown");
+
+  dropdowns.forEach((dropdown) => {
+    const selected = dropdown.querySelector(".dropdown-selected");
+    const optionsList = dropdown.querySelector(".dropdown-options");
+    const options = dropdown.querySelectorAll(".dropdown-options li");
+    const hiddenSelect = dropdown.querySelector("select");
+    const arrow = dropdown.querySelector(".arrow");
+    
+    let isOpen = false;
+
+    // Toggle Dropdown
+    selected.addEventListener("click", (e) => {
+      e.stopPropagation(); // Prevent closing immediately
+      
+      // Close all other dropdowns first (optional, but good UX)
+      closeAllOtherDropdowns(dropdown);
+
+      isOpen = !isOpen;
+      dropdown.classList.toggle("open", isOpen);
+
+      if (isOpen) {
+        // Expand Animation
+        gsap.to(optionsList, {
+          height: "auto",
+          opacity: 1,
+          duration: 0.4,
+          ease: "back.out(1.2)", // Bouncy elastic effect
+          pointerEvents: "auto"
+        });
+        gsap.to(arrow, { rotation: -135, y: 2, duration: 0.3, ease: "power2.inOut" });
+      } else {
+        // Collapse Animation
+        closeDropdown(optionsList, arrow);
+      }
+    });
+
+    // Handle Option Click
+    options.forEach((option) => {
+      option.addEventListener("click", () => {
+        // Update the display text (keeping the arrow span)
+        selected.innerHTML = `${option.innerText} <span class="arrow"></span>`;
+        
+        // Re-grab the new arrow element since we just replaced the HTML
+        const newArrow = dropdown.querySelector(".arrow");
+        
+        // Update the hidden select element value
+        hiddenSelect.value = option.getAttribute("data-value");
+        
+        // Dispatch a change event so your existing filter script knows the value changed!
+        hiddenSelect.dispatchEvent(new Event('change'));
+
+        // Close dropdown
+        isOpen = false;
+        dropdown.classList.remove("open");
+        closeDropdown(optionsList, newArrow);
+      });
+    });
+
+    // Helper: Close animation
+    function closeDropdown(list, arrowEl) {
+      gsap.to(list, {
+        height: 0,
+        opacity: 0,
+        duration: 0.3,
+        ease: "power2.in",
+        pointerEvents: "none"
+      });
+      gsap.to(arrowEl, { rotation: 45, y: -2, duration: 0.3, ease: "power2.inOut" });
+    }
+  });
+
+  // Close dropdowns if user clicks outside of them
+  document.addEventListener("click", () => {
+    dropdowns.forEach((dropdown) => {
+      if (dropdown.classList.contains("open")) {
+        dropdown.classList.remove("open");
+        const list = dropdown.querySelector(".dropdown-options");
+        const arrow = dropdown.querySelector(".arrow");
+        gsap.to(list, { height: 0, opacity: 0, duration: 0.3, ease: "power2.in", pointerEvents: "none" });
+        gsap.to(arrow, { rotation: 45, y: -2, duration: 0.3, ease: "power2.inOut" });
+      }
+    });
+  });
+
+  // Helper function to close other dropdowns when opening one
+  function closeAllOtherDropdowns(currentDropdown) {
+    dropdowns.forEach((dropdown) => {
+      if (dropdown !== currentDropdown && dropdown.classList.contains("open")) {
+        dropdown.classList.remove("open");
+        const list = dropdown.querySelector(".dropdown-options");
+        const arrow = dropdown.querySelector(".arrow");
+        gsap.to(list, { height: 0, opacity: 0, duration: 0.3, ease: "power2.in", pointerEvents: "none" });
+        gsap.to(arrow, { rotation: 45, y: -2, duration: 0.3, ease: "power2.inOut" });
+      }
+    });
+  }
+});
+
+

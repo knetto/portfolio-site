@@ -756,17 +756,6 @@ nav .close:hover div::after {
 
 
 
-#new-section-2 {
-  position: relative;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  color: var(--white);
-  display: flex;
-  z-index: 12; /* Higher value so it appears on top */
-  overflow: auto;
-  background-color: var(--black);
-}
 
 .new-section-2-content {
   display: flex;
@@ -805,13 +794,40 @@ nav .close:hover div::after {
   display: block; /* Each word ("Check out" and "my projects") on its own line */
 }
 
+#new-section-2 {
+  position: relative;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  color: var(--white);
+  display: flex;
+  z-index: 12; 
+  /* overflow: auto; <--- REMOVE OR COMMENT OUT THIS LINE */
+  background-color: var(--black);
+}
+
 .subheading {
-  font-size: 2.7rem; /* Smaller but still large text */
-  width: 45%; /* 50% of the container width */
+  font-size: 2.7rem;
+  width: 45%;
   line-height: 1.3;
   padding-top: 2.7%;
   margin-top: 50px;
-  opacity: 0;
+  /* Remove the old opacity/transform from here */
+}
+
+.char {
+  /* Create a background: top 50% is grey, bottom 50% is white */
+  background: linear-gradient(to top, var(--white) 50%, rgba(255, 255, 255, 0.2) 50%);
+  background-size: 100% 200%; /* Make background twice as tall */
+  background-position: top; /* Start by showing the top (grey) part */
+  
+  /* Clip the background to the shape of the text */
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  color: transparent;
+  
+  display: inline-block; /* Required for the background positioning to work perfectly */
 }
 
 .circle {
@@ -1146,63 +1162,81 @@ nav .close:hover div::after {
       color: var(--white);
     }
     
-    /* Circle Button */
-    .circle-btn {
-      width: 220px;
-      height: 220px;
-      border-radius: 50%;
-      background: var(--white);
-      color: var(--black);
-      border: none;
-      font-size: 1.8rem;
-      font-weight: 800;
-      transform: scale(1);
-      transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), 
-        background 0.3s, color 0.3s;
-      box-shadow: 0 0 0 0 rgba(255,255,255,.2);
-      animation: pulse 2.8s infinite;
-    }
-    
-    /* Hover animation */
-    .circle-btn:hover {
-      transform: scale(1.12);
-      background: transparent;
-      color: var(--white);
-      outline: 3px solid var(--white);
-    }
-    
-    /* Slight floating/pulse animation */
-    @keyframes pulse {
-      0% {
-        box-shadow: 0 0 0 0 rgba(255,255,255,.15);
-      }
-      70% {
-        box-shadow: 0 0 0 22px rgba(255,255,255,0);
-      }
-      100% {
-        box-shadow: 0 0 0 0 rgba(255,255,255,0);
-      }
-    }
-    
-    /* Responsive */
-    @media (max-width: 900px) {
-      .text-content-otherProjects {
-        flex-direction: column;
-        text-align: center;
-        gap: 35px;
-      }
-    
-      .heading-other {
-        width: 100%;
-        font-size: 4rem;
-      }
-    
-      .circle-btn {
-        width: 160px;
-        height: 160px;
-        font-size: 1.4rem;
-      }
-    }
+/* Circle Button */
+.circle-btn {
+  position: relative;
+  overflow: hidden; /* Crucial for clipping the fill inside the circle */
+  width: 220px;
+  height: 220px;
+  border-radius: 50%;
+  background: transparent; 
+  color: var(--white);
+  border: 3px solid var(--white);
+  font-size: 1.8rem;
+  font-weight: 800;
+  cursor: pointer;
+  transform: scale(1);
+  /* Removed background/color transitions; GSAP handles the fill now */
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 0 0 0 rgba(255,255,255,.2);
+  animation: pulse 2.8s infinite;
+}
+
+/* Keep text above the background fill */
+.btn-text {
+  position: relative;
+  z-index: 2;
+  transition: color 0.3s ease;
+}
+
+/* The element that will animate the fill */
+.btn-fill {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 10px; /* Small starting size */
+  height: 10px;
+  border-radius: 50%;
+  background: var(--white);
+  z-index: 1;
+  pointer-events: none; /* Prevents interference with mouse events */
+  transform: translate(-50%, -50%) scale(0); /* Centers it and hides it initially */
+}
+
+/* Hover animations */
+.circle-btn:hover {
+  transform: scale(1.12);
+  outline: none; /* Prevents double border visually */
+}
+
+.circle-btn:hover .btn-text {
+  color: var(--black); /* Change text color when white background fills in */
+}
+
+/* Slight floating/pulse animation */
+@keyframes pulse {
+  0% { box-shadow: 0 0 0 0 rgba(255,255,255,.15); }
+  70% { box-shadow: 0 0 0 22px rgba(255,255,255,0); }
+  100% { box-shadow: 0 0 0 0 rgba(255,255,255,0); }
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .text-content-otherProjects {
+    flex-direction: column;
+    text-align: center;
+    gap: 100px;
+  }
+  .heading-other {
+    width: 100%;
+    font-size: 4rem;
+  }
+  .circle-btn {
+    width: 160px;
+    height: 160px;
+    font-size: 1.4rem;
+  }
+}
     
 
 
@@ -2524,6 +2558,7 @@ textarea.error + .error-message {
   gap: 20px;
   margin-bottom: 50px;
   opacity: 1; /* Add to your GSAP animations if you want it to fade in */
+  z-index: 9; /* Keeps it above other content when open */
 }
 
 .control-group {
@@ -2538,46 +2573,94 @@ textarea.error + .error-message {
   font-size: 1rem;
 }
 
-.control-group select {
+/* --- Custom Animated Dropdowns --- */
+.custom-dropdown {
+  position: relative;
+  font-family: inherit;
+  width: 160px; /* Adjust as needed */
+  z-index: 999; /* Keeps it above other content when open */
+}
+
+.dropdown-selected {
   background: transparent;
   color: var(--navBarText);
   border: 2px solid var(--navBarText);
-  padding: 8px 16px;
+  padding: 8px 18px;
   border-radius: 30px;
-  font-family: inherit;
   font-size: 0.95rem;
   font-weight: 500;
   cursor: none; /* Matches your custom cursor */
-  outline: none;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   transition: all 0.3s ease;
-  appearance: none;
-  -webkit-appearance: none;
-  /* Custom dropdown arrow */
-  background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23777%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E");
-  background-repeat: no-repeat;
-  background-position: right 12px top 50%;
-  background-size: 10px auto;
-  padding-right: 30px;
+  user-select: none;
 }
 
-.control-group select:hover,
-.control-group select:focus {
+.dropdown-selected:hover {
   background-color: var(--navBarText);
   color: var(--navText);
 }
 
-.control-group select option {
-  background: var(--white);
-  color: var(--black);
+/* Custom CSS Arrow */
+.dropdown-selected .arrow {
+  display: inline-block;
+  width: 8px;
+  height: 8px;
+  border-right: 2px solid currentColor;
+  border-bottom: 2px solid currentColor;
+  transform: translateY(-2px) rotate(45deg);
+  transition: transform 0.3s ease;
 }
 
+/* Arrow state when open handled by GSAP/class, but just in case */
+.custom-dropdown.open .arrow {
+  transform: translateY(2px) rotate(-135deg);
+}
+
+/* The expanding options list */
+.dropdown-options {
+  list-style: none;
+  position: absolute;
+  top: calc(100% + 10px);
+  left: 0;
+  width: 100%;
+  background: var(--navBackground);
+  border: 1px solid color-mix(in srgb, var(--navBarText) 20%, transparent);
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  /* Hidden by default, GSAP will handle showing it */
+  height: 0;
+  opacity: 0;
+  pointer-events: none; 
+}
+
+.dropdown-options li {
+  padding: 10px 18px;
+  color: var(--navText);
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: none;
+  transition: background 0.2s ease, padding-left 0.2s ease;
+}
+
+.dropdown-options li:hover {
+  background: color-mix(in srgb, var(--navText) 10%, transparent);
+  padding-left: 24px; /* Slight indent hover effect */
+}
+
+/* Mobile Adjustments */
 @media (max-width: 600px) {
-  .project-controls {
-    gap: 15px;
+  .custom-dropdown {
+    width: 140px;
   }
-  .control-group select {
+  .dropdown-selected {
     font-size: 0.85rem;
-    padding: 6px 12px;
-    padding-right: 25px;
+    padding: 6px 14px;
+  }
+  .dropdown-options li {
+    font-size: 0.85rem;
+    padding: 8px 14px;
   }
 }

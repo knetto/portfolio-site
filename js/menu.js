@@ -15,12 +15,14 @@ open.addEventListener("click", () => {
     tl.play();
     scheduleFirstBubble();
   } else {
-    tl.to("nav",             { right: 0, duration: 0 })
-      .to("nav",             { height: "100vh" }, "-=.1")
-      .to("nav ul li a",     { opacity: 1, pointerEvents: "all", stagger: .2 }, "-=.8")
-      .to("#theme-toggle",   { opacity: 1, pointerEvents: "all" }, "-=.3")
-      .to(".close",          { opacity: 1, pointerEvents: "all" }, "-=.8")
-      .to("nav h2",          { opacity: 1 }, "-=1");
+   tl.to("nav",             { right: 0, duration: 0 })
+  .to("nav",             { height: "100vh" }, "-=.1")
+  .to(".close",          { opacity: 1, pointerEvents: "all" }, 0.2)
+  .to("nav h2",          { opacity: 1 }, 0.2)
+  // Lowered the stagger from 0.2 to 0.1 for a tighter sequence
+  .to("nav ul li a",     { opacity: 1, pointerEvents: "all", stagger: 0.1 }, "-=0.6")
+  // The "<" symbol tells GSAP: "Start this at the exact same time as the previous animation"
+  .to("#theme-toggle",   { opacity: 1, pointerEvents: "all" }, "<");
 
     scheduleFirstBubble(); // bubble schedule starts after opening
   }
@@ -75,10 +77,4 @@ function stopBubbleLoop() {
   hideBubble();
 }
 
-open.addEventListener("click", () => {
-  document.body.classList.add("no-scroll");
-});
 
-close.addEventListener("click", () => {
-  document.body.classList.remove("no-scroll");
-});
