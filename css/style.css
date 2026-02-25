@@ -1874,7 +1874,7 @@ textarea.error + .error-message {
   font-size: .8rem;
   letter-spacing: .05em;
   opacity: .7;
-  margin-bottom: 4px;
+  /* margin-bottom: 4px; */
   display: block;
 }
 
@@ -1882,7 +1882,7 @@ textarea.error + .error-message {
 .projects-section .contribution p {
   font-size: .95rem;
   opacity: .75;
-  margin-bottom: 14px;
+  /* margin-bottom: 14px; */
 }
 
 
@@ -2663,4 +2663,81 @@ textarea.error + .error-message {
     font-size: 0.85rem;
     padding: 8px 14px;
   }
+}
+
+/* ============================================
+   3D INFINITE GALLERY STYLES - FIXED
+   ============================================ */
+
+.gallery-3d-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background: var(--black);
+  z-index: 100;
+}
+
+/* Add to your CSS */
+#gallery-3d-canvas,
+.gallery-3d-container canvas {
+  cursor: none !important;
+}
+
+/* Hide footer when photography section is active */
+body:has(#photography-section:not([style*="display: none"])) .footer {
+  display: none !important;
+}
+
+/* Only hide the project grid and controls, NOT the category buttons */
+body:has(#photography-section:not([style*="display: none"])) #project-grid,
+body:has(#photography-section:not([style*="display: none"])) .project-controls {
+  display: none !important;
+}
+
+/* Keep the category buttons and title visible but reposition them */
+body:has(#photography-section:not([style*="display: none"])) .content-center {
+  position: relative;
+  z-index: 102;
+}
+
+/* Ensure the photography section itself is fullscreen when active */
+#photography-section {
+  position: fixed !important;
+  top: 0;
+  left: 0;
+  width: 100vw !important;
+  height: 100vh !important;
+  z-index: 99;
+  padding: 0 !important;
+  margin: 0 !important;
+  display: none;
+}
+
+#photography-section:not([style*="display: none"]) {
+  display: flex !important;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Ensure Instagram link is visible and positioned correctly */
+body:has(#photography-section:not([style*="display: none"])) .instagram-link {
+  display: block !important;
+  position: relative;
+  z-index: 102;
+  margin-top: -20vh;
+  margin-bottom: 20px;
+}
+
+/* Remove padding from projects section when gallery is active */
+body:has(#photography-section:not([style*="display: none"])) .projects-section {
+  padding-bottom: 0 !important;
+}
+
+/* Ensure nav bar stays visible */
+body:has(#photography-section:not([style*="display: none"])) .nav-bar {
+  z-index: 101;
 }

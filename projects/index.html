@@ -25,6 +25,8 @@
     <link rel="icon" type="image/png" sizes="32x32" href="/img/favicon/favicon-32x32.png">
     <link rel="apple-touch-icon" href="/img/favicon/apple-touch-icon.png">
     <link rel="manifest" href="/img/favicon/site.webmanifest">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
   
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-CQ0C0Q3SBK"></script>
     <script>
@@ -196,12 +198,12 @@
           <strong>ROLE</strong>
           <p>Robot Builder & Logic Developer</p>
         </div>
-  
+        <br>
         <div class="contribution">
           <strong>CONTRIBUTION</strong>
           <p>I built and programmed the self-driving robot car and created the logic to find and drive to the nearest free parking spot.</p>
         </div>
-  
+        <br>
         <button class="hover-this view-btn">View Project →</button>
       </div>
       <div class="card-fill"></div>
@@ -316,7 +318,7 @@
       <strong>ROLE</strong>
       <p>Hardware Builder & AR Developer</p>
     </div>
-
+    <br>
     <div class="contribution">
       <strong>CONTRIBUTION</strong>
       <p>
@@ -324,7 +326,7 @@
         and developed the Arduino detection system that triggers reactive lighting when trash is thrown into the helmet.
       </p>
     </div>
-
+    <br>
     <button class="hover-this view-btn">View Project →</button>
   </div>
   <div class="card-fill"></div>
@@ -439,7 +441,7 @@
         <strong>ROLE</strong>
         <p>Builder & Programmer</p>
       </div>
-
+      <br>
       <div class="contribution">
         <strong>CONTRIBUTION</strong>
         <p>
@@ -447,7 +449,7 @@
           and programmed all motor control and emotional behavior logic using Arduino.
         </p>
       </div>
-
+      <br>
       <button class="hover-this view-btn">View Project →</button>
     </div>
     <div class="card-fill"></div>
@@ -551,12 +553,12 @@
         <strong>ROLE</strong>
         <p>Concept & Graphic Design</p>
       </div>
-
+      <br>
       <div class="contribution">
         <strong>CONTRIBUTION</strong>
         <p>I developed the concept and created the artwork using AI generation and Photoshop.</p>
       </div>
-
+      <br>
       <button class="hover-this view-btn">View Project →</button>
     </div>
     <div class="card-fill"></div>
@@ -640,7 +642,8 @@
 </div> 
   
   <!-- Photography Section -->
-  <section id="photography-section" class="photography-section" style="display: none;">
+  <!-- Photography Section with 3D Infinite Gallery -->
+<section id="photography-section" class="photography-section" style="display: none;">
   
   <!-- Instagram Link -->
   <div class="instagram-link hover-this">
@@ -652,10 +655,14 @@
   </div>
 
   <div class="photography-content">
-      <div class="image-gallery" id="image-gallery"></div>
-  </div>
-  </section>
+    <!-- 3D Infinite Gallery Container -->
+    <div class="gallery-3d-container" id="gallery-3d-container">
+      <canvas id="gallery-3d-canvas"></canvas>     
+    </div>
 
+    <!-- Fallback/Original Gallery (hidden when 3D is active) -->
+    <div class="image-gallery" id="image-gallery" style="display: none;"></div>
+  </div>
 </section>
 
 
@@ -672,7 +679,7 @@
   </a>
 </div>
 
-
+</section>
 
 <footer class="footer">
     <div class="footer-columns">
@@ -726,7 +733,7 @@
       
       <p>© <span id="current-year"></span> Corné Schipper. All rights reserved.</p>
     </div>
-  </footer>
+</footer>
   
   
   <script defer  src="https://cdn.jsdelivr.net/npm/gsap@3.12.7/dist/gsap.min.js"></script>
