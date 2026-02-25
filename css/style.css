@@ -1145,22 +1145,41 @@ nav .close:hover div::after {
       padding: 5%;
     }
     
-    .text-content-otherProjects {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      width: 100%;
-    }
-    
-    /* Left Title */
-    .heading-other {
-      font-size: 6.5rem;
-      font-weight: 900;
-      line-height: 1.1;
-      width: 55%;
-      mix-blend-mode: difference;
-      color: var(--white);
-    }
+.text-content-otherProjects {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+/* 1. Main container keeps layout & sizing */
+.heading-other {
+  font-size: 6.5rem;
+  font-weight: 900;
+  line-height: 1.1;
+  width: 55%;
+  /* mix-blend-mode: difference; */
+}
+
+/* 2. New class for individual lines */
+.text-line {
+  /* Outline & Color */
+  -webkit-text-stroke: 2px var(--white);
+  color: transparent; 
+
+  /* The Gradient (I see you are using a nice light blue in the screenshot! Replace the hex if needed) */
+  background: linear-gradient(to right, var(--white) 50%, transparent 50%);
+  background-size: 200% 100%;
+  background-position: 100% 0;
+  
+  -webkit-background-clip: text;
+  background-clip: text;
+
+  /* THE FIX FOR CHOPPED LETTERS */
+  display: inline-block; 
+  padding-bottom: 0.15em; /* Gives the background extra room at the bottom */
+  margin-bottom: -0.15em; /* Pulls the next line back up so your line-height isn't ruined */
+}
     
 /* Circle Button */
 .circle-btn {

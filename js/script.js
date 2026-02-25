@@ -192,7 +192,32 @@ magneticElements.forEach(element => {
 });
 
 
+window.addEventListener("load", () => {
+  gsap.registerPlugin(ScrollTrigger);
 
+  const lines = gsap.utils.toArray('.text-line');
+
+  lines.forEach((line) => {
+    gsap.to(line, {
+      backgroundPosition: "0% 0", 
+      ease: "none",               
+      scrollTrigger: {
+        trigger: line,            
+        
+        // Use percentages for fine-tuned control
+        start: "0% 85%",      
+        end: "100% 60%",     
+        
+        scrub: 0.5,
+        
+        // Turns on the visual guides so you can see the percentages at work!
+        // markers: true         
+      }
+    });
+  });
+
+  ScrollTrigger.refresh(); 
+});
 
 // Initial check to apply styles if the page is already scrolled on load
 window.addEventListener('load', () => {
